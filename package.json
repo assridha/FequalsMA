@@ -1,0 +1,11 @@
+{
+  "name": "fequalsma",
+  "version": "0.1.0",
+  "description": "Website/app where users can learn physics through courses and exercises. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ashwin Sridhar",
+  "license": "ISC"
+}
