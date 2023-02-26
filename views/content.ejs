@@ -1,0 +1,52 @@
+<!-- Basic ejs script with heading content.title -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Content</title>
+</head>
+
+
+<body>
+    <h1 id="content">
+        <%= content.title %>
+    </h1>
+
+    <!-- include toc.ejs -->
+    <%- include('./partials/toc') %>
+        <!-- Add new content if level is !=3 -->
+        <% if (content.level !=3) { %>
+            <h3>Add new Content</h3>
+            <form action="/<%= content._id %>/add" method="POST">
+                <input type="text" name="title" placeholder="Title">
+                <br>
+                <input type="submit" value="Add">
+            </form>
+            <% } %>
+
+                <h3>Description</h3>
+                <p>
+                    <%- content.summary %>
+                </p>
+                <!-- Link to edit page -->
+                <a href="/<%= content._id %>/edit">Edit</a>
+
+                <h3>Links</h3>
+                <!-- Link back to home -->
+                <a href="/">Home</a>
+                <!-- link back to parent -->
+                <!-- If parent does not exist then redirect to / -->
+                <% if (!content.parent) { %>
+                    <a href="/">Back</a>
+                    <% } else { %>
+                        <a href="/<%= content.parent %>/content">Back</a>
+                        <% } %>
+                            <!-- form to add new content document -->
+                            <br>
+
+
+
+</body>
+
+</html>

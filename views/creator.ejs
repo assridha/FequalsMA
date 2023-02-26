@@ -1,0 +1,93 @@
+<!-- Start with a simple html page -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <!-- Add a multi-select form for each element in subjects. POST route to /create -->
+    <div>
+        <form action="/create" method="POST">
+            <select name="selectedSubject" id="selectedSubject" multiple>
+                <!-- for loop for each subject -->
+                <% for (let i=0; i < subjects.length; i++) { %>
+                    <option value="<%= subjects[i]._id %>">
+                        <%= subjects[i].title %>
+                    </option>
+                    <% } %>
+            </select>
+            <br>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    <!-- Add a multi-select form for each element in parts. POST route to /create -->
+    <div>
+        <form action="/create" method="POST">
+            <select name="selectedParts" id="selectedParts" multiple>
+                <!-- for loop for each part -->
+                <% for (let i=0; i < parts.length; i++) { %>
+                    <option value="<%= parts[i]._id %>">
+                        <%= parts[i].title %>
+                    </option>
+                    <% } %>
+            </select>
+            <br>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    <!-- Add a multi-select form for each element in chapters. POST route to /create -->
+    <div>
+        <form action="/create" method="POST">
+            <select name="selectedChapter" id="selectedChapter" multiple>
+                <!-- for loop for each chapter -->
+                <% for (let i=0; i < chapters.length; i++) { %>
+                    <option value="<%= chapters[i]._id %>">
+                        <%= chapters[i].title %>
+                    </option>
+                    <% } %>
+            </select>
+            <br>
+            <input type="submit" value="Update">
+        </form>
+
+
+    </div>
+    <!-- Add a multi-select form for each element in topics. POST route to /create -->
+    <div>
+        <form action="/create" method="POST">
+            <select name="topics" id="topics" multiple>
+                <!-- for loop for each topic -->
+                <% for (let i=0; i < topics.length; i++) { %>
+                    <option value="<%= topics[i]._id %>">
+                        <%= topics[i].title %>
+                    </option>
+                    <% } %>
+            </select>
+            <br>
+            <input type="submit" value="Update">
+        </form>
+
+    </div>
+
+    <!-- script to add XMLHTTPRequest post request that adds an event listener to chapters on click and sends the value of chapters -->
+    <!-- <script>
+        let chapters = document.getElementById("chapters");
+        chapters.addEventListener("click", function () {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://192.168.1.213:8080/create");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ selectedChapter: chapters.value }));
+        });
+    </script> -->
+
+</body>
+
+</html>
