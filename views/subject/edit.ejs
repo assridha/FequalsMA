@@ -1,0 +1,74 @@
+<% layout('layouts/boilerplate') %>
+    <div>
+        <p>Below are various sujects to explore</p>
+
+        <% subjects.sort((a, b)=> a.index - b.index); %>
+            <% for (let i=0; i < subjects.length; i++) { %>
+
+                <% if(subjects[i]._id.equals(subject._id)) { %>
+                    <form action="/pola/<%= subjects[i]._id %>" method="POST">
+                        <div class="card mb-3" style="max-width: 840px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="<%= subjects[i].image %>" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <input name="title" type="text" class="form-control"
+                                                id="exampleFormControlInput1" value="<%= subjects[i].title %>">
+                                        </h5>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlTextarea1" class="form-label">Enter
+                                                Summary</label>
+                                            <textarea name="summary" class="form-control"
+                                                id="exampleFormControlTextarea1"
+                                                rows="3"><%=subjects[i].summary%></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlInput1" class="form-label">Image URL</label>
+                                            <input name="image" type="text" class="form-control"
+                                                id="exampleFormControlInput1" value="<%= subjects[i].image%>">
+                                        </div>
+
+
+                                        <button type="submit" class="btn btn-primary btn-sm">Sumbit</button>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <% } else { %>
+                        <div class="card mb-3" style="max-width: 840px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="<%= subjects[i].image %>" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="/subject/<%= subjects[i]._id %>">
+                                                <%= subjects[i].title %>
+                                            </a></h5>
+                                        <p class="card-text">
+                                            <%= subjects[i].summary %>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <% } %>
+
+
+
+                            <% } %>
+
+
+
+
+
+    </div>

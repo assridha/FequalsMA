@@ -1,0 +1,58 @@
+<% layout('layouts/boilerplate') %>
+
+    <h1>
+        <%= subject.title%>
+    </h1>
+
+    <% for (let i=0; i < parts.length; i++) { %>
+        <div class="card mb-3" style="max-width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="subject/<%= parts[i]._id %>">
+                                <%= parts[i].title %>
+                            </a></h5>
+                        <p class="card-text">
+                            <%= parts[i].summary %>
+                        </p>
+
+                        <form style="display: inline-block;" action="subject/<%= parts[i]._id%>/edit"
+                            style="width: fit-content;">
+                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                        </form>
+
+                        <form style="display: inline-block;" action="subject/<%= parts[i]._id %>?_method=DELETE"
+                            method="POST" style="width: fit-content;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+            <h3>Add new topic </h3>
+            <form action="/pola/<%=subject._id%>/part" method="POST">
+                <div class="card mb-3" style="max-width: 840px;">
+                    <div class="row g-0">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                                        value="Title">
+                                </h5>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Enter
+                                        Summary</label>
+                                    <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
+                                        rows="3">No summary yet</textarea>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-primary btn-sm">Add Part</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>

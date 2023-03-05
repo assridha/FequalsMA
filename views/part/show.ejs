@@ -1,0 +1,44 @@
+<% layout('layouts/boilerplate') %>
+
+    <h1>
+        <%= part.title %>
+    </h1>
+    <h2>Summary</h2>
+    <p>
+        <%= part.summary %>
+    </p>
+    <h2>Content</h2>
+    <p>
+        <%= part.body %>
+    </p>
+
+    <h2>List of Chapters</h2>
+    <!-- list all chapter titles -->
+    <ul>
+        <% for (let i=0; i < chapters.length; i++) { %>
+            <li>
+                <a href="/pola/subject/part/<%= chapters[i]._id %>">
+                    <%= chapters[i].title %>
+                </a>
+            </li>
+            <% } %>
+    </ul>
+
+    <h2>Add Chapters</h2>
+    <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
+    <form action="<%=part._id%>/chapter" method="POST">
+        <div class="card mb-3" style="max-width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                                value="Title">
+                        </h5>
+                        <button type="submit" class="btn btn-primary btn-sm">Add Chapter</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>

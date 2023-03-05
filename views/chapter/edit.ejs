@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+
+    <!-- form to edit chapter and send it via post route -->
+
+    <form action="/pola/subject/part/<%=chapter._id%>" method="POST">
+
+        <div class="card mb-3" style="max-width: 840px;">
+
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                                value="<%=chapter.title%>">
+                        </h5>
+                        <p class="card-text">
+                            <textarea name="body" class="form-control" id="exampleFormControlTextarea1"
+                                rows="3"><%=chapter.body%></textarea>
+                        </p>
+
+
+                        <button type="submit" class="btn btn-primary btn-sm">Edit Chapter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
