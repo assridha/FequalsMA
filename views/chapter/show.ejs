@@ -1,66 +1,89 @@
 <% layout('layouts/boilerplate') %>
 
     <h1>
-        <%=chapter.title%>
+        <%=chapter.index+1%>. <%=chapter.title%>
+                <!-- anchor tag to edit chapter route -->
+                <a href="/pola/subject/part/<%=chapter._id%>/edit"
+                    style="text-decoration: none;font-size: medium; vertical-align: super;">✏️</a>
+                <!-- form to delete chapter -->
+                <form style="display: inline-block;" action="/pola/subject/part/<%=chapter._id%>?_method=DELETE"
+                    method="POST">
+                    <!-- anchor tag to submit the form on click -->
+                    <a href="#" onclick="parentNode.submit(); return false;"
+                        style="text-decoration: none;font-size: medium; vertical-align: super;">❌</a>
+                </form>
     </h1>
 
-    <h2>Introduction</h2>
     <p>
-        <%=chapter.body%>
+        <%-chapter.body%>
     </p>
-
-    <!-- anchor tag to edit chapter route -->
-    <a href="/pola/subject/part/<%=chapter._id%>/edit">Edit</a>
-    <!-- form to delete chapter -->
-    <form style="display: inline-block;" action="/pola/subject/part/<%=chapter._id%>?_method=DELETE" method="POST">
-        <!-- anchor tag to submit the form on click -->
-        <a href="#" onclick="parentNode.submit(); return false;">Delete</a>
-    </form>
 
     <!-- render all section -->
 
     <% for (let i=0; i < sections.length; i++) { %>
 
-        <h2>
+        <h2 id="<%=sections[i]._id%>">
             <%= i+1 %>.
                 <%= sections[i].title %>
+
+                    <!-- anchor tag to edit section route -->
+                    <a href="/pola/subject/part/chapter/<%= sections[i]._id%>/edit"
+                        style="text-decoration: none;vertical-align: super;font-size: medium;">✏️</a>
+                    <!-- form to delete section -->
+                    <form style="display: inline-block;"
+                        action="/pola/subject/part/chapter/<%= sections[i]._id%>?_method=DELETE" method="POST">
+                        <!-- anchor tag that submits form on click -->
+                        <a href="#" onclick="parentNode.submit(); return false;"
+                            style="text-decoration: none;vertical-align: super;font-size: medium;">❌</a>
+                    </form>
         </h2>
         <p>
-            <%= sections[i].body %>
+            <%- sections[i].body %>
         </p>
-        <!-- anchor tag to edit section route -->
-        <a href="/pola/subject/part/chapter/<%= sections[i]._id%>/edit">Edit</a>
-        <!-- form to delete section -->
-        <form style="display: inline-block;" action="/pola/subject/part/chapter/<%= sections[i]._id%>?_method=DELETE"
-            method="POST">
-            <!-- anchor tag that submits form on click -->
-            <a href="#" onclick="parentNode.submit(); return false;">Delete</a>
-        </form>
-        <!-- form to delete section
-            <form action="/pola/subject/part/chapter/<%= sections[i]._id%>?_method=DELETE" method="POST">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form> -->
-        <% } %>
 
-            <h2>Add Sections</h2>
+
+        <% } %>
             <!-- form to create new section. create POST route to pola/subject/part/<chapter>/section -->
             <form action="/pola/subject/part/<%=chapter._id%>/section" method="POST">
-                <div class="card mb-3" style="max-width: 840px;">
+                <div class="card mb-3" style="max-width: 540px;">
                     <div class="row g-0">
-                        <div class="col-md-8">
+                        <div class="container">
                             <div class="card-body">
-                                <h5 class="card-title">
+                                <button type="submit" class="btn btn-primary btn-sm">+
+                                    Section</button>
+                                <h5 class="card-title mt-3">
                                     <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
                                         value="Title">
                                 </h5>
-                                <p class="card-text">
-                                    <textarea name="body" class="form-control" id="exampleFormControlTextarea1"
-                                        rows="3">Body</textarea>
-                                </p>
-                                <button type="submit" class="btn btn-primary btn-sm">Add Chapter</button>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+
+            <!-- add link back to part, align left -->
+            <% if (chapter.index==0) { %>
+                ⬅️<a href="<%=linkObject[1].link%>">
+                    <%=linkObject[1].text%>
+                </a>
+                <% } else { %>
+                    ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>"> Chapter <%=chapter.index%>:
+                            <%= previousChapter.title %></a>
+                    <% } %>
+                        <br>
+                        <% if (nextChapter) { %>
+                            <!-- span algin right -->
+                            ➡️<span>
+                                <!-- add link to first chapter link. Name it chapter 1. align right -->
+                                <a href="/pola/subject/part/<%=nextChapter._id %>"> Chapter <%=chapter.index+2%>:
+                                        <%=nextChapter.title%> </a>
+                            </span>
+                            <% } else {%>
+                                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
+                                <form action="/pola/subject/<%=chapter.part%>/chapter" method="POST"
+                                    style="display: inline-block;">
+                                    <a href="#" onclick="parentNode.submit(); return false;"> ➕</a>
+                                    <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
+                                </form>
+
+                                <% }%>

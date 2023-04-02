@@ -1,61 +1,68 @@
 <% layout('layouts/boilerplate') %>
 
-    <h1>
-        <%= subject.title%>
-    </h1>
+    <!-- Add ace editor for html. Load the script from the cdn source. Make it fully fledged with emmet 
+support, autocompletion etc -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <!-- load emmet code and snippets compiled for browser -->
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ext-emmet.js">  </script>
+    <script src="https://rawgithub.com/nightwing/emmet-core/master/emmet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
 
-    <% for (let i=0; i < parts.length; i++) { %>
-
-        <% if (parts[i]._id.equals(part._id)) { %>
-            <form action="/pola/subject/<%= parts[i]._id %>" method="POST">
-                <div class="card mb-3" style="max-width: 840px;">
-                    <div class="row g-0">
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                                        value="<%= parts[i].title %>">
-                                </h5>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Enter
-                                        Summary</label>
-                                    <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
-                                        rows="3"><%= parts[i].summary %></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Sumbit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- create 2 column containers -->
+    <div class="row">
+        <div class="col-6">
+            <!-- Place the editor in a form and post the result to template/edit -->
+            <form action="/pola/subject/<%= part._id %>" method="POST" id="editForm">
+                <button onclick="location.href='/pola/subject/<%= part._id%>'" type="button" class="btn btn-secondary">
+                    Go Back</button>
+                <button type="submit" class="btn btn-primary">Render</button>
+                <h5 class="card-title">
+                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                        value="<%=part.title%>">
+                </h5>
+                <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
+                    rows="3"><%= part.summary %></textarea>
+                <input type="hidden" name="body">
+                <!-- Place the editor of ace with a width and height -->
+                <div id="editor" class="border mt-2"></div>
             </form>
+        </div>
 
-            <% } else { %>
-                <div class="card mb-3" style="max-width: 840px;">
-                    <div class="row g-0">
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title"><a href="/pola/subject/<%= parts[i]._id %>">
-                                        <%= parts[i].title %>
-                                    </a></h5>
-                                <p class="card-text">
-                                    <%= parts[i].summary %>
-                                </p>
+        <div class="col-6 border">
+            <h2>
+                <%=part.title%>
+            </h2>
+            <!-- display the body -->
+            <%-part.body%>
+        </div>
+    </div>
 
-                                <form style="display: inline-block;" action="/pola/subject/<%= parts[i]._id%>/edit"
-                                    style="width: fit-content;">
-                                    <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                                </form>
+    <!-- Add the ace editor for html. enable emmet -->
+    <script>
+        var editor = ace.edit("editor");
+        editor.session.setMode("ace/mode/html");
+        // enable autocompletion and snippets
+        ace.require("ace/ext/language_tools");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+        ace.require("ace/ext/emmet");
+        // enable emmet on the current editor
+        editor.setOption("enableEmmet", true);
 
-                                <form style="display: inline-block;"
-                                    action="/pola/subject/<%= parts[i]._id %>?_method=DELETE" method="POST"
-                                    style="width: fit-content;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+        // set the editor content to the body input field
+        editor.setValue(`<%-part.body%>`);
+    </script>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% } %>
+    <!-- Assign editor content to the body input field -->
+    <script>
 
-                    <% } %>
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.querySelector('input[name="body"]').value = editor.getValue();
+            this.submit();
+
+        });
+    </script>

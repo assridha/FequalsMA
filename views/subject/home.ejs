@@ -1,88 +1,56 @@
-<% layout('layouts/boilerplate') %>
+<% layout('layouts/boilerplate_for_template') %>
+    <div class="container-fluid ms-1">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Create a card grid of equal height for each subject with image, title and summay. Include an edit button-->
+            <% for (let i=0; i < subjects.length; i++) { %>
 
-    <figure class="text-center mb-0">
-        <blockquote class="blockquote">
-            <p class="pb-3">
-                <i class="fas fa-quote-left fa-xs text-primary"></i>
-                <span class="lead font-italic">Physics is the key to the Cosmos. Can you unlock its secrets?</span>
-                <i class="fas fa-quote-right fa-xs text-primary"></i>
-            </p>
-        </blockquote>
-    </figure>
+                <div class="col">
 
-    <% for (let i=0; i < subjects.length; i++) { %>
-        <div class="card mb-3" style="max-width: 840px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="<%= subjects[i].image %>" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="pola/<%= subjects[i]._id %>">
+                    <div class="card h-100" style="width: 20rem;">
+                        <!-- add link to subject page to image -->
+                        <a href="/pola/<%= subjects[i]._id %>">
+                            <img src="<%= subjects[i].image %>" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
                                 <%= subjects[i].title %>
-                            </a></h5>
-                        <p class="card-text">
-                            <%= subjects[i].summary %>
-                        </p>
-
-                        <form style="display: inline-block;" action="pola/<%= subjects[i]._id%>/edit"
-                            style="width: fit-content;">
-                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                        </form>
-
-                        <form style="display: inline-block;" action="pola/<%= subjects[i]._id %>?_method=DELETE"
-                            method="POST" style="width: fit-content;">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-
-                        <% if (subjects[i].index> 0){ %>
-                            <form style="display: inline-block;" action="pola/<%= subjects[i]._id %>/reduce"
-                                method="POST" style="width: fit-content;">
-                                <button type="submit" class="btn btn-primary btn-sm">Reduce</button>
-                            </form>
-                            <% } %>
-                                <% if (subjects[i].index+1< subjects.length){ %>
-                                    <form style="display: inline-block;" action="pola/<%= subjects[i]._id %>/increase"
-                                        method="POST" style="width: fit-content;">
-                                        <button type="submit" class="btn btn-primary btn-sm">Increase</button>
-                                    </form>
-                                    <% } %>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <% } %>
-            <h3>Add new topic </h3>
-            <form action="/pola" method="POST">
-                <div class="card mb-3" style="max-width: 840px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="https://s3-alpha.figma.com/hub/file/948140848/1f4d8ea7-e9d9-48b7-b70c-819482fb10fb-cover.png"
-                                class="img-fluid rounded-start" alt="...">
+                            </h5>
+                            <p class="card-text">
+                                <%= subjects[i].summary %>
+                            </p>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                                        value="Title">
-                                </h5>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Enter
-                                        Summary</label>
-                                    <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
-                                        rows="3">No summary yet</textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Image URL</label>
-                                    <input name="image" type="text" class="form-control" id="exampleFormControlInput1">
-                                </div>
+                    </div>
+
+                </div>
+
+                <% } %>
 
 
+                    <!-- copy the form to add new subject but style it as according to the current card style -->
+                    <form action="/pola" method="POST">
+                        <div class="col">
+                            <div class="card h-100" style="width: 20rem;">
+                                <img src="https://www.wolflair.com/wp-content/uploads/2017/01/placeholder.jpg"
+                                    class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <input name="title" type="text" class="form-control"
+                                            id="exampleFormControlInput1" value="Title">
+                                    </h5>
+                                    <p class="card-text">
+                                        <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
+                                            rows="3">No summary yet</textarea>
+                                    </p>
+                                    <p class="card-text">
+                                        <input name="image" type="text" class="form-control"
+                                            id="exampleFormControlInput1" placeholder="Image URL">
+                                    </p>
+
+                                </div>
                                 <button type="submit" class="btn btn-primary btn-sm">Add Subject</button>
-
                             </div>
+
                         </div>
-                    </div>
-                </div>
-            </form>
+                    </form>
+        </div>
+    </div>

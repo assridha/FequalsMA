@@ -1,74 +1,53 @@
 <% layout('layouts/boilerplate') %>
     <div>
-        <p>Below are various sujects to explore</p>
-
-        <% subjects.sort((a, b)=> a.index - b.index); %>
-            <% for (let i=0; i < subjects.length; i++) { %>
-
-                <% if(subjects[i]._id.equals(subject._id)) { %>
-                    <form action="/pola/<%= subjects[i]._id %>" method="POST">
-                        <div class="card mb-3" style="max-width: 840px;">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <img src="<%= subjects[i].image %>" class="img-fluid rounded-start" alt="...">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <input name="title" type="text" class="form-control"
-                                                id="exampleFormControlInput1" value="<%= subjects[i].title %>">
-                                        </h5>
-                                        <div class="mb-3">
-                                            <label for="exampleFormControlTextarea1" class="form-label">Enter
-                                                Summary</label>
-                                            <textarea name="summary" class="form-control"
-                                                id="exampleFormControlTextarea1"
-                                                rows="3"><%=subjects[i].summary%></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Image URL</label>
-                                            <input name="image" type="text" class="form-control"
-                                                id="exampleFormControlInput1" value="<%= subjects[i].image%>">
-                                        </div>
-
-
-                                        <button type="submit" class="btn btn-primary btn-sm">Sumbit</button>
-
-
-
-                                    </div>
-                                </div>
+        <form action="/pola/<%= subject._id %>" method="POST">
+            <div class="card mb-3" style="max-width: 840px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="<%= subject.image %>" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                                    value="<%= subject.title %>">
+                            </h5>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Enter
+                                    Summary</label>
+                                <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3"><%=subject.summary%></textarea>
                             </div>
-                        </div>
-                    </form>
-                    <% } else { %>
-                        <div class="card mb-3" style="max-width: 840px;">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <img src="<%= subjects[i].image %>" class="img-fluid rounded-start" alt="...">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><a href="/subject/<%= subjects[i]._id %>">
-                                                <%= subjects[i].title %>
-                                            </a></h5>
-                                        <p class="card-text">
-                                            <%= subjects[i].summary %>
-                                        </p>
-
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Enter
+                                    Body</label>
+                                <textarea name="body" class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3"><%=subject.body%></textarea>
                             </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Image URL</label>
+                                <input name="image" type="text" class="form-control" id="exampleFormControlInput1"
+                                    value="<%= subject.image%>">
+                            </div>
+                            <!-- dropdown list of indices of all subjects with index of subject  as default value-->
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Index</label>
+                                <select name="index" class="form-select" aria-label="Default select example">
+                                    <!-- sort subjects along index -->
+                                    <% subjects.sort((a, b)=> (a.index > b.index) ? 1 : -1) %>
+                                        <% for (let i=0; i < subjects.length; i++) { %>
+                                            <option value="<%= subjects[i].index %>" <% if
+                                                (subjects[i].index==subject.index) { %> selected <% } %>><%=
+                                                        subjects[i].index %>
+                                            </option>
+                                            <% } %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Sumbit</button>
+
                         </div>
-
-                        <% } %>
-
-
-
-                            <% } %>
-
-
-
-
-
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>

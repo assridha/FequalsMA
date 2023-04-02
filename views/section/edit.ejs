@@ -1,27 +1,67 @@
 <% layout('layouts/boilerplate') %>
 
-    <!-- form to edit section and send it via post route -->
+    <!-- Add ace editor for html. Load the script from the cdn source. Make it fully fledged with emmet 
+support, autocompletion etc -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <!-- load emmet code and snippets compiled for browser -->
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ext-emmet.js">  </script>
+    <script src="https://rawgithub.com/nightwing/emmet-core/master/emmet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
 
-    <form action="/pola/subject/part/chapter/<%=section._id%>" method="POST">
-
-        <div class="card mb-3" style="max-width: 840px;">
-
-            <div class="row g-0">
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                                value="<%=section.title%>">
-                        </h5>
-                        <p class="card-text">
-                            <textarea name="body" class="form-control" id="exampleFormControlTextarea1"
-                                rows="3"><%=section.body%></textarea>
-                        </p>
-
-
-                        <button type="submit" class="btn btn-primary btn-sm">Submit Change</button>
-                    </div>
-                </div>
-            </div>
+    <!-- create 2 column containers -->
+    <div class="row">
+        <div class="col-6">
+            <!-- Place the editor in a form and post the result to template/edit -->
+            <form action="/pola/subject/part/chapter/<%=section._id%>" method="POST" id="editForm">
+                <button onclick="location.href='/pola/subject/part/<%=section.chapter%>'" type="button"
+                    class="btn btn-secondary">
+                    Go Back</button>
+                <button type="submit" class="btn btn-primary">Render</button>
+                <h5 class="card-title">
+                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                        value="<%=section.title%>">
+                </h5>
+                <input type="hidden" name="body">
+            </form>
+            <!-- Place the editor of ace with a width and height -->
+            <div id="editor" class="border"></div>
         </div>
-    </form>
+
+
+        <div class="col-6 border">
+            <h2>
+                <%=section.title%>
+            </h2>
+            <!-- display the body -->
+            <%-section.body%>
+        </div>
+    </div>
+
+    <!-- Add the ace editor for html. enable emmet -->
+    <script>
+        var editor = ace.edit("editor");
+        editor.session.setMode("ace/mode/html");
+        // enable autocompletion and snippets
+        ace.require("ace/ext/language_tools");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+        ace.require("ace/ext/emmet");
+        // enable emmet on the current editor
+        editor.setOption("enableEmmet", true);
+
+        // set the editor content to the body input field
+        editor.setValue(`<%-section.body%>`);
+
+    </script>
+
+    <!-- Assign editor content to the body input field -->
+    <script>
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.querySelector('input[name="body"]').value = editor.getValue();
+            this.submit();
+        });
+    </script>

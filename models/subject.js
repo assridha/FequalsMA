@@ -11,6 +11,7 @@ var deepPopulate = require('mongoose-deep-populate')(mongoose);
 const SubjectSchema = new Schema({
     title: String,
     summary: String,
+    body: String,
     index: Number,
     image: String
 });

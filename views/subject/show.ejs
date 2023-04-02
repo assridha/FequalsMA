@@ -1,58 +1,41 @@
 <% layout('layouts/boilerplate') %>
-
-    <h1>
+    <div class="container mt-1"></div>
+    <img src="<%=subject.image%>" class="figure-img img-fluid rounded" alt="..." width="70px"><br>
+    <h1 style="display: inline-block;text-decoration: underline;">
         <%= subject.title%>
-    </h1>
+    </h1> <a href="/pola/<%= subject._id%>/edit" style="text-decoration: none;">✏️</a>
+    <form style="display: inline-block;" action="/pola/<%= subject._id %>?_method=DELETE" method="POST"
+        style="width: fit-content;">
+        <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;">❌</a>
+    </form>
+    <p>
+        <%= subject.body%>
+    </p>
+    <!-- sort parts according to index -->
+    <% parts.sort((a, b)=> (a.index > b.index) ? 1 : -1) %>
+        <% for (let i=0; i < parts.length; i++) { %>
 
-    <% for (let i=0; i < parts.length; i++) { %>
-        <div class="card mb-3" style="max-width: 840px;">
-            <div class="row g-0">
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="subject/<%= parts[i]._id %>">
-                                <%= parts[i].title %>
-                            </a></h5>
-                        <p class="card-text">
-                            <%= parts[i].summary %>
-                        </p>
-
-                        <form style="display: inline-block;" action="subject/<%= parts[i]._id%>/edit"
-                            style="width: fit-content;">
-                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                        </form>
-
-                        <form style="display: inline-block;" action="subject/<%= parts[i]._id %>?_method=DELETE"
-                            method="POST" style="width: fit-content;">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <% } %>
-            <h3>Add new topic </h3>
-            <form action="/pola/<%=subject._id%>/part" method="POST">
-                <div class="card mb-3" style="max-width: 840px;">
-                    <div class="row g-0">
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                                        value="Title">
-                                </h5>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Enter
-                                        Summary</label>
+            <h2><a href="subject/<%= parts[i]._id %>" style="color: black;">
+                    Part <%=parts[i].index+1%>: <%= parts[i].title %>
+                </a></h2>
+            <p>
+                <%= parts[i].summary %>
+            </p>
+            <% } %>
+                <form action="/pola/<%=subject._id%>/part" method="POST">
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="container">
+                                <div class="card-body">
+                                    <button type="submit" class="btn btn-primary btn-sm">+Part</button>
+                                    <h2 class="card-title mt-3">
+                                        <input name="title" type="text" class="form-control"
+                                            id="exampleFormControlInput1" value="Title">
+                                    </h2>
                                     <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
                                         rows="3">No summary yet</textarea>
+
                                 </div>
-
-
-                                <button type="submit" class="btn btn-primary btn-sm">Add Part</button>
-
                             </div>
                         </div>
-                    </div>
-                </div>
-            </form>
+                </form>
