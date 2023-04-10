@@ -11,32 +11,108 @@ support, autocompletion etc -->
     <!-- create 2 column containers -->
     <div class="row">
         <div class="col-6">
-            <!-- Place the editor in a form and post the result to template/edit -->
-            <form action="/pola/subject/part/chapter/<%=section._id%>" method="POST" id="editForm">
-                <button onclick="location.href='/pola/subject/part/<%=section.chapter%>'" type="button"
-                    class="btn btn-secondary">
-                    Go Back</button>
-                <button type="submit" class="btn btn-primary">Render</button>
-                <h5 class="card-title">
-                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                        value="<%=section.title%>">
-                </h5>
-                <input type="hidden" name="body">
-            </form>
-            <!-- Place the editor of ace with a width and height -->
-            <div id="editor" class="border"></div>
-        </div>
+            <!-- create a simple toolbar display with 3 buttons -->
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-light" id="add-image">🖼️</button>
+                </div>
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                    <button type="button" class="btn btn-light" id="add-block-equation">➗</button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Third group">
+                    <button type="button" class="btn btn-light">📅</button>
+                </div>
+            </div>
 
+            <div class="container mt-3">
+                <!-- Place the editor in a form and post the result to template/edit -->
+                <form action="/pola/subject/part/chapter/<%=section._id%>" method="POST" id="editForm">
+                    <button onclick="location.href='/pola/subject/part/<%=section.chapter%>'" type="button"
+                        class="btn btn-secondary">
+                        Go Back</button>
+                    <button type="submit" class="btn btn-primary">Render</button>
+                    <h5 class="card-title">
+                        <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                            value="<%=section.title%>">
+                    </h5>
+                    <input type="hidden" name="body">
+                </form>
+                <!-- Place the editor of ace with a width and height -->
+                <div id="editor" class="border"></div>
+            </div>
+
+            <div class="container mt-3">
+                <h3>Equations</h3>
+
+                <!-- Display all equations in section in form of a table. The columns consist of row number and expression -->
+                <table class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" style="width:20%">Title</th>
+                            <th scope="col">Expression</th>
+                            <th scope="col">Edit/Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i = 0; i < section.equations.length; i++) { %>
+                        <tr>
+                            <th scope="row"><%=i+1%></th>
+                                                          
+                                <form action="/pola/subject/part/chapter/<%=section._id%>/editEquation/<%=section.equations[i]._id%>"
+                                method="POST">
+                                <!-- title  -->
+                                <td><input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                                        value="<%=section.equations[i].title%>"></td>
+                                <td> 
+                                <!-- text area field to edit the expression -->
+                                <textarea name="expression" class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3"><%=section.equations[i].expression%></textarea>
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                                </td>
+                            </form>
+                            
+                            <td>
+
+                                <!-- form to delete equation via DELETE route -->
+                                <form action="/pola/subject/part/chapter/<%=section._id%>/deleteEquation/<%=section.equations[i]._id%>"
+                                    method="POST">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                
+                            </td>
+                        </tr>
+                        <% } %>
+                        <!-- last row is a form to post route to add new equation -->
+                        <tr>
+                            <form action="/pola/subject/part/chapter/<%=section._id%>/addEquation" method="POST">
+                                <th scope="row"></th>
+                                <!-- title -->
+                                <td><input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                                        value="Title"></td>
+                                <!-- textarea to add expression -->
+                                <td><textarea name="expression" class="form-control" id="exampleFormControlTextarea1"
+                                        rows="3">$e=mc^2$</textarea></td>
+                                <td><button type="submit" class="btn btn-primary">Add</button></td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+            
+        </div>
 
         <div class="col-6 border">
             <h2>
                 <%=section.title%>
             </h2>
             <!-- display the body -->
-            <%-section.body%>
+            <%- section.body %>
         </div>
     </div>
-
+   
     <!-- Add the ace editor for html. enable emmet -->
     <script>
         var editor = ace.edit("editor");
@@ -48,6 +124,7 @@ support, autocompletion etc -->
             enableSnippets: true,
             enableLiveAutocompletion: true
         });
+
         ace.require("ace/ext/emmet");
         // enable emmet on the current editor
         editor.setOption("enableEmmet", true);
@@ -59,9 +136,48 @@ support, autocompletion etc -->
 
     <!-- Assign editor content to the body input field -->
     <script>
-        document.getElementById('editForm').addEventListener('submit', function (e) {
+        document.getElementById("editForm").addEventListener("submit", function (e) {
             e.preventDefault();
-            document.querySelector('input[name="body"]').value = editor.getValue();
-            this.submit();
-        });
-    </script>
+            document.querySelector('input[name="body" ]').value = editor.getValue(); this.submit();
+        }); </script>
+
+        <!-- script to add an image tag at current cursor location in the editor when the button add-image is clicked -->
+       <!-- add image caption and center both image and caption -->
+        <!--add image width -->
+        <script>
+            document.getElementById("add-image").addEventListener("click", function (e) {
+                e.preventDefault();
+                editor.insert('<figure class="text-center"><img src="https://picsum.photos/200/300" alt="random image" width="200"><figcaption>Random image</figcaption></figure>');
+            }); </script>
+
+<!-- script to add block latex equation tag at current cursor location in the editor when the button add-block-equation is clicked. Center the equation -->
+<script>
+    document.getElementById("add-block-equation").addEventListener("click", function (e) {
+        e.preventDefault();
+        editor.insert('<div class="text-center" id="eqn1"></div>');
+    }); </script>
+
+
+
+
+<!-- Add mathjax to render latex equations -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- initialize mathjax -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+
+<!-- loop though each equation in section and add a script to set the value of element with id = <equation.title> to the expression  -->
+<% for (let i = 0; i < section.equations.length; i++) { %>
+<script>
+    document.getElementById("<%=section.equations[i].title%>").innerHTML = `<%=section.equations[i].expression%>`;
+</script>
+<% } %>
+
+

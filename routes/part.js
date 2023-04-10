@@ -117,7 +117,7 @@ router.post('/:id/chapter', async (req, res) => {
 
     // redirect to part page or last chapter page if part has chapters
     if (chapters.length > 0) {
-        res.redirect(`/pola/subject/part/${chapters[chapters.length - 1]._id}`);
+        res.redirect(`/pola/subject/part/${chapters[chapters.length - 1]._id}/exercises`);
     }
     else {
         res.redirect(`/pola/subject/${partID}`);

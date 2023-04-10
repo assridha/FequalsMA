@@ -1,0 +1,96 @@
+<% layout('layouts/boilerplate_for_template') %>
+    <!-- Based on the reference model create a table to display all the fields in the database. Each field is aviable via the array references -->
+
+    <h1>References</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Authors</th>
+                <th scope="col">URL</th>
+                <th scope="col">Media Type</th>
+                <th scope="col">Tags</th>
+                <th scope="col">Meta String</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (let i=0; i < references.length; i++) { %>
+                <tr>
+                    <td>
+                        <%=references[i].title%>
+                    </td>
+                    <!-- convert array of strings into one string separated by comma -->
+                    <td>
+                        <%=references[i].authors.join(', ')%></td>
+            <td><%=references[i].url%></td>
+            <td><%=references[i].mediatype%></td>
+            <td><%=references[i].tags%></td>
+            <td><%=references[i].metastring%></td>
+            <td>
+                <!-- anchor tag to edit reference route -->
+                <a href="/references/<%=references[i]._id%>/edit"
+                    style="text-decoration: none;vertical-align: super;font-size: medium;">✏️</a>
+                <!-- form to delete reference -->
+                <form style="display: inline-block;"
+                    action="/references/<%=references[i]._id%>?_method=DELETE"
+                    method="POST">
+                    <!-- anchor tag that submits form on click -->
+                    <a href="#" onclick="parentNode.submit(); return false;"
+                        style="text-decoration: none;vertical-align: super;font-size: medium;">❌</a>
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<!-- form to create new reference. create POST route to /references -->
+<form action="/references" method="POST">
+    <!-- string input for title -->
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input name="title" type="text" class="form-control" id="title" placeholder="Title">
+    </div>
+    <!-- string input for authors -->
+    <div class="form-group">
+        <label for="authors">Authors</label>
+        <input name="authors" type="text" class="form-control" id="authors" placeholder="Authors">
+    </div>
+    <!-- string input for url -->
+    <div class="form-group">
+        <label for="url">URL</label>
+        <input name="url" type="text" class="form-control" id="url" placeholder="URL">
+    </div>
+    <!-- radio input for media type. Options are book, article, publication, podcast, video -->
+    <fieldset>
+        <label for="mediatype">Media Type</label>
+        <div>
+            <input type="radio" id="book" name="mediatype" value="book">
+            <label for="book">Book</label>
+
+            <input type="radio" id="article" name="mediatype" value="article">
+            <label for="article">Article</label>
+
+            <input type="radio" id="publication" name="mediatype" value="publication">
+            <label for="publication">Publication</label>
+
+            <input type="radio" id="podcast" name="mediatype" value="podcast">
+            <label for="podcast">Podcast</label>
+
+            <input type="radio" id="video" name="mediatype" value="video">
+            <label for="video">Video</label>
+        </div>
+    </fieldset>
+    <!-- string input for tags -->
+    <div class="form-group">
+        <label for="tags">Tags</label>
+        <input name="tags" type="text" class="form-control" id="tags" placeholder="Tags">
+    </div>
+    <!-- string input for metastring -->
+    <div class="form-group">
+        <label for="metastring">Meta String</label>
+        <input name="metastring" type="text" class="form-control" id="metastring" placeholder="Meta String">
+    </div>
+    <!-- submit button -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

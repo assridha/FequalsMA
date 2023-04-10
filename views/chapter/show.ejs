@@ -61,29 +61,67 @@
                 </div>
             </form>
 
+           
+            <h2>References</h2>
+             <!-- Display the list of chapter.references as an ordered list with each numeral displayed as [1],[2],[3],.. etc. for each reference display all the authors seperated by comma followed by a period then
+            the title. Add the link to the reference separately.-->
+            <!-- custom ol where each number is displayed between square brackets. For eg [1] item 1 [2] item 2 etc -->
+            <ul style="list-style: none;padding-left: 0;">
+                <% for (let i=0; i < chapter.references.length; i++) { %>
+                    <li>
+                        [<%=i+1%>] <% for (let j=0; j < chapter.references[i].authors.length; j++) { %>
+                            <%=chapter.references[i].authors[j]%>
+                                <% if (j<chapter.references[i].authors.length-1) { %>
+                                    ,
+                                    <% } %>
+                                        <% } %>.
+                                        <i><%=chapter.references[i].title%></i>
+                                            (<a href="<%=chapter.references[i].link%>">
+                                             link   
+                                            </a>)
+                    </li>
+                    <% } %>
+            </ul>
+
             <!-- add link back to part, align left -->
             <% if (chapter.index==0) { %>
                 ⬅️<a href="<%=linkObject[1].link%>">
                     <%=linkObject[1].text%>
                 </a>
                 <% } else { %>
-                    ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>"> Chapter <%=chapter.index%>:
+                    ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>/exercises"> Exercises for Chapter <%=chapter.index%>:
                             <%= previousChapter.title %></a>
                     <% } %>
                         <br>
-                        <% if (nextChapter) { %>
+                        
                             <!-- span algin right -->
                             ➡️<span>
                                 <!-- add link to first chapter link. Name it chapter 1. align right -->
-                                <a href="/pola/subject/part/<%=nextChapter._id %>"> Chapter <%=chapter.index+2%>:
-                                        <%=nextChapter.title%> </a>
+                                <a href="/pola/subject/part/<%=chapter._id %>/exercises"> Exercises for Chapter <%=chapter.index+1%>:
+                                        <%=chapter.title%> </a>
                             </span>
-                            <% } else {%>
-                                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                                <form action="/pola/subject/<%=chapter.part%>/chapter" method="POST"
-                                    style="display: inline-block;">
-                                    <a href="#" onclick="parentNode.submit(); return false;"> ➕</a>
-                                    <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
-                                </form>
 
-                                <% }%>
+
+
+<!-- Add mathjax to render latex equations -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- initialize mathjax -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+
+<!-- loop though each equation in section and add a script to set the value of element with id = <equation.title> to the expression  -->
+<% for (let j=0; j < sections.length; j++) { %>
+    <% for (let i = 0; i < sections[j].equations.length; i++) { %>
+<script>
+    document.getElementById("<%=sections[j].equations[i].title%>").innerHTML = `<%=sections[j].equations[i].expression%>`;
+</script>
+<% } %>
+<% } %>
+

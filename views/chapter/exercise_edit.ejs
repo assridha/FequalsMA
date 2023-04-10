@@ -1,0 +1,60 @@
+<% layout('layouts/boilerplate_for_template') %>
+<!-- add form to edit exercise -->
+<form action="/pola/subject/part/chapter/<%= exercise._id%>/editExercise" method="POST">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="container">
+                <div class="card-body">
+                    <button type="submit" class="btn btn-primary btn-sm">Edit Exercise</button>
+                    <br>
+                    <!-- add label for each input -->
+                    <label for="exampleFormControlInput1" class="form-label">Problem</label>
+                    <!-- add textarea for problem -->
+                    <textarea name="problem" class="form-control" id="exampleFormControlTextarea1" rows="3"><%=exercise.problem%></textarea>
+
+                    <label for="exampleFormControlInput1" class="form-label">Type</label>
+                    <!-- list selection for type input. show current value as default option -->
+                    <select name="type" class="form-control" id="exampleFormControlSelect1">
+                        <option <% if (exercise.type === "MCQ") { %> selected <% } %> >MCQ</option>
+                        <option <% if (exercise.type === "MAQ") { %> selected <% } %> >MAQ</option>
+                        <option <% if (exercise.type === "Numeric") { %> selected <% } %> >Numeric</option>
+                        <option <% if (exercise.type === "Short Answer") { %> selected <% } %> >Short Answer</option>
+                        <option <% if (exercise.type === "Long Answer") { %> selected <% } %> >Long Answer</option>
+                        <option <% if (exercise.type === "Table") { %> selected <% } %> >Table</option>
+                    </select>
+
+                    <label for="exampleFormControlInput1" class="form-label">Options</label>
+                    <!-- join exercise.options into one string with semicolen separation -->
+                    <% let options = exercise.options.join(";") %>
+                    <!-- add input for options -->
+                    <input type="text" name="options" class="form-control" id="exampleFormControlInput1" value="<%=options%>">
+
+                    <label for="exampleFormControlInput1" class="form-label">Answer Explaination</label>
+                    <!-- add text area for answerExplaination -->
+                    <textarea name="answerExplaination" class="form-control" id="exampleFormControlTextarea1" rows="3"><%=exercise.answerExplaination%></textarea>
+
+                    <label for="exampleFormControlInput1" class="form-label">Answer Index</label>
+                    <!-- convert to char array and join exercise.answerIndex into one string with semicolen separation -->
+                    <% let answerIndex = exercise.answerIndex.map(String).join(";") %>
+                    <!-- add input for answerIndex -->
+                    <input type="text" name="answerIndex" class="form-control" id="exampleFormControlInput1" value="<%=answerIndex%>">
+
+                    <label for="exampleFormControlInput1" class="form-label">Answer Number</label>
+                    <!-- add input for answerNumber -->
+                    <input type="number" name="answerNumber" class="form-control" id="exampleFormControlInput1" value="<%=exercise.answerNumber%>">
+
+                    <label for="exampleFormControlInput1" class="form-label">Figure</label>
+                    <!-- add input for figure-->
+                    <input type="text" name="figure" class="form-control" id="exampleFormControlInput1" value="<%=exercise.figure%>">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- display the current figure -->
+<% if (exercise.figure) { %>
+    <img src="<%=exercise.figure%>" alt="Figure" style="width:100%">
+<% } %>
+

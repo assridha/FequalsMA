@@ -3,11 +3,13 @@
 // index: Number
 // body: String
 // chapter: Chapter
+// equations: [Equation]
 
 // import required modules
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Chapter = require('./chapter');
+const Equation = require('./equation');
 
 // create schema
 const SectionSchema = new Schema({
@@ -17,7 +19,11 @@ const SectionSchema = new Schema({
     chapter: {
         type: Schema.Types.ObjectId,
         ref: 'Chapter'
-    }
+    },
+    equations: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Equation'
+    }]
 });
 
 // export model

@@ -2,12 +2,16 @@
 // title: String
 // index: Number
 // summary: String
+// body: String
+// references: [Reference]
 // part: Part
 
 // import required modules
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Part = require('./part');
+const Reference = require('./reference');
+const Exercise = require('./exercise');
 
 // create schema
 const ChapterSchema = new Schema({
@@ -17,7 +21,15 @@ const ChapterSchema = new Schema({
     part: {
         type: Schema.Types.ObjectId,
         ref: 'Part'
-    }
+    },
+    references: [{  // references is an array of references
+        type: Schema.Types.ObjectId,
+        ref: 'Reference'
+    }],
+    exercises: [{  // exercises is an array of exercises
+        type: Schema.Types.ObjectId,
+        ref: 'Exercise'
+    }],
 });
 
 // export model
