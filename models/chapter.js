@@ -6,7 +6,6 @@
 // references: [Reference]
 // part: Part
 // exercises: [Exercise]
-// author: User
 
 // import required modules
 const mongoose = require('mongoose');
@@ -32,11 +31,7 @@ const ChapterSchema = new Schema({
     exercises: [{  // exercises is an array of exercises
         type: Schema.Types.ObjectId,
         ref: 'Exercise'
-    }],
-    author: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
+    }]
 });
 
 // export model

@@ -5,7 +5,6 @@
 // answerExplaination: String
 // answerIndex: [Number]
 // answerNumber: Number
-// author: User
 
 // import required modules
 const mongoose = require('mongoose');
@@ -19,11 +18,7 @@ const ExerciseSchema = new Schema({
     options: [String],
     answerExplaination: String,
     answerIndex: [Number],
-    answerNumber: Number,
-    author: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    }
+    answerNumber: Number
 });
 
 // export model
