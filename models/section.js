@@ -4,6 +4,7 @@
 // body: String
 // chapter: Chapter
 // equations: [Equation]
+// author: User
 
 // import required modules
 const mongoose = require('mongoose');
@@ -23,7 +24,11 @@ const SectionSchema = new Schema({
     equations: [{
         type: Schema.Types.ObjectId,
         ref: 'Equation'
-    }]
+    }],
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 // export model

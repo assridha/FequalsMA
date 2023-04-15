@@ -3,6 +3,7 @@
 // index: Number
 // summary: String
 // import required modules
+// author: User
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
@@ -13,7 +14,11 @@ const SubjectSchema = new Schema({
     summary: String,
     body: String,
     index: Number,
-    image: String
+    image: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 SubjectSchema.plugin(deepPopulate);

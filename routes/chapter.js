@@ -8,6 +8,7 @@ const Reference = require('../models/reference');
 const Exercise = require('../models/exercise');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
+const { isLoggedIn } = require('../utils/middleware');
 
 // get route to each chapter page
 router.get('/:id', async (req, res) => {
@@ -89,7 +90,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // post route to add section to chapter
-router.post('/:id/section', async (req, res) => {
+router.post('/:id/section', isLoggedIn, async (req, res) => {
     const chapterID = req.params.id;
 
     // find chapter document

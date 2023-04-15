@@ -4,6 +4,7 @@ const path = require('path');
 const app = express();
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
 const joi = require('joi');
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
@@ -14,7 +15,11 @@ const partRoute = require('./routes/part');
 const chapterRoute = require('./routes/chapter');
 const sectionRoute = require('./routes/section');
 const referenceRoute = require('./routes/reference');
+const userRoutes = require('./routes/user');
 const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 // set view engine to ejs
 app.engine('ejs', ejsMate);
@@ -45,6 +50,7 @@ const sessionConfig = {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionConfig));
+app.use(flash());
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(bodyParser.json())
@@ -54,25 +60,21 @@ const Subject = require('./models/subject');
 const Part = require('./models/part');
 const Chapter = require('./models/chapter');
 const Reference = require('./models/reference');
-const Exercise = require('./models/exercise');
 
-// find all exercises (_id only) and set it to answers variable. This is used to check if the answer is correct or not. answers has an an additional custom property called 'input' which is used to store the user's input.
-// input is initially set to null. It is set to the user's input when the user submits the answer. Set answer to req.session.answer to store the answer in the session.
-app.use(async (req, res, next) => {
-    
-    // if answers is not in the session, create it and set it to the answers variable.
-    if (!req.session.answers) {
+app.use(passport.initialize());
+app.use(passport.session());        
+passport.use(new LocalStrategy(User.authenticate()));
 
-    const exercises = await Exercise.find({}, '_id');
-    const answers = exercises.map(exercise => {
-        return { _id: exercise._id.toString(), input: null }
-    });
-    req.session.answers = answers;
-    }
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// setup flash messages
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 });
-        
-
 
 // send toc array to all routes. retrieve all subjects, parts and chapters. Only retrieve title and parent fields.
 app.use(async (req, res, next) => {
@@ -101,6 +103,8 @@ app.use('/pola/subject/part', chapterRoute);
 app.use('/pola/subject/part/chapter', sectionRoute);
 // //--------------------- REFERENCE ROUTES---------------------//
 app.use('/references', referenceRoute);
+// //--------------------- USER ROUTES---------------------//
+app.use('/', userRoutes);
 
 // get route to /template
 app.get('/template', (req, res) => {

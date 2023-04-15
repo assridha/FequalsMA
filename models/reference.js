@@ -6,6 +6,7 @@
 // mediatype: String
 // tags: [String]
 // metastring: String
+// author: User
 
 // import required modules
 const mongoose = require('mongoose');
@@ -18,7 +19,11 @@ const ReferenceSchema = new Schema({
     url: String,
     mediatype: String,
     tags: [String],
-    metastring: String
+    metastring: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 // export model
