@@ -8,6 +8,7 @@
     <% for (let i=0; i < chapter.exercises.length; i++) { %>
 
         <h2>Exercise <%=i+1%>
+            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
             <!-- anchor tag to edit exercise route -->
             <a href="/pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/editExercise"
                 style="text-decoration: none;vertical-align: super;font-size: medium;">✏️</a>
@@ -18,6 +19,7 @@
                 <a href="#" onclick="parentNode.submit(); return false;"
                     style="text-decoration: none;vertical-align: super;font-size: medium;">🗑️</a>
             </form>
+            <% } %>
         </h2>
         <p>
             <%- chapter.exercises[i].problem %>
@@ -31,10 +33,7 @@
 
         <!-- display form if type is "MCQ" -->
         <% if (chapter.exercises[i].type == "MCQ") { %>
-            <!-- get answer from answers by matching the id -->
-            <% let answer = answers.find((answer) => chapter.exercises[i]._id.equals(answer._id)) %>
-        <!-- display all options in a radio selection form -->
-        
+        <!-- display all options in a radio selection -->
             <% for (let j=0; j < chapter.exercises[i].options.length; j++) { %>
                 <div class="form-check">
                 <input class="form-check-input" type="radio" name="answer<%=i%>" id="flexRadioDefault<%=chapter.exercises[i].options[j]%>" value="<%=j%>">
@@ -44,7 +43,7 @@
               </div>
 
             <% } %>
-            <button type="button" class="btn btn-primary" id="button<%=i%>">Submit</button><span id="span_<%=i%>"></span>
+            <button type="button" class="btn btn-primary" id="button<%=i%>">Check</button><span id="span_<%=i%>"></span>
             <!-- script to detect which option has been clicked on button press  -->
             <script>
                 document.getElementById("button<%=i%>").addEventListener("click", function() {
@@ -89,7 +88,7 @@
                 </label>
               </div>
             <% } %>
-            <button type="button" class="btn btn-primary" id="button<%=i%>">Submit</button><span id="span_<%=i%>"></span>
+            <button type="button" class="btn btn-primary" id="button<%=i%>">Check </button><span id="span_<%=i%>"></span>
         <!-- script to retrive all the checked answers upon button click. answers should be arranged in a array and post to /pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer. Get response if answer was correct -->
         <script>
             document.getElementById("button<%=i%>").addEventListener("click", function() {
@@ -143,7 +142,7 @@
                 </div>
             </div>
             
-            <button type="button" class="btn btn-primary" id="button<%=i%>">Submit</button><span id="span_<%=i%>"></span>
+            <button type="button" class="btn btn-primary" id="button<%=i%>">Check</button><span id="span_<%=i%>"></span>
         
         <!--script to obtain numeric answer upon button submission and post it to /pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route and check if answer is correct  -->
         <script>
@@ -175,29 +174,31 @@
 
         <% } %>
         <br>
-    <h2>Add new exercise</h2>
-            <!-- form to create new exercise. create POST route to pola/subject/part/<chapter>/exercise -->
-            <form action="/pola/subject/part/<%=chapter._id%>/exercises" method="POST">
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="container">
-                            <div class="card-body">
-                                <button type="submit" class="btn btn-primary btn-sm">+
-                                    Exercise</button>
-                                    <!-- list selection for type input -->
-                                    <select name="type" class="form-control" id="exampleFormControlSelect1">
-                                        <option>MCQ</option>
-                                        <option>MAQ</option>
-                                        <option>Numeric</option>
-                                        <option>Short Answer</option>
-                                        <option>Long Answer</option>
-                                        <option>Table</option>
-                                    </select>
-                            </div>
+        <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+             <h2>Add new exercise</h2>
+                <!-- form to create new exercise. create POST route to pola/subject/part/<chapter>/exercise -->
+                 <form action="/pola/subject/part/<%=chapter._id%>/exercises" method="POST">
+                  <div class="card mb-3" style="max-width: 540px;">
+                       <div class="row g-0">
+                         <div class="container">
+                                <div class="card-body">
+                                  <button type="submit" class="btn btn-primary btn-sm">+
+                                        Exercise</button>
+                                       <!-- list selection for type input -->
+                                       <select name="type" class="form-control" id="exampleFormControlSelect1">
+                                          <option>MCQ</option>
+                                          <option>MAQ</option>
+                                          <option>Numeric</option>
+                                          <option>Short Answer</option>
+                                            <option>Long Answer</option>
+                                            <option>Table</option>
+                                      </select>
+                             </div>
+                         </div>
                         </div>
-                    </div>
-                </div>
-            </form>
+                 </div>
+                </form>
+        <% } %>
 
 
             <!-- add link back to part, align left -->

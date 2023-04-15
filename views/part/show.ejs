@@ -2,13 +2,15 @@
 
     <h1 style="display: inline-block;">
         <%=part.index+1%>. <%= part.title %>
+        <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <span style="vertical-align:super;font-size: medium;"><a href="<%= part._id%>/edit"
                         style="text-decoration: none;">✏️</a></span>
                 <form style="display: inline-block;" action="<%=part._id%>?_method=DELETE" method="POST">
                     <!-- anchor tag to submit the form on click -->
                     <a href="#" onclick="parentNode.submit(); return false;"
-                        style="text-decoration: none;font-size: medium;vertical-align: super;">❌</a>
+                        style="text-decoration: none;font-size: medium;vertical-align: super;">🗑️</a>
                 </form>
+                <% } %>
     </h1>
 
     <p>

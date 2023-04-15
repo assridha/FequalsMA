@@ -2,6 +2,7 @@
 
     <h1>
         <%=chapter.index+1%>. <%=chapter.title%>
+        <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <!-- anchor tag to edit chapter route -->
                 <a href="/pola/subject/part/<%=chapter._id%>/edit"
                     style="text-decoration: none;font-size: medium; vertical-align: super;">✏️</a>
@@ -10,8 +11,9 @@
                     method="POST">
                     <!-- anchor tag to submit the form on click -->
                     <a href="#" onclick="parentNode.submit(); return false;"
-                        style="text-decoration: none;font-size: medium; vertical-align: super;">❌</a>
+                        style="text-decoration: none;font-size: medium; vertical-align: super;">🗑️</a>
                 </form>
+                <% } %>
     </h1>
 
     <p>
@@ -25,7 +27,7 @@
         <h2 id="<%=sections[i]._id%>">
             <%= i+1 %>.
                 <%= sections[i].title %>
-
+                    <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                     <!-- anchor tag to edit section route -->
                     <a href="/pola/subject/part/chapter/<%= sections[i]._id%>/edit"
                         style="text-decoration: none;vertical-align: super;font-size: medium;">✏️</a>
@@ -34,8 +36,9 @@
                         action="/pola/subject/part/chapter/<%= sections[i]._id%>?_method=DELETE" method="POST">
                         <!-- anchor tag that submits form on click -->
                         <a href="#" onclick="parentNode.submit(); return false;"
-                            style="text-decoration: none;vertical-align: super;font-size: medium;">❌</a>
+                            style="text-decoration: none;vertical-align: super;font-size: medium;">🗑️</a>
                     </form>
+                    <% } %>
         </h2>
         <p>
             <%- sections[i].body %>
@@ -43,6 +46,7 @@
 
 
         <% } %>
+        <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
             <!-- form to create new section. create POST route to pola/subject/part/<chapter>/section -->
             <form action="/pola/subject/part/<%=chapter._id%>/section" method="POST">
                 <div class="card mb-3" style="max-width: 540px;">
@@ -60,6 +64,7 @@
                     </div>
                 </div>
             </form>
+            <% } %>
 
            
             <h2>References</h2>

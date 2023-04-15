@@ -25,7 +25,7 @@
 
                 <% } %>
 
-
+                <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                     <!-- copy the form to add new subject but style it as according to the current card style -->
                     <form action="/pola" method="POST">
                         <div class="col">
@@ -52,5 +52,6 @@
 
                         </div>
                     </form>
+                    <% } %>
         </div>
     </div>

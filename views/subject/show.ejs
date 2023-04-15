@@ -3,11 +3,14 @@
     <img src="<%=subject.image%>" class="figure-img img-fluid rounded" alt="..." width="70px"><br>
     <h1 style="display: inline-block;text-decoration: underline;">
         <%= subject.title%>
-    </h1> <a href="/pola/<%= subject._id%>/edit" style="text-decoration: none;">✏️</a>
+    </h1> 
+    <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+    <a href="/pola/<%= subject._id%>/edit" style="text-decoration: none;">✏️</a>
     <form style="display: inline-block;" action="/pola/<%= subject._id %>?_method=DELETE" method="POST"
         style="width: fit-content;">
-        <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;">❌</a>
+        <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;">🗑️</a>
     </form>
+    <% } %>
     <p>
         <%= subject.body%>
     </p>
@@ -22,6 +25,7 @@
                 <%= parts[i].summary %>
             </p>
             <% } %>
+            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <form action="/pola/<%=subject._id%>/part" method="POST">
                     <div class="card mb-3" style="max-width: 540px;">
                         <div class="row g-0">
@@ -39,3 +43,4 @@
                             </div>
                         </div>
                 </form>
+            <% } %>
