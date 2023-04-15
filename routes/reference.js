@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const Reference = require('../models/reference');
+const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 // get route to editor page
-router.get('/editor', async (req, res) => {
+router.get('/editor',isLoggedIn, isAdmin, async (req, res) => {
 
     // obtain all references
     const references = await Reference.find({});
@@ -16,7 +17,7 @@ router.get('/editor', async (req, res) => {
 
 });
 // post route to create new reference
-router.post('/', async (req, res) => {
+router.post('/',isLoggedIn, isAdmin, async (req, res) => {
 
 
     // create new reference document

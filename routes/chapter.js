@@ -8,7 +8,7 @@ const Reference = require('../models/reference');
 const Exercise = require('../models/exercise');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
-const { isLoggedIn } = require('../utils/middleware');
+const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 // get route to each chapter page
 router.get('/:id', async (req, res) => {
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // get route to edit page of each chapter
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isAdmin, async (req, res) => {
 
     const chapterID = req.params.id;
 
@@ -45,7 +45,7 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 // post route to edit chapter
-router.post('/:id', async (req, res) => {
+router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
     // find chapter document
@@ -63,7 +63,7 @@ router.post('/:id', async (req, res) => {
 });
 
 // delete route to delete chapter
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
     // find section documents
@@ -90,7 +90,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // post route to add section to chapter
-router.post('/:id/section', isLoggedIn, async (req, res) => {
+router.post('/:id/section', isLoggedIn,isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
     // find chapter document
@@ -115,7 +115,7 @@ router.post('/:id/section', isLoggedIn, async (req, res) => {
 });
 
 // post route to add reference to chapter from addRef post route in chapter/edit.ejs
-router.post('/:id/addRef', async (req, res) => {
+router.post('/:id/addRef',isLoggedIn, isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
     // find chapter document
@@ -139,7 +139,7 @@ router.post('/:id/addRef', async (req, res) => {
 });
 
 // post route to remove reference to chapter from removeRef post route in chapter/edit.ejs
-router.post('/:id/removeRef', async (req, res) => {
+router.post('/:id/removeRef',isLoggedIn, isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
     // find chapter document
@@ -171,14 +171,12 @@ router.get('/:id/exercises', async (req, res) => {
     const nextChapter = await Chapter.findOne({ index: chapter.index + 1, part: chapter.part });
     const previousChapter = await Chapter.findOne({ index: chapter.index - 1, part: chapter.part });
 
-    const answers = req.session.answers;
-
     // render exercises.ejs file with chapter variable
-    res.render('chapter/exercise', { chapter, linkObject, nextChapter, previousChapter,answers });
+    res.render('chapter/exercise', { chapter, linkObject, nextChapter, previousChapter });
 });
 
 // post route to add exercise to chapter
-router.post('/:id/exercises', async (req, res) => {
+router.post('/:id/exercises',isLoggedIn, isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
     // find chapter document
@@ -208,7 +206,7 @@ router.post('/:id/exercises', async (req, res) => {
 });
 
 // get route to edit exercise page (chapter/exercise_edit.ejs)
-router.get('/chapter/:exerciseID/editExercise', async (req, res) => {
+router.get('/chapter/:exerciseID/editExercise',isLoggedIn, isAdmin, async (req, res) => {
     const exerciseID = req.params.exerciseID;
 
     // find exercise document
@@ -221,7 +219,7 @@ router.get('/chapter/:exerciseID/editExercise', async (req, res) => {
 });
 
 // post route to edit exercise (route is /chapter/:exerciseID/editExercise)
-router.post('/chapter/:exerciseID/editExercise', async (req, res) => {
+router.post('/chapter/:exerciseID/editExercise',isLoggedIn, isAdmin, async (req, res) => {
     const exerciseID = req.params.exerciseID;
     
     // find exercise document
@@ -250,7 +248,7 @@ router.post('/chapter/:exerciseID/editExercise', async (req, res) => {
 });
 
 // delete route to delete exercise
-router.delete('/chapter/:exerciseID/deleteExercise', async (req, res) => {
+router.delete('/chapter/:exerciseID/deleteExercise',isLoggedIn, isAdmin, async (req, res) => {
     const exerciseID = req.params.exerciseID;
 
     // find exercise document

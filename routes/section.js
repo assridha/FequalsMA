@@ -4,11 +4,11 @@ const Chapter = require('../models/chapter');
 const Section = require('../models/section');
 const { getLinkObject } = require('../utils/getLinkObject');
 const Equation = require('../models/equation');
-
+const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 
 //delete route to delete section
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const sectionID = req.params.id;
 
     // find section document
@@ -32,7 +32,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // post route to edit section
-router.post('/:id', async (req, res) => {
+router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const sectionID = req.params.id;
 
     // find section document
@@ -50,7 +50,7 @@ router.post('/:id', async (req, res) => {
 });
 
 // get route to edit page of each section
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
 
     const sectionID = req.params.id;
 
@@ -67,7 +67,7 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 // post route to create new equation and add it to section
-router.post('/:id/addEquation', async (req, res) => {
+router.post('/:id/addEquation',isLoggedIn, isAdmin, async (req, res) => {
     const sectionID = req.params.id;
 
     // find section document
@@ -93,7 +93,7 @@ router.post('/:id/addEquation', async (req, res) => {
 });
 
 // post route to delete equation from section
-router.post('/:sId/deleteEquation/:eID', async (req, res) => {
+router.post('/:sId/deleteEquation/:eID',isLoggedIn, isAdmin, async (req, res) => {
     const sectionID = req.params.sId;
     const equationID = req.params.eID;
 
@@ -117,7 +117,7 @@ router.post('/:sId/deleteEquation/:eID', async (req, res) => {
 });
 
 // post route to edit equation
-router.post('/:sId/editEquation/:eID', async (req, res) => {
+router.post('/:sId/editEquation/:eID',isLoggedIn, isAdmin, async (req, res) => {
     const sectionID = req.params.sId;
     const equationID = req.params.eID;
 

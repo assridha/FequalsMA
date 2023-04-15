@@ -52,7 +52,7 @@ router.get('/logout', (req, res) => {
                 console.log(err);
             }
             req.flash('success', 'Goodbye!');
-            res.redirect('/pola');
+            res.redirect('back')
         });
 });
 

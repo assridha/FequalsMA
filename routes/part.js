@@ -6,6 +6,7 @@ const Subject = require('../models/subject');
 const Chapter = require('../models/chapter');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
+const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 // get route to each part page
 router.get('/:id', async (req, res) => {
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res) => {
 
 
 // get route to edit page of each part
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
 
     const partID = req.params.id;
 
@@ -45,7 +46,7 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 // post route to subject part quick-edit part
-router.post('/:id', async (req, res) => {
+router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const partID = req.params.id;
 
     // find part document
@@ -64,7 +65,7 @@ router.post('/:id', async (req, res) => {
 });
 
 // delete route to delete part
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const partID = req.params.id;
 
     // find chapter document related to part
@@ -98,7 +99,7 @@ router.delete('/:id', async (req, res) => {
 
 
 // post route to add new chapter
-router.post('/:id/chapter', async (req, res) => {
+router.post('/:id/chapter',isLoggedIn, isAdmin, async (req, res) => {
     const partID = req.params.id;
 
     // find all chapters in part

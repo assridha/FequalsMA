@@ -4,6 +4,7 @@ const Subject = require('../models/subject');
 const Part = require('../models/part');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
+const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 // get route on home page
 router.get('/', async (req, res) => {
@@ -20,7 +21,7 @@ router.get('/', async (req, res) => {
 
 
 // post route to add new subject
-router.post('/', async (req, res) => {
+router.post('/',isLoggedIn, isAdmin, async (req, res) => {
 
     // get subjects
     const subjects = await Subject.find();
@@ -46,7 +47,7 @@ router.post('/', async (req, res) => {
 });
 
 // get route to edit page of each subject
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
 
     const subjectID = req.params.id;
 
@@ -64,7 +65,7 @@ router.get('/:id/edit', async (req, res) => {
 
 
 // post route to edit subject
-router.post('/:id', async (req, res) => {
+router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const subjectID = req.params.id;
 
     // find subject document
@@ -93,7 +94,7 @@ router.post('/:id', async (req, res) => {
 });
 
 // delete route to delete subject
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
     const subjectID = req.params.id;
 
     // query to find all part documents with reference to subjectID
@@ -138,7 +139,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //post route to add new part
-router.post('/:id/part', async (req, res) => {
+router.post('/:id/part',isLoggedIn, isAdmin, async (req, res) => {
     const subjectID = req.params.id;
 
     // get parts
