@@ -43,7 +43,8 @@
               </div>
 
             <% } %>
-            <button type="button" class="btn btn-primary" id="button<%=i%>">Check</button><span id="span_<%=i%>"></span>
+            <button type="button" class="btn btn-primary" id="button<%=i%>">Check</button>
+            <div id="span_<%=i%>"></div>
             <!-- script to detect which option has been clicked on button press  -->
             <script>
                 document.getElementById("button<%=i%>").addEventListener("click", function() {
@@ -64,13 +65,17 @@
                             // console.log(xhr.responseText);
                             // alert user if answer is correct or incorrect
                             if (xhr.responseText == "true") {
-                                alert("Correct!");
-                                // insert green tick in span tag
-                                document.getElementById("span_<%=i%>").innerHTML = "✅";
+                                document.getElementById("span_<%=i%>").innerHTML = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Correct!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>`;
                             } else {
-                                alert("Incorrect!");
-                                // insert red cross in span tag
-                                document.getElementById("span_<%=i%>").innerHTML = "❌";
+                                document.getElementById("span_<%=i%>").innerHTML = `
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    Wrong! Try again!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>`;
                             }
                         }
                     }
@@ -112,15 +117,18 @@
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // console.log(xhr.responseText);
                         // alert user if answer is correct or incorrect
-                        if (xhr.responseText == "true") {
-                            alert("Correct!");
-                            // insert green tick in span tag
-                            document.getElementById("span_<%=i%>").innerHTML = "✅";
-                        } else {
-                            alert("Incorrect!");
-                            // insert red cross in span tag
-                            document.getElementById("span_<%=i%>").innerHTML = "❌";
-                        }
+                        if (xhr.responseText == "true") {document.getElementById("span_<%=i%>").innerHTML = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Correct!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>`;
+                            } else {
+                                document.getElementById("span_<%=i%>").innerHTML = `
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    Wrong! Try again!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>`;
+                            }
                     }
                 }
             });
@@ -159,12 +167,18 @@
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // console.log(xhr.responseText);
                         if (xhr.responseText == "true") {
-                            alert("Correct!");
-                            document.getElementById("span_<%=i%>").innerHTML = "✅";
-                        } else {
-                            alert("Incorrect!");
-                            document.getElementById("span_<%=i%>").innerHTML = "❌";
-                        }
+                            document.getElementById("span_<%=i%>").innerHTML = `
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Correct!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>`;
+                            } else {
+                                document.getElementById("span_<%=i%>").innerHTML = `
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    Wrong! Try again!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>`;
+                            }
                     }
                 }
             });
