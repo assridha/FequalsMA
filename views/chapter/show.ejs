@@ -13,6 +13,11 @@
                     <a href="#" onclick="parentNode.submit(); return false;"
                         style="text-decoration: none;font-size: medium; vertical-align: super;">🗑️</a>
                 </form>
+                <% if (chapter.published) { %>
+                    <span style="font-size: medium;vertical-align: super;">🟢</span>
+                    <% } else { %>
+                        <span style="font-size: medium;vertical-align: super;">🔴</span>
+                <% } %>
                 <% } %>
     </h1>
 
@@ -38,10 +43,26 @@
                         <a href="#" onclick="parentNode.submit(); return false;"
                             style="text-decoration: none;vertical-align: super;font-size: medium;">🗑️</a>
                     </form>
+                    <!-- display published status using big colored circles -->
+                    <% if (sections[i].published) { %>
+                        <span style="font-size: medium;vertical-align: super;">🟢</span>
+                        <% } else { %>
+                            <span style="font-size: medium;vertical-align: super;">🔴</span>
+                    <% } %>
                     <% } %>
         </h2>
         <p>
-            <%- sections[i].body %>
+            <% let bodyText = sections[i].body %>
+            
+            <!-- check if bodyText is null -->
+            <% if (bodyText) { %>
+
+            <!-- find all substrings '@' and replace it with '\' -->
+            <% bodyText = bodyText.replace(/@/g, '\\') %>
+            
+            <!-- display the body -->
+            <%- bodyText %>
+            <% } %>
         </p>
 
 
@@ -67,7 +88,7 @@
             <% } %>
 
            
-            <h2>References</h2>
+            <!--<h2>References</h2>-->
              <!-- Display the list of chapter.references as an ordered list with each numeral displayed as [1],[2],[3],.. etc. for each reference display all the authors seperated by comma followed by a period then
             the title. Add the link to the reference separately.-->
             <!-- custom ol where each number is displayed between square brackets. For eg [1] item 1 [2] item 2 etc -->
@@ -121,12 +142,25 @@
     };
 </script>
 
-<!-- loop though each equation in section and add a script to set the value of element with id = <equation.title> to the expression  -->
-<% for (let j=0; j < sections.length; j++) { %>
-    <% for (let i = 0; i < sections[j].equations.length; i++) { %>
+<!-- find all elements of class eqn-num and insert the current equation number as (i) -->
 <script>
-    document.getElementById("<%=sections[j].equations[i].title%>").innerHTML = `<%=sections[j].equations[i].expression%>`;
+    const eqnNums = document.getElementsByClassName("eqn-num");
+    for (let i = 0; i < eqnNums.length; i++) {
+        // get the id of the equation
+        const id = eqnNums[i].getAttribute("id");
+        // insert an anchor tag in equation with the id as href
+        eqnNums[i].innerHTML = `<a href="/pola/subject/part/<%=chapter._id%>#${id}" style="color:black;text-decoration:none;">(${i + 1})</a>`;
+    }
 </script>
-<% } %>
-<% } %>
+
+<!-- find all elements of class fig-num and concatenate the current figure number as Fig i: -->
+<script>
+    const figNums = document.getElementsByClassName("fig-num");
+    for (let i = 0; i < figNums.length; i++) {
+        // get the id of the figure
+        const id = figNums[i].getAttribute("id");
+        // insert an anchor tag in figure with the id as href
+        figNums[i].innerHTML = `<a href="/pola/subject/part/<%=chapter._id%>#${id}" style="color:black;">Fig ${i + 1}</a>`+figNums[i].innerHTML;
+    }
+</script>
 

@@ -35,11 +35,10 @@ router.get('/login', (req, res) => {
 });
 
 // post route to /login using passport.authenticate middleware
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login',keepSessionInfo: true }), (req, res) => {
     req.flash('success', 'Welcome back!');
-
     // redirect pola    
-    res.redirect('/pola');
+    res.redirect(req.session.returnTo || '/pola');
 });
 
 

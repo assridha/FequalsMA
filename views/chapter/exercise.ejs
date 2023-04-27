@@ -228,12 +228,15 @@
                                         <%=nextChapter.title%> </a>
                             </span>
                             <% } else {%>
+                                <!-- if user is logged in and is admin -->
+                                <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                                 <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
                                 <form action="/pola/subject/<%=chapter.part%>/chapter" method="POST"
                                     style="display: inline-block;">
                                     <a href="#" onclick="parentNode.submit(); return false;"> ➕</a>
                                     <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
                                 </form>
+                                <% } %>
 
                                 <% }%>
 

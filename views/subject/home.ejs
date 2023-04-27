@@ -14,6 +14,11 @@
                         <div class="card-body">
                             <h5 class="card-title">
                                 <%= subjects[i].title %>
+                                <% if (subjects[i].published) { %>
+                                    <span style="font-size: medium;vertical-align: super;">🟢</span>
+                                    <% } else { %>
+                                        <span style="font-size: medium;vertical-align: super;">🔴</span>
+                                <% } %>
                             </h5>
                             <p class="card-text">
                                 <%= subjects[i].summary %>

@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/pola">dL</a>
+        <a class="navbar-brand" href="/pola">tPP</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,14 @@
                         <% }) %>
                             <% } %>
             </ul>
-            <!-- display logout only if currentUser exists -->
+            <!-- display login only if currentUser doesnt exist and if node enviroment is not production -->
+            <% if(!currentUser && process.env.NODE_ENV !== 'production') { %>
+                <div class="navbar-nav ml-auto">
+                    <a href="/login" class="nav-link">Login</a>
+                </div>
+                <% } %>
+
+                <!-- display logout only if currentUser exists -->
             <% if(currentUser) { %>
                 <div class="navbar-nav ml-auto">
                     <a href="/logout" class="nav-link">Logout</a>

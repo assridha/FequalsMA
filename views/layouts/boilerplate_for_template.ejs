@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>the principle of least action</title>
+    <title>the Physics Portal</title>
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -20,21 +20,60 @@
             width: 100%;
             height: 200px;
         }
+        .canvas-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-image: url('https://dub06pap001files.storage.live.com/y4mCemxZ8-1wFYUcIGgjJGyKuMUBwAVQDvEmZLEgrhXi08nV59u90bAICE_y4qj0KfxLzkY_L8Ok60ruMyaTlVwaivV9k-_bMRTlhHqKipDfgBYHdMmSHUGw7jSqMFssYflRlC23sO1XY0nCi0PG0jm5VnAjqU5K4vowFx06mZW0nNk3UxeVJFShvThtERJCieo?width=557&height=280&cropmode=none');
+            background-size: cover;
+            z-index: -1;
+        }
+
+        .canvas-content {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            transform: translateY(-50%);
+            max-width: 40%;
+            color: white;
+        }
+
+        @media (max-width: 767px) {
+            .canvas-content {
+                top: 40%;
+                left: 5%;
+                max-width: 70%;
+            }
+        }
     </style>
 
 </head>
 
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar') %>
-        <div class="jumbotron jumbotron-fluid bg-dark text-center text-white" style="min-height: 200px;">
-            <div class="container">
-                <h1 class="display-4">dL=0</h1>
-                <p class="lead">Physics is the key to the Cosmos. Can you unlock its secrets?</p>
-            </div>
-        </div>
-        <main class="container mt-4 mb-4">
-            <%- include('../partials/flash') %>
-            <%- body %>
+
+        <main>
+            <!-- Canvas with background image and off-center title -->
+<div class="canvas-container">
+    <div class="canvas-bg"></div>
+    <div class="canvas-content">
+        <h1>Welcome to the Physics Portal</h1>
+        <p>This is a short description for our portal. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+</div>
+ 
+<div class="container mt-4 mb-4"> <%- include('../partials/flash') %>
+    <%- body %></div>
+
         </main>
         <%- include('../partials/footer') %>
 

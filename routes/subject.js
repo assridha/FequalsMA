@@ -9,9 +9,16 @@ const { isLoggedIn, isAdmin } = require('../utils/middleware');
 // get route on home page
 router.get('/', async (req, res) => {
 
+    req.session.returnTo = req.originalUrl;
+
     // get all subject documents and sort by index
-    const subjects = await Subject.find()
+    let subjects = await Subject.find()
         .sort({ index: 1 });
+
+    // if user is not logged in and is not admin then filter out subjects with published false
+    if (!req.user || !req.user === process.env.ADMIN_OID) {
+        subjects = subjects.filter(subject => subject.published);
+    }
 
     const linkObject = [];
     // render subject_home.ejs file with subjects variable
@@ -36,7 +43,8 @@ router.post('/',isLoggedIn, isAdmin, async (req, res) => {
         title: req.body.title,
         summary: req.body.summary,
         index: getIndex(subjects),
-        image: imageURL
+        image: imageURL,
+        published: false
     });
 
     // save new content document
@@ -48,6 +56,8 @@ router.post('/',isLoggedIn, isAdmin, async (req, res) => {
 
 // get route to edit page of each subject
 router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
 
     const subjectID = req.params.id;
 
@@ -83,6 +93,7 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     subject.image = req.body.image;
     subject.index = req.body.index;
     subject.body = req.body.body;
+    subject.published = req.body.published;
 
     // save updated subject document
     await subject.save();
@@ -125,12 +136,20 @@ router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
 
 // get route to each subject page
 router.get('/:id', async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
+    
     const subjectID = req.params.id;
 
     const subject = await Subject.findById(subjectID);
 
     // find all part documents with reference to subjectID
-    const parts = await Part.find({ subject: subjectID })
+    let parts = await Part.find({ subject: subjectID })
+
+    // if user is not logged in and is not admin then filter out parts with published false
+    if (!req.user || !req.user === process.env.ADMIN_OID) {
+        parts = parts.filter(part => part.published);
+    }
 
     const linkObject = await getLinkObject(subject, 'subject');
 
@@ -150,7 +169,8 @@ router.post('/:id/part',isLoggedIn, isAdmin, async (req, res) => {
         title: req.body.title,
         summary: req.body.summary,
         index: getIndex(parts),
-        subject: subjectID
+        subject: subjectID,
+        published: false
     });
 
     // save new part document

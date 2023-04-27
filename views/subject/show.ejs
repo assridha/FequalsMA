@@ -10,6 +10,11 @@
         style="width: fit-content;">
         <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;">🗑️</a>
     </form>
+    <% if (subject.published) { %>
+        <span style="font-size: medium;vertical-align: super;">🟢</span>
+        <% } else { %>
+            <span style="font-size: medium;vertical-align: super;">🔴</span>
+    <% } %>
     <% } %>
     <p>
         <%= subject.body%>
@@ -20,7 +25,15 @@
 
             <h2><a href="subject/<%= parts[i]._id %>" style="color: black;">
                     Part <%=parts[i].index+1%>: <%= parts[i].title %>
-                </a></h2>
+                </a>
+                <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+                <% if (parts[i].published) { %>
+                    <span style="font-size: medium;vertical-align: super;">🟢</span>
+                    <% } else { %>
+                        <span style="font-size: medium;vertical-align: super;">🔴</span>
+                <% } %>
+                <% } %>
+            </h2>
             <p>
                 <%= parts[i].summary %>
             </p>

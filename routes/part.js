@@ -10,6 +10,9 @@ const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 // get route to each part page
 router.get('/:id', async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
+
     const partID = req.params.id;
 
     // find part document
@@ -27,6 +30,8 @@ router.get('/:id', async (req, res) => {
 
 // get route to edit page of each part
 router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
 
     const partID = req.params.id;
 
@@ -56,12 +61,14 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     part.title = req.body.title;
     part.summary = req.body.summary;
     part.body = req.body.body;
+    part.published = req.body.published;
 
     // save updated part document
     await part.save();
 
     // redirect to part page
-    res.redirect(`/pola/subject/${part._id}/edit`);
+    //res.redirect(`/pola/subject/${part._id}/edit`);
+    res.send(part);
 });
 
 // delete route to delete part
@@ -110,7 +117,8 @@ router.post('/:id/chapter',isLoggedIn, isAdmin, async (req, res) => {
         title: req.body.title,
         body: 'Default body text.',
         index: getIndex(chapters),
-        part: partID
+        part: partID,
+        published: false
     });
 
     // save new chapter document

@@ -13,6 +13,8 @@ const { isLoggedIn, isAdmin } = require('../utils/middleware');
 // get route to each chapter page
 router.get('/:id', async (req, res) => {
 
+    req.session.returnTo = req.originalUrl;
+
     const chapterID = req.params.id;
 
     // find chapter document
@@ -22,8 +24,13 @@ router.get('/:id', async (req, res) => {
     const nextChapter = await Chapter.findOne({ index: chapter.index + 1, part: chapter.part });
     const previousChapter = await Chapter.findOne({ index: chapter.index - 1, part: chapter.part });
 
-    // find all sections in chapter
-    const sections = await Section.find({ chapter: chapterID });
+    // find all sections in chapter and polpulate equations array.
+    let sections = await Section.find({ chapter: chapterID}).populate('equations');
+
+    // if not logged in and not admin, filter out sections with published false
+    if (!req.user || !req.user === process.env.ADMIN_OID) {
+        sections = sections.filter(section => section.published);
+    }
 
     const linkObject = await getLinkObject(chapter, 'chapter');
     
@@ -33,6 +40,8 @@ router.get('/:id', async (req, res) => {
 
 // get route to edit page of each chapter
 router.get('/:id/edit', isLoggedIn, isAdmin, async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
 
     const chapterID = req.params.id;
 
@@ -54,6 +63,7 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     // update chapter document with new data
     chapter.title = req.body.title;
     chapter.body = req.body.body;
+    chapter.published = req.body.published;
 
     // save updated chapter document
     await chapter.save();
@@ -104,7 +114,8 @@ router.post('/:id/section', isLoggedIn,isAdmin, async (req, res) => {
         title: req.body.title,
         body: req.body.body,
         chapter: chapter._id,
-        index: getIndex(sections)
+        index: getIndex(sections),
+        published: false
     });
 
     // save new section document
@@ -160,6 +171,9 @@ router.post('/:id/removeRef',isLoggedIn, isAdmin, async (req, res) => {
 
 // get route to /exercises page
 router.get('/:id/exercises', async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
+
     const chapterID = req.params.id;
 
     // find chapter document and populate all fields of exercises array
@@ -207,6 +221,9 @@ router.post('/:id/exercises',isLoggedIn, isAdmin, async (req, res) => {
 
 // get route to edit exercise page (chapter/exercise_edit.ejs)
 router.get('/chapter/:exerciseID/editExercise',isLoggedIn, isAdmin, async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
+
     const exerciseID = req.params.exerciseID;
 
     // find exercise document

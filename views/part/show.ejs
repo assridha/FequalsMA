@@ -10,6 +10,11 @@
                     <a href="#" onclick="parentNode.submit(); return false;"
                         style="text-decoration: none;font-size: medium;vertical-align: super;">🗑️</a>
                 </form>
+                <% if (part.published) { %>
+                    <span style="font-size: medium;vertical-align: super;">🟢</span>
+                    <% } else { %>
+                        <span style="font-size: medium;vertical-align: super;">🔴</span>
+                <% } %>
                 <% } %>
     </h1>
 
@@ -25,12 +30,14 @@
             <!-- add link to first chapter link. Name it chapter 1. align right -->
             <a href="/pola/subject/part/<%=chapters[0]._id%>">➡️ Chapter 1: <%=chapters[0].title%> </a>
             <% } else { %>
-
-                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
-                    <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
-                    <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
-                </form>
+                <!-- check if user is logged in and is admin -->
+                <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+                    <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
+                    <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
+                        <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
+                        <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
+                    </form>
+                <% } %>
 
                 <%} %>
     </p>

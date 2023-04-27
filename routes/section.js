@@ -41,16 +41,20 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     // update section document with new data
     section.title = req.body.title;
     section.body = req.body.body;
+    section.published = req.body.published;
 
     // save updated section document
     await section.save();
 
     // redirect to chapter page
-    res.redirect(`/pola/subject/part/chapter/${section._id}/edit`);
+    //res.redirect(`/pola/subject/part/chapter/${section._id}/edit`);
+    res.send(section);
 });
 
 // get route to edit page of each section
 router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
 
     const sectionID = req.params.id;
 
@@ -64,6 +68,7 @@ router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
 
     //render section/edit.ejs file with section variable
     res.render('section/edit', { section, chapter, linkObject });
+   
 });
 
 // post route to create new equation and add it to section

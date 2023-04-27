@@ -43,6 +43,16 @@
                                             <% } %>
                                 </select>
                             </div>
+                            <!-- create checkbox and set default state depending on published status -->
+                             <!-- set to checked if published is true -->
+                            <div class="form-check form-switch">
+                                <% if(subject.published) { %>
+                                <input class="form-check-input" name="published" type="checkbox" role="switch" id="publishCheck" value="true" checked>
+                                <% } else { %>
+                                    <input class="form-check-input" name="published" type="checkbox" role="switch" id="publishCheck" value="true">
+                                <% } %>
+                                <label class="form-check-label" for="publishCheck">Publish Status</label>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-sm">Sumbit</button>
 
                         </div>
