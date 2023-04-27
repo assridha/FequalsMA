@@ -1,4 +1,4 @@
-<% layout('layouts/boilerplate') %>
+<% layout('layouts/private') %>
 
     <!-- Add ace editor for html. Load the script from the cdn source. Make it fully fledged with emmet 
 support, autocompletion etc -->
@@ -11,6 +11,35 @@ support, autocompletion etc -->
     <!-- create 2 column containers -->
     <div class="row">
         <div class="col-6">
+
+            <div class="container mt-3">
+                    <!-- create checkbox and set default state depending on published status -->
+                    <!-- set to checked if published is true -->
+                    <div class="form-check form-switch">
+                        <% if(section.published) { %>
+                        <input class="form-check-input" name="published" type="checkbox" role="switch" id="publishCheck" checked>
+                        <% } else { %>
+                        <input class="form-check-input" name="published" type="checkbox" role="switch" id="publishCheck">
+                        <% } %>
+                        <label class="form-check-label" for="publishCheck">Publish Status</label>
+                    </div>
+
+                <h5 class="card-title">
+                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+                        value="<%=section.title%>">
+                </h5>
+                <input type="hidden" name="body">
+                <!-- Place the editor of ace with a width and height -->
+                <div id="editor" class="border" style="height: 500px;"></div>
+                <div style="padding-top: 20px;"></div>
+                <!-- Place the editor in a form and post the result to template/edit -->
+                    <button onclick="location.href='/pola/subject/part/<%=section.chapter%>'" type="button"
+                        class="btn btn-secondary">
+                        Go Back</button>
+                    <button type="button" class="btn btn-primary" id="save-button">Save</button>
+                    <button type="button" class="btn btn-success" id="preview-button">Preview</button>
+                    
+            </div>
             <!-- create a simple toolbar display with 3 buttons -->
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group me-2" role="group" aria-label="First group">
@@ -23,93 +52,39 @@ support, autocompletion etc -->
                     <button type="button" class="btn btn-light">📅</button>
                 </div>
             </div>
-
-            <div class="container mt-3">
-                <!-- Place the editor in a form and post the result to template/edit -->
-                <form action="/pola/subject/part/chapter/<%=section._id%>" method="POST" id="editForm">
-                    <button onclick="location.href='/pola/subject/part/<%=section.chapter%>'" type="button"
-                        class="btn btn-secondary">
-                        Go Back</button>
-                    <button type="submit" class="btn btn-primary">Render</button>
-                    <h5 class="card-title">
-                        <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                            value="<%=section.title%>">
-                    </h5>
-                    <input type="hidden" name="body">
-                </form>
-                <!-- Place the editor of ace with a width and height -->
-                <div id="editor" class="border"></div>
-            </div>
-
-            <div class="container mt-3">
-                <h3>Equations</h3>
-
-                <!-- Display all equations in section in form of a table. The columns consist of row number and expression -->
-                <table class="table table-striped" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" style="width:20%">Title</th>
-                            <th scope="col">Expression</th>
-                            <th scope="col">Edit/Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for (let i = 0; i < section.equations.length; i++) { %>
-                        <tr>
-                            <th scope="row"><%=i+1%></th>
-                                                          
-                                <form action="/pola/subject/part/chapter/<%=section._id%>/editEquation/<%=section.equations[i]._id%>"
-                                method="POST">
-                                <!-- title  -->
-                                <td><input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                                        value="<%=section.equations[i].title%>"></td>
-                                <td> 
-                                <!-- text area field to edit the expression -->
-                                <textarea name="expression" class="form-control" id="exampleFormControlTextarea1"
-                                    rows="3"><%=section.equations[i].expression%></textarea>
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                                </td>
-                            </form>
-                            
-                            <td>
-
-                                <!-- form to delete equation via DELETE route -->
-                                <form action="/pola/subject/part/chapter/<%=section._id%>/deleteEquation/<%=section.equations[i]._id%>"
-                                    method="POST">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                
-                            </td>
-                        </tr>
-                        <% } %>
-                        <!-- last row is a form to post route to add new equation -->
-                        <tr>
-                            <form action="/pola/subject/part/chapter/<%=section._id%>/addEquation" method="POST">
-                                <th scope="row"></th>
-                                <!-- title -->
-                                <td><input name="title" type="text" class="form-control" id="exampleFormControlInput1"
-                                        value="Title"></td>
-                                <!-- textarea to add expression -->
-                                <td><textarea name="expression" class="form-control" id="exampleFormControlTextarea1"
-                                        rows="3">$e=mc^2$</textarea></td>
-                                <td><button type="submit" class="btn btn-primary">Add</button></td>
-                            </form>
-                        </tr>
-                    </tbody>
-                </table>
-
-
-            </div>
             
         </div>
 
         <div class="col-6 border">
-            <h2>
+            <h2 id="title-text" >
                 <%=section.title%>
             </h2>
+            
+            <% let bodyText = section.body %>
+            <% if(bodyText) { %> 
+                <!-- find all substrings '@' and replace it with '\' -->
+                <% bodyText = bodyText.replace(/@/g, '\\') %>
+                <% } %>
+            
+            
+            
             <!-- display the body -->
-            <%- section.body %>
+            <div id="body-text">
+                <%- bodyText %>
+            </div>
+            
+        </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Server</strong>
+            <small>Now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            💾 Successfully saved data!
+          </div>
         </div>
     </div>
    
@@ -129,17 +104,12 @@ support, autocompletion etc -->
         // enable emmet on the current editor
         editor.setOption("enableEmmet", true);
 
+        let bodyText = `<%-section.body%>`;
+
         // set the editor content to the body input field
-        editor.setValue(`<%-section.body%>`);
+        editor.setValue(bodyText);
 
     </script>
-
-    <!-- Assign editor content to the body input field -->
-    <script>
-        document.getElementById("editForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            document.querySelector('input[name="body" ]').value = editor.getValue(); this.submit();
-        }); </script>
 
         <!-- script to add an image tag at current cursor location in the editor when the button add-image is clicked -->
        <!-- add image caption and center both image and caption -->
@@ -147,14 +117,14 @@ support, autocompletion etc -->
         <script>
             document.getElementById("add-image").addEventListener("click", function (e) {
                 e.preventDefault();
-                editor.insert('<figure class="text-center"><img src="https://picsum.photos/200/300" alt="random image" width="200"><figcaption>Random image</figcaption></figure>');
+                editor.insert('<figure class="text-center"><img src="https://picsum.photos/200/300" alt="random image" width="200">\n<figcaption class="fig-num" id="fig-label">Random image</figcaption></figure>');
             }); </script>
 
 <!-- script to add block latex equation tag at current cursor location in the editor when the button add-block-equation is clicked. Center the equation -->
 <script>
     document.getElementById("add-block-equation").addEventListener("click", function (e) {
         e.preventDefault();
-        editor.insert('<div class="text-center" id="eqn1"></div>');
+        editor.insert('<div class="container-fluid"> <div class="row align-items-start"><div class="col"></div>\n<div class="col text-center">\n$$ e=mc^2 $$\n</div><div class="col eqn-num" id="eq-label" style="text-align: end; margin:15px">\n(1)</div></div></div>');
     }); </script>
 
 
@@ -168,16 +138,56 @@ support, autocompletion etc -->
 <script>
     MathJax = {
         tex: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']]
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
         }
     };
 </script>
 
-<!-- loop though each equation in section and add a script to set the value of element with id = <equation.title> to the expression  -->
-<% for (let i = 0; i < section.equations.length; i++) { %>
+<!-- script to submit the form editForm when save-button is clicked. The script then displays the response that is sent back from the server -->
 <script>
-    document.getElementById("<%=section.equations[i].title%>").innerHTML = `<%=section.equations[i].expression%>`;
-</script>
-<% } %>
+    document.getElementById("save-button").addEventListener("click", function (e) {
+       e.preventDefault();
+       
+
+        fetch('/pola/subject/part/chapter/<%=section._id%>', {
+            method: 'POST',
+            body: JSON.stringify({
+                title: document.querySelector('input[name="title" ]').value,
+                body: editor.getValue(),
+                published: document.querySelector('input[name="published" ]').checked
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            credentials: 'same-origin'
+            // display success message once response is received. obtain section from response. Set the title-text and body-text of the section to the values obtained from the response
+        }).then(response => response.json()).then(section => {
+            document.getElementById("title-text").innerHTML = section.title;
+            const bodyText = section.body.replace(/@/g, '\\');
+            document.getElementById("body-text").innerHTML = bodyText;
+            // render latex equations only in body-text
+            MathJax.typesetPromise([document.getElementById("body-text")]);
+
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show()
+            
+        });
+    }); </script>
+
+
+<!-- script to set the content of body-text to the editor content on button click of preview-button -->
+<script>
+    document.getElementById("preview-button").addEventListener("click", function (e) {
+        e.preventDefault();
+        const bodyText = editor.getValue().replace(/@/g, '\\');
+        document.getElementById("body-text").innerHTML = bodyText;
+        document.getElementById("title-text").innerHTML = document.querySelector('input[name="title" ]').value;
+        // render latex equations only in body-text
+        MathJax.typesetPromise([document.getElementById("body-text")]);
+    }); </script>
 
 
