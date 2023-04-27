@@ -31,13 +31,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 //connect to mongodb and console log if connected or not. Set strictQuery to true to prevent deprecation warning.
 mongoose.set('strictQuery', true);
-// mongoose.connect('mongodb+srv://ashwinsridhara:kLhBq7cjKzxbAwvD@alphasandbox.niws52d.mongodb.net/fEqaulsMA?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
-//     .then(() => console.log('Connected to MongoDB...'))
-//     .catch(err => console.error('Could not connect to MongoDB...'));
+ mongoose.connect(`mongodb+srv://ashwinsridhara:${process.env.MONGODB_ADMIN_PASSWORD}@knowledge-library.5haz12m.mongodb.net/fEqaulsMA?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+     .then(() => console.log('Connected to MongoDB Atlas...'))
+     .catch(err => console.error('Could not connect to MongoDB...'));
 
-mongoose.connect('mongodb://localhost:27017/fequalsma', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB...'))
-    .catch(err => console.error('Could not connect to MongoDB...'));
+//mongoose.connect('mongodb://localhost:27017/fequalsma', { useNewUrlParser: true, useUnifiedTopology: true })
+//    .then(() => console.log('Connected to MongoDB...'))
+//    .catch(err => console.error('Could not connect to MongoDB...'));
 
 const sessionConfig = {
         secret: 'fequalsma',
@@ -81,9 +81,18 @@ app.use((req, res, next) => {
 
 // send toc array to all routes. retrieve all subjects, parts and chapters. Only retrieve title and parent fields.
 app.use(async (req, res, next) => {
-    const subjects = await Subject.find({}, 'title index');
-    const parts = await Part.find({}, 'title subject index');
-    const chapters = await Chapter.find({}, 'title part index');
+
+    let subjects = await Subject.find({}, 'title index published');
+    let parts = await Part.find({}, 'title subject index published');
+    let chapters = await Chapter.find({}, 'title part index published');
+    
+    // if user is not logged in and is not admin, filter out unpublished subjects, parts and chapters
+    if(!req.user || !req.user === process.env.ADMIN_OID) {
+        subjects = subjects.filter(subject => subject.published);
+        parts = parts.filter(part => part.published);
+        chapters = chapters.filter(chapter => chapter.published);
+    }
+    
     const toc = { subjects, parts, chapters };
     res.locals.toc = toc;
     next();

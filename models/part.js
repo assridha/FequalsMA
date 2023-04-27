@@ -5,6 +5,7 @@
 // body: String
 // subject: Subject
 // image: String
+// published: Boolean
 
 // import required modules
 const mongoose = require('mongoose');
@@ -22,7 +23,8 @@ const PartSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Subject'
     },
-    image: String
+    image: String,
+    published: Boolean
 });
 
 PartSchema.plugin(deepPopulate);

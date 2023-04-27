@@ -2,6 +2,7 @@
 // title: String
 // index: Number
 // summary: String
+// published: Boolean
 // import required modules
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -13,7 +14,8 @@ const SubjectSchema = new Schema({
     summary: String,
     body: String,
     index: Number,
-    image: String
+    image: String,
+    published: Boolean
 });
 
 SubjectSchema.plugin(deepPopulate);
