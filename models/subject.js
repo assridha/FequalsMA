@@ -5,6 +5,7 @@
 // published: Boolean
 // import required modules
 const mongoose = require('mongoose');
+const course = require('./course');
 const Schema = mongoose.Schema;
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
@@ -15,7 +16,9 @@ const SubjectSchema = new Schema({
     body: String,
     index: Number,
     image: String,
-    published: Boolean
+    published: Boolean,
+    status: { type: String, default: 'hide' },
+    course: { type: Schema.Types.ObjectId, ref: 'Course' }
 });
 
 SubjectSchema.plugin(deepPopulate);
