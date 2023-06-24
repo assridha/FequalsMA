@@ -31,7 +31,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 //connect to mongodb and console log if connected or not. Set strictQuery to true to prevent deprecation warning.
 mongoose.set('strictQuery', true);
- mongoose.connect(`mongodb+srv://ashwinsridhara:${process.env.MONGODB_ADMIN_PASSWORD}@knowledge-library.5haz12m.mongodb.net/fEqaulsMA?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+const dbUrl = process.env.DB_URL
+ mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
      .then(() => console.log('Connected to MongoDB Atlas...'))
      .catch(err => console.error('Could not connect to MongoDB...'));
 
