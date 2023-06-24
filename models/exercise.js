@@ -13,12 +13,14 @@ const Schema = mongoose.Schema;
 //create schema
 const ExerciseSchema = new Schema({
     problem: String,
+    question: String,
     type: String,
     figure: String,
     options: [String],
     answerExplaination: String,
     answerIndex: [Number],
-    answerNumber: Number
+    answerNumber: Number,
+    index: Number
 });
 
 // export model
