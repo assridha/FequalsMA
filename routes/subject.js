@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Subject = require('../models/subject');
 const Part = require('../models/part');
+const Course = require('../models/course');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
 const { isLoggedIn, isAdmin } = require('../utils/middleware');
+const course = require('../models/course');
 
 // get route on home page
 router.get('/', async (req, res) => {
@@ -15,15 +17,27 @@ router.get('/', async (req, res) => {
     let subjects = await Subject.find()
         .sort({ index: 1 });
 
-    // if user is not logged in and is not admin then filter out subjects with published false
+    // if user is not logged in and is not admin then filter out subjects with status hide
     if (!req.user || !req.user === process.env.ADMIN_OID) {
-        subjects = subjects.filter(subject => subject.published);
+        subjects = subjects.filter(subject => subject.status !== 'hide');
     }
+
+    // get all courses
+    const courses = await Course.find();
 
     const linkObject = [];
     // render subject_home.ejs file with subjects variable
-    res.render('subject/home', { subjects, linkObject });
+    res.render('subject/home', { subjects, linkObject,courses });
 
+});
+
+// route to about page
+router.get('/about', async (req, res) => {
+
+    req.session.returnTo = req.originalUrl;
+
+    // render about.ejs file
+    res.render('home/about');
 });
 
 
@@ -44,7 +58,8 @@ router.post('/',isLoggedIn, isAdmin, async (req, res) => {
         summary: req.body.summary,
         index: getIndex(subjects),
         image: imageURL,
-        published: false
+        published: false,
+        course  : req.body.course
     });
 
     // save new content document
@@ -67,10 +82,13 @@ router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
     // get all subjects
     const subjects = await Subject.find();
 
+    // get courses
+    const courses = await Course.find();
+
     const linkObject = await getLinkObject(subject, 'subject');
 
     // render subject_edit.ejs file with subject and parts variables
-    res.render('subject/edit', { subject, subjects, linkObject });
+    res.render('subject/edit', { subject, subjects, linkObject, courses });
 });
 
 
@@ -94,6 +112,8 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     subject.index = req.body.index;
     subject.body = req.body.body;
     subject.published = req.body.published;
+    subject.status = req.body.status;
+    subject.course = req.body.course;
 
     // save updated subject document
     await subject.save();
@@ -146,9 +166,9 @@ router.get('/:id', async (req, res) => {
     // find all part documents with reference to subjectID
     let parts = await Part.find({ subject: subjectID })
 
-    // if user is not logged in and is not admin then filter out parts with published false
+    // if user is not logged in and is not admin then filter out parts with status hide
     if (!req.user || !req.user === process.env.ADMIN_OID) {
-        parts = parts.filter(part => part.published);
+        parts = parts.filter(part => part.status !== 'hide');
     }
 
     const linkObject = await getLinkObject(subject, 'subject');
