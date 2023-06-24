@@ -24,7 +24,8 @@ const PartSchema = new Schema({
         ref: 'Subject'
     },
     image: String,
-    published: Boolean
+    published: Boolean,
+    status: { type: String, default: 'hide' }
 });
 
 PartSchema.plugin(deepPopulate);
