@@ -1,7 +1,29 @@
 <% layout('layouts/boilerplate') %>
+    <div class="row container-fluid" style="margin-left: 0; padding-left: 0;">
+        <div class="col-md-9" style="padding-left: 0;">⬅️<a href="<%=linkObject[0].link%>">
+        Back to <%=linkObject[0].text%>
+    </a></div>
+    <!--<div class="col"></div>-->
+    <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+    <% if (chapters[0]) {%>
+        <!-- add link to first chapter link. Name it chapter 1. align right -->
+        ➡️<a href="/pola/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
+        <% } else { %>
+            <!-- check if user is logged in and is admin -->
+            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
+                <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
+                    <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
+                    <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
+                </form>
+            <% } %>
 
+            <%} %>
+        </div>
+    </div>
+    <hr>
     <h1 style="display: inline-block;">
-        <%=part.index+1%>. <%= part.title %>
+        <%= part.title %>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <span style="vertical-align:super;font-size: medium;"><a href="<%= part._id%>/edit"
                         style="text-decoration: none;">✏️</a></span>
@@ -22,22 +44,47 @@
         <%- part.body %>
     </p>
 
-    <p>
-        ⬅️<a href="<%=linkObject[0].link%>">
-            <%=linkObject[0].text%>
-        </a><br>
-        <% if (chapters[0]) {%>
-            <!-- add link to first chapter link. Name it chapter 1. align right -->
-            <a href="/pola/subject/part/<%=chapters[0]._id%>">➡️ Chapter 1: <%=chapters[0].title%> </a>
-            <% } else { %>
-                <!-- check if user is logged in and is admin -->
-                <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                    <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                    <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
-                        <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
-                        <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
-                    </form>
-                <% } %>
+    <hr>
+    <div class="row container-fluid" style="margin-left: 0; padding-left: 0;">
+        <div class="col-md-9" style="padding-left: 0;">⬅️<a href="<%=linkObject[0].link%>">
+        Back to <%=linkObject[0].text%>
+    </a></div>
+    <!--<div class="col"></div>-->
+    <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+    <% if (chapters[0]) {%>
+        <!-- add link to first chapter link. Name it chapter 1. align right -->
+        ➡️<a href="/pola/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
+        <% } else { %>
+            <!-- check if user is logged in and is admin -->
+            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
+                <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
+                    <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
+                    <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
+                </form>
+            <% } %>
 
-                <%} %>
-    </p>
+            <%} %>
+        </div>
+    </div>
+    <!-- find all elements of class eqn-num and insert the current equation number as (i) -->
+<script>
+    const eqnNums = document.getElementsByClassName("eqn-num");
+    for (let i = 0; i < eqnNums.length; i++) {
+        // get the id of the equation
+        const id = eqnNums[i].getAttribute("id");
+        // insert an anchor tag in equation with the id as href
+        eqnNums[i].innerHTML = `<a href="/pola/subject/<%=part._id%>#${id}" style="color:black;text-decoration:none;">(${i + 1})</a>`;
+    }
+</script>
+
+<!-- find all elements of class fig-num and concatenate the current figure number as Fig i: -->
+<script>
+    const figNums = document.getElementsByClassName("fig-num");
+    for (let i = 0; i < figNums.length; i++) {
+        // get the id of the figure
+        const id = figNums[i].getAttribute("id");
+        // insert an anchor tag in figure with the id as href
+        figNums[i].innerHTML = `<a href="/pola/subject/<%=part._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
+    }
+</script>
