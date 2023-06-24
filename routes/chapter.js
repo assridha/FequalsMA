@@ -176,8 +176,8 @@ router.get('/:id/exercises', async (req, res) => {
 
     const chapterID = req.params.id;
 
-    // find chapter document and populate all fields of exercises array
-    const chapter = await Chapter.findById(chapterID).populate('exercises');
+    // find chapter document and populate exercises array field with all fields except answerExplanation
+    const chapter = await Chapter.findById(chapterID).populate('exercises', '-answerExplanation');
 
     const linkObject = await getLinkObject(chapter, 'chapter');
 
@@ -193,8 +193,11 @@ router.get('/:id/exercises', async (req, res) => {
 router.post('/:id/exercises',isLoggedIn, isAdmin, async (req, res) => {
     const chapterID = req.params.id;
 
-    // find chapter document
-    const chapter = await Chapter.findById(chapterID);
+    // find chapter document. populate the index field of exercises array
+    const chapter = await Chapter.findById(chapterID).populate('exercises', 'index');
+
+    // find the highest index of exercise in chapter
+    const index = chapter.exercises.reduce((max, exercise) => exercise.index > max ? exercise.index : max, -1);
 
     // create new exercise document
     const newExercise = new Exercise({
@@ -204,6 +207,7 @@ router.post('/:id/exercises',isLoggedIn, isAdmin, async (req, res) => {
         answerIndex: 0,
         answerExplanation: 'Explanation goes here',
         answerNumber: 0,
+        index: index + 1,
     });
 
     // save new exercise document
@@ -216,7 +220,7 @@ router.post('/:id/exercises',isLoggedIn, isAdmin, async (req, res) => {
     await chapter.save();
 
     // redirect to chapter exercises page
-    res.redirect(`/pola/subject/part/${chapter._id}/exercises`);
+    res.redirect(`/pola/subject/part/${chapter._id}/exercises/#addExerciseTitle`);
 });
 
 // get route to edit exercise page (chapter/exercise_edit.ejs)
@@ -249,8 +253,9 @@ router.post('/chapter/:exerciseID/editExercise',isLoggedIn, isAdmin, async (req,
     // update exercise document with new data
     exercise.problem = req.body.problem;
     exercise.type = req.body.type;
-    //break options into array via semi-colon
-    exercise.options = req.body.options.split(';');
+    exercise.question = req.body.question;
+    //break options into array via newline
+    exercise.options = req.body.options.split('\r\n');
     // break answerIndex into array via semi-colon and convert to number
     exercise.answerIndex = req.body.answerIndex.split(';').map((index) => Number(index));
     exercise.answerExplaination = req.body.answerExplaination;
@@ -309,8 +314,9 @@ router.post('/chapter/:exerciseID/answer', async (req, res) => {
        isCorrect = JSON.stringify(exercise.answerIndex) === JSON.stringify(answer);
     }
 
-    // if answer is correct, send back true else send back false
-    res.send(isCorrect);
+    // send back isCorrect and answerExplaination
+    res.send({ isCorrect, answerExplaination: exercise.answerExplaination });
+    
 
 
 });
