@@ -1,7 +1,29 @@
 <% layout('layouts/boilerplate') %>
-
+<!-- add link back to part, align left -->
+<div class="row container-fluid">
+    <div class="col-md-9" style="padding-left: 0;margin-left: 0;">
+    <% if (chapter.index==0) { %>
+         ⬅️<a href="<%=linkObject[1].link%>">
+       Back to <%=linkObject[1].text%>
+         </a>
+         <% } else { %>
+        ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>/exercises"> Back to Exercises for Chapter <%=chapter.index%>:
+                <%= previousChapter.title %></a>
+        <% } %>
+    </div>
+    <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+            
+                <!-- span algin right -->
+                ➡️<span>
+                    <!-- add link to first chapter link. Name it chapter 1. align right -->
+                    <a href="/pola/subject/part/<%=chapter._id %>/exercises"> Go to Exercises for Chapter <%=chapter.index+1%>:
+                            <%=chapter.title%> </a>
+                </span>
+    </div>
+</div>
+<hr>
     <h1>
-        <%=chapter.index+1%>. <%=chapter.title%>
+       <%=chapter.title%>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <!-- anchor tag to edit chapter route -->
                 <a href="/pola/subject/part/<%=chapter._id%>/edit"
@@ -30,7 +52,6 @@
     <% for (let i=0; i < sections.length; i++) { %>
 
         <h2 id="<%=sections[i]._id%>">
-            <%= i+1 %>.
                 <%= sections[i].title %>
                     <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                     <!-- anchor tag to edit section route -->
@@ -109,23 +130,28 @@
                     <% } %>
             </ul>
 
-            <!-- add link back to part, align left -->
-            <% if (chapter.index==0) { %>
-                ⬅️<a href="<%=linkObject[1].link%>">
-                    <%=linkObject[1].text%>
-                </a>
-                <% } else { %>
-                    ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>/exercises"> Exercises for Chapter <%=chapter.index%>:
+            <hr>
+            <div class="row container-fluid">
+                <div class="col-md-9" style="padding-left: 0;margin-left: 0;">
+                <% if (chapter.index==0) { %>
+                     ⬅️<a href="<%=linkObject[1].link%>">
+                    Back to <%=linkObject[1].text%>
+                     </a>
+                     <% } else { %>
+                    ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>/exercises"> Back to Exercises for Chapter <%=chapter.index%>:
                             <%= previousChapter.title %></a>
                     <% } %>
-                        <br>
+                </div>
+                <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
                         
                             <!-- span algin right -->
                             ➡️<span>
                                 <!-- add link to first chapter link. Name it chapter 1. align right -->
-                                <a href="/pola/subject/part/<%=chapter._id %>/exercises"> Exercises for Chapter <%=chapter.index+1%>:
+                                <a href="/pola/subject/part/<%=chapter._id %>/exercises"> Go to Exercises for Chapter <%=chapter.index+1%>:
                                         <%=chapter.title%> </a>
                             </span>
+                </div>
+            </div>
 
 
 
@@ -160,7 +186,7 @@
         // get the id of the figure
         const id = figNums[i].getAttribute("id");
         // insert an anchor tag in figure with the id as href
-        figNums[i].innerHTML = `<a href="/pola/subject/part/<%=chapter._id%>#${id}" style="color:black;">Fig ${i + 1}</a>`+figNums[i].innerHTML;
+        figNums[i].innerHTML = `<a href="/pola/subject/part/<%=chapter._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
     }
 </script>
 
