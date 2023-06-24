@@ -1,62 +1,83 @@
 <% layout('layouts/boilerplate_for_template') %>
-    <div class="container-fluid ms-1">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <!-- Create a card grid of equal height for each subject with image, title and summay. Include an edit button-->
-            <% for (let i=0; i < subjects.length; i++) { %>
 
-                <div class="col">
+<h2>Courses 📚 </h2>
+<div class="container-fluid ms-1">
+<% for(k=0;k< courses.length;k++){%>
+<h3><%= courses[k].title %></h3>
 
-                    <div class="card h-100" style="width: 20rem;">
-                        <!-- add link to subject page to image -->
-                        <a href="/pola/<%= subjects[i]._id %>">
-                            <img src="<%= subjects[i].image %>" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= subjects[i].title %>
-                                <% if (subjects[i].published) { %>
-                                    <span style="font-size: medium;vertical-align: super;">🟢</span>
-                                    <% } else { %>
-                                        <span style="font-size: medium;vertical-align: super;">🔴</span>
-                                <% } %>
-                            </h5>
-                            <p class="card-text">
-                                <%= subjects[i].summary %>
-                            </p>
-                        </div>
+<% const subject_course = subjects.filter((subject) => subject.course.equals(courses[k]._id)); %>
+
+    
+      <div class="container-fluid mt-4"></div>
+      <div class="row row-cols-1 row-cols-md-5 g-4">
+        <% for (let i=0; i < subject_course.length; i++) { %>
+          <div class="col" style="text-align: center;">
+            <div class="image-container">
+                           
+                <% if (subject_course[i].published || (currentUser && currentUser._id.toString() == process.env.ADMIN_OID)) { %>
+                  <a href="/pola/<%= subject_course[i]._id %>">
+                    <img src="<%= subject_course[i].image %>" class="img-fluid allSides" alt="..." width="60%">
+                  </a>
+                <% } else { %>
+                    <img src="<%= subject_course[i].image %>" class="img-fluid allSides" alt="..." width="60%">
+                    <div class="overlay">
+                     <div class="text">Coming Soon</div>
                     </div>
+                  <% } %>
+            </div>
+            
+            <h5 class="mt-2"><%= subject_course[i].title %>
+              <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+              <% if (subject_course[i].published) { %>
+                  <span style="font-size: medium;">🟢</span>
+                  <% } else { %>
+                      <span style="font-size: medium;">🔴</span>
+              <% } %>
+              <% } %></h5>
+          </div>
+          
 
-                </div>
-
-                <% } %>
-
-                <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                    <!-- copy the form to add new subject but style it as according to the current card style -->
-                    <form action="/pola" method="POST">
-                        <div class="col">
-                            <div class="card h-100" style="width: 20rem;">
-                                <img src="https://www.wolflair.com/wp-content/uploads/2017/01/placeholder.jpg"
+      <% } %>
+    </div>
+    <%}%>
+    <div class="container-fluid mt-4"></div>
+        <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+        <!-- copy the form to add new subject but style it as according to the current card style -->
+        <form action="/pola" method="POST">
+        <div class=" mb-3 card" style="max-width: 540px;background-color:#fdf1e2 ;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="https://www.wolflair.com/wp-content/uploads/2017/01/placeholder.jpg"
                                     class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <input name="title" type="text" class="form-control"
-                                            id="exampleFormControlInput1" value="Title">
-                                    </h5>
-                                    <p class="card-text">
-                                        <textarea name="summary" class="form-control" id="exampleFormControlTextarea1"
-                                            rows="3">No summary yet</textarea>
-                                    </p>
-                                    <p class="card-text">
-                                        <input name="image" type="text" class="form-control"
-                                            id="exampleFormControlInput1" placeholder="Image URL">
-                                    </p>
-
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Add Subject</button>
-                            </div>
-
-                        </div>
-                    </form>
-                    <% } %>
-        </div>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1" value="Title">
+                </h5>
+                <p class="card-text"> 
+                    <textarea name="summary" class="form-control" id="exampleFormControlTextarea1" rows="3">No summary yet</textarea>
+                </p>
+                <!-- add course from list -->
+                <p class="card-text"> 
+                    <select name="course" class="form-select" aria-label="Default select example">
+                        <option selected>Select course</option>
+                        <% for (let i=0; i < courses.length; i++) { %>
+                            <option value="<%= courses[i]._id %>"><%= courses[i].title %></option>
+                        <% } %>
+                    </select>
+                </p>
+                  <p class="card-text">  <input name="image" type="text" class="form-control"
+                    id="exampleFormControlInput2" placeholder="Image URL"></p>
+                  <button type="submit" class="btn btn-primary btn-sm">Add Subject</button>
+                </div>
+              </div>
+            </div>
+            </div>
+        </form>
+        <% } %>
+    </div>
+    <h2>Updates 📢 </h2>
+    <div class="container-fluid mb-4 mt-4">
+      <a class="twitter-timeline" data-tweet-limit="3" data-width="800" href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw" data-chrome="noborders transparent noheader"></a>>Tweets by TwitterDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>    
     </div>
