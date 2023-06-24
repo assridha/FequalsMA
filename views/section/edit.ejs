@@ -55,7 +55,7 @@ support, autocompletion etc -->
             
         </div>
 
-        <div class="col-6 border">
+        <div class="col-6 border" style="height: 760px;overflow-y: auto;">
             <h2 id="title-text" >
                 <%=section.title%>
             </h2>
@@ -90,7 +90,9 @@ support, autocompletion etc -->
    
     <!-- Add the ace editor for html. enable emmet -->
     <script>
-        var editor = ace.edit("editor");
+        var editor = ace.edit("editor",{
+                 wrap: true, // wrap text
+            });
         editor.session.setMode("ace/mode/html");
         // enable autocompletion and snippets
         ace.require("ace/ext/language_tools");
@@ -124,7 +126,7 @@ support, autocompletion etc -->
 <script>
     document.getElementById("add-block-equation").addEventListener("click", function (e) {
         e.preventDefault();
-        editor.insert('<div class="container-fluid"> <div class="row align-items-start"><div class="col"></div>\n<div class="col text-center">\n$$ e=mc^2 $$\n</div><div class="col eqn-num" id="eq-label" style="text-align: end; margin:15px">\n(1)</div></div></div>');
+        editor.insert('<div style="display: flex; justify-content: center; align-items: baseline;margin: 0px 0px;">\n<div class="equation">\n $$e=mc^2$$</div>\n<div class="eqn-num" id="EQN_REF" style="padding-left: 10px;">\n(1)\n</div>\n</div>');
     }); </script>
 
 

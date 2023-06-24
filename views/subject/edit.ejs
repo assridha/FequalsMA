@@ -25,13 +25,27 @@
                                     rows="3"><%=subject.body%></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Image URL</label>
-                                <input name="image" type="text" class="form-control" id="exampleFormControlInput1"
+                                <label for="exampleFormControlInput2" class="form-label">Image URL</label>
+                                <input name="image" type="text" class="form-control" id="exampleFormControlInput2"
                                     value="<%= subject.image%>">
+                            </div>
+                            <!-- dropdown list of all courses -->
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput3" class="form-label">Course</label>
+                                <select name="course" class="form-select" aria-label="Default select example">
+                                    <!-- sort courses along index -->
+                                    <% courses.sort((a, b)=> (a.index > b.index) ? 1 : -1) %>
+                                        <% for (let i=0; i < courses.length; i++) { %>
+                                            <option value="<%= courses[i]._id %>" <% if
+                                                (courses[i]._id.equals(subject.course)) { %> selected <% } %>><%=
+                                                        courses[i].title %>
+                                            </option>
+                                            <% } %>
+                                </select>
                             </div>
                             <!-- dropdown list of indices of all subjects with index of subject  as default value-->
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Index</label>
+                                <label for="exampleFormControlInput4" class="form-label">Index</label>
                                 <select name="index" class="form-select" aria-label="Default select example">
                                     <!-- sort subjects along index -->
                                     <% subjects.sort((a, b)=> (a.index > b.index) ? 1 : -1) %>
@@ -53,6 +67,17 @@
                                 <% } %>
                                 <label class="form-check-label" for="publishCheck">Publish Status</label>
                             </div>
+                            <!-- dropdown selection with options "hide" and "view". name is status -->
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput5" class="form-label">Status</label>
+                                <select name="status" class="form-select" aria-label="Default select example">
+                                    <option value="hide" <% if (subject.status=="hide") { %> selected <% } %>>hide
+                                    </option>
+                                    <option value="view" <% if (subject.status=="view") { %> selected <% } %>>view
+                                    </option>
+                                </select>
+                            </div>
+                
                             <button type="submit" class="btn btn-primary btn-sm">Sumbit</button>
 
                         </div>
