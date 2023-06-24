@@ -5,12 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>the principle of least action</title>
+    <title>The First Principles Portal</title>
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="icon" type="image/svg+xml" href="https://example.com/image.svg">
+    <link rel="icon"  href="https://dub06pap001files.storage.live.com/y4mnrov1K0eRwFJzyYhBWjU690R-tnYuJILmGabv5Jhr3eRr7DwJu8j23u2Lqsl9wgVhLg2E9osw_y-3ZhqyqlStJLT-a0N3DkJRKjdvrbzhZRl8V7l1kWJEl8zFLWzaQPlDQtd2eflJB5Nt9RC6HdE5RBnznWFGF5AWaS2GHdMfMAoXrPENEqaYkrNdOF9tQrF?width=622&height=599&cropmode=none">
+        <!-- Set body font to Spectral. Import necessary stylesheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spectral:400,400i,700,700i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,400i,700,700i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+       <!--  add computer modern font-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.18/katex.min.css">
+
 
     <!-- Add style for #editor class-->
     <style type="text/css" media="screen">
@@ -20,31 +29,97 @@
             width: 100%;
             height: 400px;
         }
+        body {
+            /* add computer modern font */
+            /*font-family: 'CMU Serif', 'Times New Roman', serif;*/
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #213555;
+            background-color: #fdf1e2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        @media (max-width: 768px) {
+            body {
+                font-size: 0.8rem;
+            }
+        }
+        /* remove all frills. No border or highlighting on click */
+        .navbar-toggler {
+        border: none;
+        outline: none;
+        box-shadow: none;       
+        }
+        .center-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        }
+        footer{
+             margin-top: auto;
+        }
+        .sidebar-text{
+            color: #D8C4B6;
+        }
+        .sidebar-heading{
+            color: #D8C4B6;
+        }
+        .sidebar-text:hover{
+            color: #F2E9E4;
+        }
+        .sidebar{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            overflow-y: scroll;
+        }
+        .allSides
+        {
+        border: solid 1px #555;
+        background-color: #eed;
+        box-shadow:  0 0 10px  #4F709C;
+        -moz-box-shadow: 0 0 10px  #4F709C;
+        -webkit-box-shadow: 0 0 10px  #4F709C;
+        -o-box-shadow: 0 0 10px  #4F709C;
+        border-radius: 10%;
+        }
+        .highlight-box{
+            background-color:#D8C4B6;
+             box-shadow: 5px 10px;
+             width:90%;
+             margin:2%;
+             padding: 2%;
+             border-radius: 5px;
+        }
+        .equation{
+            flex: 1; 
+            text-align: center;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+    
+        figcaption{
+            margin-top: 1rem;
+        }
     </style>
-
 </head>
-
-<body class="d-flex flex-column vh-100">
+<body class="d-flex">
     <%- include('../partials/navbar') %>
-            <div class="row">
-                <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 d-flex">
-                    <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2">
-                        <nav class="navbar navbar-light bg-light">
-                            <div class="container-fluid">
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#sideBarToC" aria-controls="sideBarToC" aria-expanded="true"
-                                    aria-label="Toggle navigation">
-                                    <span>ToC</span>
-                                </button>
-                            </div>
-                        </nav>
-                        <div class="collapse show navbar-collapse" id="sideBarToC">
-                            <ol class="bg-light">
-                                <!-- sort toc.subjects in order of index -->
-                                <% let subjectsSort=toc.subjects.sort((a, b)=> (a.index > b.index) ? 1 : -1) %>
+            <div class="row container-fluid" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
+                <div class="col-12 col-sm-3 col-xl-2 px-0 d-flex" style="margin-left: 0%;">
+                    <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-4" style="background-color: #4F709C;">
+                    <div>      
+                        <h5 class="sidebar-heading"> Overview</h5>
+                        <div>
+                                <!-- filter toc.subjects based on id in linkObject[0] and assign to subject -->
+                                <% let subject = toc.subjects.filter(subject => subject._id.equals(linkObject[0]._id)) %>
+                                
+                                <% let subjectsSort=subject %>
                                     <% for (let i=0; i< subjectsSort.length; i++) { %>
-                                        <li class="nav-item"><span>
-                                                <a href="/pola/<%=subjectsSort[i]._id%>" id="subject<%=i%>">
+                                        <span>
+                                                <a href="/pola/<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
                                                     <%= subjectsSort[i].title %>
                                                 </a>
                                             </span>
@@ -55,21 +130,36 @@
                                                         <span style="font-size: small;">🔴</span>
                                                 <% } %>
                                                 <% } %>
-                                            <a data-bs-toggle="collapse" href="#collapseList<%=i%>" role="button"
-                                                aria-expanded="false" aria-controls="collapseList<%=i%>">
-                                                [+]
-                                            </a></li>
+                                            <a data-bs-toggle="collapse" href="#collapseList<%=i%>" id="link_<%=i%>" role="button"
+                                                aria-expanded="false" aria-controls="collapseList<%=i%>" class="sidebar-text" style="text-decoration:none;">
+                                                [<span id="plus_minus_<%=i%>">+</span>]
+                                            </a>
+                                            <!-- script to set plus_minus_<%=i%> to + or  -->
+                                            <script>
+                                                 
+                                                 document.getElementById("link_<%=i%>").addEventListener("click", function() {
+                                                        if (document.getElementById("plus_minus_<%=i%>").innerHTML == "+") {
+                                                            document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
+                                                        } else {
+                                                            document.getElementById("plus_minus_<%=i%>").innerHTML = "+";
+                                                        }
+                                                    });
+
+
+
+                                            </script>
+
                                         <!-- filter parts with parent subjectsSort[i] -->
                                         <% let partsSort=toc.parts.filter((part)=>
                                             part.subject.equals(subjectsSort[i]._id))
                                             %>
                                             <% partsSort=partsSort.sort((a, b)=> (a.index > b.index) ? 1 : -1)
                                                 %>
-                                                <ol class="collapse" id="collapseList<%=i%>">
+                                                <ul class="collapse sidebar-text" id="collapseList<%=i%>">
                                                     <% for (let j=0; j< partsSort.length; j++) { %>
                                                         <li class="nav-item"><span>
                                                                 <a href="/pola/subject/<%=partsSort[j]._id%>"
-                                                                    id="part<%=i%>_<%=j%>">
+                                                                    id="part<%=i%>_<%=j%>" class="sidebar-text">
                                                                     <%= partsSort[j].title %>
                                                                 </a>
                                                             </span>
@@ -81,11 +171,22 @@
                                                                 <% } %>
                                                                 <% } %>
                                                             <a data-bs-toggle="collapse"
-                                                                href="#collapseList<%=i%>_<%=j%>" role="button"
+                                                                href="#collapseList<%=i%>_<%=j%>" id="link_<%=i%>_<%=j%>" role="button"
                                                                 aria-expanded="false"
-                                                                aria-controls="collapseList<%=i%>_<%=j%>">
-                                                                [+]
+                                                                aria-controls="collapseList<%=i%>_<%=j%>" class="sidebar-text" style="text-decoration: none;">
+                                                                [<span id="plus_minus_<%=i%>_<%=j%>">+</span>]
                                                             </a></li>
+                                                    <!-- script to set plus_minus_<%=i%>_<%=j%> to + or - -->
+                                                    <script>
+
+                                                        document.getElementById("link_<%=i%>_<%=j%>").addEventListener("click", function () {
+                                                            if (document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML == "+") {
+                                                                document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
+                                                            } else {
+                                                                document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "+";
+                                                            }
+                                                        });
+                                                    </script>
 
                                                         <% let chaptersSort=toc.chapters.filter((chapter)=>
                                                             chapter.part.equals(partsSort[j]._id))
@@ -93,11 +194,11 @@
                                                             <% chaptersSort=chaptersSort.sort((a, b)=> (a.index >
                                                                 b.index) ? 1 : -1)
                                                                 %>
-                                                                <ol class="collapse" id="collapseList<%=i%>_<%=j%>">
+                                                                <ul class="collapse sidebar-text" id="collapseList<%=i%>_<%=j%>">
                                                                     <% for (let k=0; k< chaptersSort.length; k++) { %>
                                                                         <li class="nav-item"><span>
                                                                                 <a href="/pola/subject/part/<%=chaptersSort[k]._id%>"
-                                                                                    id="chapter<%=i%>_<%=j%>_<%=k%>">
+                                                                                    id="chapter<%=i%>_<%=j%>_<%=k%>" class="sidebar-text">
                                                                                     <%= chaptersSort[k].title %>
                                                                                 </a>
                                                                             </span>
@@ -125,7 +226,7 @@
 
 
                                                                                         <% } %>
-                                                                </ol>
+                                                                </ul>
                                                                 <!-- first check if length of linkObject is greater than 1  -->
                                                                 <% if (linkObject.length>1) {%>
                                                                     <!-- create script to show collapseList<%=i%>_<%=j%> if _id matches the _id in linkObject[1]-->
@@ -135,29 +236,32 @@
                                                                             document.getElementById("collapseList<%=i%>_<%=j%>").classList.add("show");
                                                                             // also make part<%=j%> bold
                                                                             document.getElementById("part<%=i%>_<%=j%>").style.fontWeight = "bold";
+                                                                            // change plus_minus_<%=i%>_<%=j%> to -
+                                                                            document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
                                                                         </script>
                                                                         <% } %>
                                                                             <% } %>
 
                                                                                 <% } %>
-                                                </ol>
+                                                </ul>
                                                 <!-- create script to show collapseList<%=i%> if _id matches the _id in linkObject[0]-->
-                                                <% if (subjectsSort[i].equals(linkObject[0]._id)) { %>
+                                                <% if (subjectsSort[i]._id.equals(linkObject[0]._id)) { %>
                                                     <script>
                                                         document.getElementById("collapseList<%=i%>").classList.add("show");
                                                         // also make subject<%=i%> bold
                                                         document.getElementById("subject<%=i%>").style.fontWeight = "bold";
+                                                        // change plus_minus_<%=i%> to -
+                                                        document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
                                                     </script>
                                                     <% } %>
                                                         <% } %>
 
-                            </ol>
 
                         </div>
-
+                    </div>
                     </div>
                 </div>
-                <div class="col d-flex flex-column mb-4">
+                <div class="col d-flex flex-column mb-4 content-overflow" style="padding-left: 3rem;padding-right: 3rem; ">
                     <main>
                         <div class="col pt-4">
                             <%- include('../partials/flash') %>
