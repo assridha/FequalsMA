@@ -40,7 +40,7 @@ mongoose.set('strictQuery', true);
 //    .catch(err => console.error('Could not connect to MongoDB...'));
 
 const sessionConfig = {
-        secret: 'fequalsma',
+        secret: process.env.SECRET,
         resave: false,
         saveUninitialized: true,
         cookie: {
@@ -129,8 +129,8 @@ app.post('/template/edit', (req, res) => {
     res.send('it worked');
 });
 
-
-// listen on port 8080
-app.listen(8080, () => {
-    console.log('listening on port 8080');
+const port = process.env.PORT || 8080;
+// listen on port
+app.listen(port, () => {
+    console.log(`listening on port ${port}`);
 });
