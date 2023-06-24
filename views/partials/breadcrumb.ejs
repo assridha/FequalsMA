@@ -1,0 +1,12 @@
+<nav class="navbar" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+<!-- iterate through linkObject and display each item as breadcrumb list. Last item should be set to active -->
+<ol class="breadcrumb">
+<% for(let i=0; i< linkObject.length; i++ ) {%>
+    <% if (i==linkObject.length-1) { %>
+        <li class="breadcrumb-item active" aria-current="page"><%=linkObject[i].text%></li>
+    <% } else { %>
+        <li class="breadcrumb-item"><a href="<%=linkObject[i].link%>"><%=linkObject[i].text%></a></li>
+    <% } %>   
+<% } %>            
+</ol>
+</nav>
