@@ -56,7 +56,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionConfig));
 app.use(flash());
 app.use(methodOverride('_method'));
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json())
 
 // import all models
@@ -119,16 +119,7 @@ app.use('/references', referenceRoute);
 // //--------------------- USER ROUTES---------------------//
 app.use('/', userRoutes);
 
-// get route to /template
-app.get('/template', (req, res) => {
-    res.render('template');
-});
 
-// post route to /template/edit
-app.post('/template/edit', (req, res) => {
-    console.log(req.body);
-    res.send('it worked');
-});
 
 const port = process.env.PORT || 8080;
 // listen on port

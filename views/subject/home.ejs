@@ -1,9 +1,20 @@
-<% layout('layouts/boilerplate_for_template') %>
+<% layout('layouts/boilerplate_wo_sidebar') %>
+<%- include('../partials/banner') %>
 
-<h2>Courses 📚 </h2>
+<h2 class="apply-font-bold tertiary-color"> Starters</h2>
+<div class="container-fluid ms-1 mt-4">
+  <h4 class="apply-font tertiary-color"><a href="" style="color: inherit;">Vector Algebra Primer</a></h4>
+  <p>A refresher on basic vector algebra. </p>
+</div>
+<div class="container-fluid ms-1 mt-4">
+  <h4 class="apply-font tertiary-color"><a href="" style="color: inherit;">Calculus Primer</a></h4>
+  <p>A refresher on basic Calculus. </p>
+</div>
+<hr width="100%" class="mt-4">
+<h2 class="apply-font-bold tertiary-color">Mains</h2>
 <div class="container-fluid ms-1">
 <% for(k=0;k< courses.length;k++){%>
-<h3><%= courses[k].title %></h3>
+<h3 class="apply-font-bold tertiary-color"><%= courses[k].title %></h3>
 
 <% const subject_course = subjects.filter((subject) => subject.course.equals(courses[k]._id)); %>
 
@@ -26,7 +37,7 @@
                   <% } %>
             </div>
             
-            <h5 class="mt-2"><%= subject_course[i].title %>
+            <h5 class="mt-2 apply-font tertiary-color"><%= subject_course[i].title %>
               <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
               <% if (subject_course[i].published) { %>
                   <span style="font-size: medium;">🟢</span>
@@ -77,7 +88,8 @@
         </form>
         <% } %>
     </div>
-    <h2>Updates 📢 </h2>
+    <hr width="100%">
+    <h2 class="apply-font-bold tertiary-color">Soups </h2>
     <div class="container-fluid mb-4 mt-4">
       <a class="twitter-timeline" data-tweet-limit="3" data-width="800" href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw" data-chrome="noborders transparent noheader"></a>>Tweets by TwitterDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>    
     </div>
