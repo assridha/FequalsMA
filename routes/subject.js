@@ -3,6 +3,7 @@ const router = express.Router();
 const Subject = require('../models/subject');
 const Part = require('../models/part');
 const Course = require('../models/course');
+const Page = require('../models/page');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
 const { isLoggedIn, isAdmin } = require('../utils/middleware');
@@ -24,10 +25,20 @@ router.get('/', async (req, res) => {
 
     // get all courses
     const courses = await Course.find();
+    // get all blogs 
+    let blogs = await Page.find({ category: 'blog' });
+    // get all side pages
+    let sidePages = await Page.find({ category: 'side' });
+
+    // if user is not logged in and is not admin then filter out blogs and side pages which are not published
+    if (!req.user || !req.user === process.env.ADMIN_OID) {
+        blogs = blogs.filter(blog => blog.published === true);
+        sidePages = sidePages.filter(sidePage => sidePage.published === true);
+    }
 
     const linkObject = [];
     // render subject_home.ejs file with subjects variable
-    res.render('subject/home', { subjects, linkObject,courses });
+    res.render('subject/home', { subjects, linkObject,courses, blogs, sidePages });
 
 });
 
@@ -36,8 +47,11 @@ router.get('/about', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
+    // retrieve about page from database with title 'About'
+    const aboutPage = await Page.findOne({ title: 'About' });
+
     // render about.ejs file
-    res.render('home/about');
+    res.render('page/show', { page: aboutPage });
 });
 
 

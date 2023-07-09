@@ -22,7 +22,7 @@
         </div>
     </div>
     <hr>
-    <h1 style="display: inline-block;">
+    <h1 class="tertiary-color apply-font" style="display: inline-block;">
         <%= part.title %>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <span style="vertical-align:super;font-size: medium;"><a href="<%= part._id%>/edit"
@@ -33,7 +33,7 @@
                         style="text-decoration: none;font-size: medium;vertical-align: super;">🗑️</a>
                 </form>
                 <% if (part.published) { %>
-                    <span style="font-size: medium;vertical-align: super;">🟢</span>
+                        <span style="font-size: medium;vertical-align: super;">🟢</span>
                     <% } else { %>
                         <span style="font-size: medium;vertical-align: super;">🔴</span>
                 <% } %>

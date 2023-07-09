@@ -69,7 +69,7 @@
             <% let letters = 'abcdefghijklmnopqrstuvwxyz'; %>
         <!-- display form if type is "MCQ" -->
         <% if (chapter.exercises[i].type == "MCQ") { %>
-            <div class="card" style="background-color: #fdf1e2;">
+            <div class="card primary-bg-color">
                 <div class="card-body">
                     <p><%- chapter.exercises[i].question%></p>
         <!-- display all options in a radio selection -->
@@ -89,7 +89,7 @@
                       </button>
                       <span id="span_<%=i%>"></span>
                       <div class="collapse" id="collapseExample_<%=i%>">
-                        <div class="card-body" style="background-color: #fdf1e2;">
+                        <div class="card-body primary-bg-color">
                           <b>Solution Explanation:</b>
                           <p id="solution_explaination_<%=i%>">
                           </p>
@@ -142,7 +142,7 @@
         <% } %>
         <!-- condition to display form if type is "MAQ" (multiple answer question)-->
         <% if (chapter.exercises[i].type == "MAQ") { %>
-            <div class="card" style=" background-color: #fdf1e2;">
+            <div class="card primary-bg-color">
                 <div class="card-body">
                     <p><%- chapter.exercises[i].question%></p>
         <!-- display all options in a checkbox selection form -->
@@ -161,7 +161,7 @@
                 Explanation
               </button>
               <span id="span_<%=i%>"></span>
-              <div class="collapse" id="collapseExample_<%=i%>" style="background-color: #fdf1e2;">
+              <div class="collapse primary-bg-color" id="collapseExample_<%=i%>">
                 <div class="card-body">
                   <b>Solution Explanation:</b>
                   <p id="solution_explaination_<%=i%>">
@@ -223,11 +223,11 @@
         <% if (chapter.exercises[i].type == "Numeric") { %>
         <!-- display input form for numeric answer -->
         
-            <div class="card" style="background-color: #fdf1e2;">
+            <div class="card primary-bg-color" >
                 <div class="card-body">
                     <p><%- chapter.exercises[i].question%></p>
                     <div style="width: 15rem; display: inline-block;">
-                        <input name="answer<%=i%>" type="number" class="form-control" id="exampleFormControlInput_<%=i%>" placeholder="Enter your answer" style="background-color: #fdf1e2;">
+                        <input name="answer<%=i%>" type="number" class="form-control primary-bg-color" id="exampleFormControlInput_<%=i%>" placeholder="Enter your answer">
                     </div>
                     <div class="container-fluid mt-2"></div>
                     <button type="button" class="btn btn-dark" id="button<%=i%>">Check</button>
@@ -235,7 +235,7 @@
                         Explanation
                       </button>
                       <span id="span_<%=i%>"></span>
-                      <div class="collapse" id="collapseExample_<%=i%>" style="background-color: #fdf1e2;">
+                      <div class="collapse primary-bg-color" id="collapseExample_<%=i%>">
                         <div class="card-body">
                           <b>Solution Explanation:</b>
                           <p id="solution_explaination_<%=i%>">

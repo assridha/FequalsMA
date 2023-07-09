@@ -19,6 +19,7 @@ const chapterRoute = require('./routes/chapter');
 const sectionRoute = require('./routes/section');
 const referenceRoute = require('./routes/reference');
 const userRoutes = require('./routes/user');
+const pageRoutes = require('./routes/page');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -49,7 +50,16 @@ const sessionConfig = {
             expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
             maxAge: 1000 * 60 * 60 * 24 * 7
         }
+};
+
+//if production, set sameSite to none and secure to true and trust first proxy
+if(process.env.NODE_ENV === "production") {
+    sessionConfig.cookie.secure = true;
+    sessionConfig.cookie.sameSite = 'none';
+    app.set('trust proxy', 1);
 }
+
+
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -118,6 +128,8 @@ app.use('/pola/subject/part/chapter', sectionRoute);
 app.use('/references', referenceRoute);
 // //--------------------- USER ROUTES---------------------//
 app.use('/', userRoutes);
+// //--------------------- PAGE ROUTES---------------------//
+app.use('/', pageRoutes);
 
 
 

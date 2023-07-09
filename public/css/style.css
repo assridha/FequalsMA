@@ -124,7 +124,7 @@ body {
     font-size: 1rem;
     line-height: 1.5;
     color: #213555;
-    background-color: #fdf1e2;
+    background-color: #F5EFE7;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -175,6 +175,11 @@ width: 50%;
 
 figcaption{
     margin-top: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #4F709C;
 }
 
 @media (max-width: 786px) {

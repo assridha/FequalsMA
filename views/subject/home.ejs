@@ -1,16 +1,38 @@
 <% layout('layouts/boilerplate_wo_sidebar') %>
 <%- include('../partials/banner') %>
 
-<h2 class="apply-font-bold tertiary-color"> Starters</h2>
+<h2 class="apply-font-bold tertiary-color">Soup </h2>
+
+<!-- for loop to display all blogs -->
+<% for (let i=0; i < blogs.length; i++) { %>
 <div class="container-fluid ms-1 mt-4">
-  <h4 class="apply-font tertiary-color"><a href="" style="color: inherit;">Vector Algebra Primer</a></h4>
-  <p>A refresher on basic vector algebra. </p>
+  <h4 class="apply-font tertiary-color"><a href="/page/<%= blogs[i]._id %>" style="color: inherit;"><%= blogs[i].title %></a>
+    <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+      <% if (blogs[i].published) { %>
+          <span style="font-size: medium;">🟢</span>
+          <% } else { %>
+              <span style="font-size: medium;">🔴</span>
+      <% } %>
+      <% } %></h4>
+  <p><%= blogs[i].created.toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }) %></p>
+
 </div>
+<% } %>
+
+<% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
 <div class="container-fluid ms-1 mt-4">
-  <h4 class="apply-font tertiary-color"><a href="" style="color: inherit;">Calculus Primer</a></h4>
-  <p>A refresher on basic Calculus. </p>
+  <form action="/blog" method="POST">
+    <button type="submit" class="btn btn-primary btn-sm">New Soup</button>
+  </form>
 </div>
-<hr width="100%" class="mt-4">
+<% } %>
+
+ <div style="height: 20px;"> </div>
+
 <h2 class="apply-font-bold tertiary-color">Mains</h2>
 <div class="container-fluid ms-1">
 <% for(k=0;k< courses.length;k++){%>
@@ -88,8 +110,31 @@
         </form>
         <% } %>
     </div>
-    <hr width="100%">
-    <h2 class="apply-font-bold tertiary-color">Soups </h2>
-    <div class="container-fluid mb-4 mt-4">
-      <a class="twitter-timeline" data-tweet-limit="3" data-width="800" href="https://twitter.com/TwitterDev?ref_src=twsrc%5Etfw" data-chrome="noborders transparent noheader"></a>>Tweets by TwitterDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>    
-    </div>
+
+    <div style="height: 20px;"> </div>
+
+    <h2 class="apply-font-bold tertiary-color"> Sides</h2>
+    <!-- for loop to display all sidePages -->
+  <% for (let i=0; i < sidePages.length; i++) { %>
+  <div class="container-fluid ms-1 mt-4">
+    <h4 class="apply-font tertiary-color"><a href="/page/<%= sidePages[i]._id %>" style="color: inherit;"><%= sidePages[i].title %></a>
+      <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+        <% if (sidePages[i].published) { %>
+            <span style="font-size: medium;">🟢</span>
+            <% } else { %>
+                <span style="font-size: medium;">🔴</span>
+        <% } %>
+        <% } %></h4>
+    <p><%= sidePages[i].summary %></p>
+  </div>
+  <% } %>
+  
+  <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
+  <div class="container-fluid ms-1 mt-4">
+    <form action="/side" method="POST">
+      <button type="submit" class="btn btn-primary btn-sm">New side</button>
+    </form>
+  </div>
+  <% } %>
+  
+  <div style="height: 20px;"> </div>
