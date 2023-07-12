@@ -7,7 +7,7 @@
        Back to <%=linkObject[1].text%>
          </a>
          <% } else { %>
-        ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>/exercises"> Back to Exercises for Chapter <%=chapter.index%>:
+        ⬅️<a href="/subject/part/<%=previousChapter._id %>/exercises"> Back to Exercises for Chapter <%=chapter.index%>:
                 <%= previousChapter.title %></a>
         <% } %>
     </div>
@@ -16,7 +16,7 @@
                 <!-- span algin right -->
                 ➡️<span>
                     <!-- add link to first chapter link. Name it chapter 1. align right -->
-                    <a href="/pola/subject/part/<%=chapter._id %>/exercises"> Go to Exercises for Chapter <%=chapter.index+1%>:
+                    <a href="/subject/part/<%=chapter._id %>/exercises"> Go to Exercises for Chapter <%=chapter.index+1%>:
                             <%=chapter.title%> </a>
                 </span>
     </div>
@@ -26,15 +26,28 @@
        <%=chapter.title%>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <!-- anchor tag to edit chapter route -->
-                <a href="/pola/subject/part/<%=chapter._id%>/edit"
+                <a href="/subject/part/<%=chapter._id%>/edit"
                     style="text-decoration: none;font-size: medium; vertical-align: super;">✏️</a>
+                <button id="set_delete" style="font-size: 1rem;">Del</button>
                 <!-- form to delete chapter -->
-                <form style="display: inline-block;" action="/pola/subject/part/<%=chapter._id%>?_method=DELETE"
+                <form style="display: inline-block;" action="/subject/part/<%=chapter._id%>?_method=DELETE"
                     method="POST">
                     <!-- anchor tag to submit the form on click -->
-                    <a href="#" onclick="parentNode.submit(); return false;"
+                    <a href="#" id="delete_button" onclick="parentNode.submit(); return false;"
                         style="text-decoration: none;font-size: medium; vertical-align: super;">🗑️</a>
                 </form>
+                <script>
+                    const setDelete = document.getElementById("set_delete");
+                    const deleteButton = document.getElementById("delete_button");
+                    deleteButton.style.display = "none";
+                    setDelete.addEventListener("click", () => {
+                        if (deleteButton.style.display === "none") {
+                            deleteButton.style.display = "inline-block";
+                        } else {
+                            deleteButton.style.display = "none";
+                        }
+                    });
+                </script>
                 <% if (chapter.published) { %>
                     <span style="font-size: medium;vertical-align: super;">🟢</span>
                     <% } else { %>
@@ -55,11 +68,11 @@
                 <%= sections[i].title %>
                     <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                     <!-- anchor tag to edit section route -->
-                    <a href="/pola/subject/part/chapter/<%= sections[i]._id%>/edit"
+                    <a href="/subject/part/chapter/<%= sections[i]._id%>/edit"
                         style="text-decoration: none;vertical-align: super;font-size: medium;">✏️</a>
                     <!-- form to delete section -->
                     <form style="display: inline-block;"
-                        action="/pola/subject/part/chapter/<%= sections[i]._id%>?_method=DELETE" method="POST">
+                        action="/subject/part/chapter/<%= sections[i]._id%>?_method=DELETE" method="POST">
                         <!-- anchor tag that submits form on click -->
                         <a href="#" onclick="parentNode.submit(); return false;"
                             style="text-decoration: none;vertical-align: super;font-size: medium;">🗑️</a>
@@ -89,8 +102,8 @@
 
         <% } %>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-            <!-- form to create new section. create POST route to pola/subject/part/<chapter>/section -->
-            <form action="/pola/subject/part/<%=chapter._id%>/section" method="POST">
+            <!-- form to create new section. create POST route to /subject/part/<chapter>/section -->
+            <form action="/subject/part/<%=chapter._id%>/section" method="POST">
                 <div class="card mb-3" style="max-width: 540px;">
                     <div class="row g-0">
                         <div class="container">
@@ -138,7 +151,7 @@
                     Back to <%=linkObject[1].text%>
                      </a>
                      <% } else { %>
-                    ⬅️<a href="/pola/subject/part/<%=previousChapter._id %>/exercises"> Back to Exercises for Chapter <%=chapter.index%>:
+                    ⬅️<a href="/subject/part/<%=previousChapter._id %>/exercises"> Back to Exercises for Chapter <%=chapter.index%>:
                             <%= previousChapter.title %></a>
                     <% } %>
                 </div>
@@ -147,7 +160,7 @@
                             <!-- span algin right -->
                             ➡️<span>
                                 <!-- add link to first chapter link. Name it chapter 1. align right -->
-                                <a href="/pola/subject/part/<%=chapter._id %>/exercises"> Go to Exercises for Chapter <%=chapter.index+1%>:
+                                <a href="/subject/part/<%=chapter._id %>/exercises"> Go to Exercises for Chapter <%=chapter.index+1%>:
                                         <%=chapter.title%> </a>
                             </span>
                 </div>
@@ -175,7 +188,7 @@
         // get the id of the equation
         const id = eqnNums[i].getAttribute("id");
         // insert an anchor tag in equation with the id as href
-        eqnNums[i].innerHTML = `<a href="/pola/subject/part/<%=chapter._id%>#${id}" style="color:black;text-decoration:none;">(${i + 1})</a>`;
+        eqnNums[i].innerHTML = `<a href="/subject/part/<%=chapter._id%>#${id}" style="color:black;text-decoration:none;">(${i + 1})</a>`;
     }
 </script>
 
@@ -186,7 +199,7 @@
         // get the id of the figure
         const id = figNums[i].getAttribute("id");
         // insert an anchor tag in figure with the id as href
-        figNums[i].innerHTML = `<a href="/pola/subject/part/<%=chapter._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
+        figNums[i].innerHTML = `<a href="/subject/part/<%=chapter._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
     }
 </script>
 

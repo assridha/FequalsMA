@@ -32,7 +32,7 @@ router.post('/blog', isLoggedIn, isAdmin, async (req, res) => {
         const page = new Page({ title, content , summary, category, published });
         await page.save();
         req.flash('success', 'Page created');
-        res.redirect(`/pola`);
+        res.redirect(`/`);
     }
 );
 
@@ -47,7 +47,7 @@ router.post('/side', isLoggedIn, isAdmin, async (req, res) => {
             const page = new Page({ title, content , summary,category, published });
             await page.save();
             req.flash('success', 'Page created');
-            res.redirect(`/pola`);
+            res.redirect(`/`);
         }
 );
 
@@ -93,7 +93,7 @@ router.delete('/page/:id', isLoggedIn, isAdmin, async (req, res) => {
     }
     await page.delete();
     req.flash('success', 'Page deleted');
-    res.redirect(`/pola`);
+    res.redirect(`/`);
 }
 );
 

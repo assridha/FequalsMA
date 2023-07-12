@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
         .sort({ index: 1 });
 
     // if user is not logged in and is not admin then filter out subjects with status hide
-    if (!req.user || !req.user === process.env.ADMIN_OID) {
+    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
         subjects = subjects.filter(subject => subject.status !== 'hide');
     }
 
@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     let sidePages = await Page.find({ category: 'side' });
 
     // if user is not logged in and is not admin then filter out blogs and side pages which are not published
-    if (!req.user || !req.user === process.env.ADMIN_OID) {
+    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
         blogs = blogs.filter(blog => blog.published === true);
         sidePages = sidePages.filter(sidePage => sidePage.published === true);
     }
@@ -56,7 +56,7 @@ router.get('/about', async (req, res) => {
 
 
 // post route to add new subject
-router.post('/',isLoggedIn, isAdmin, async (req, res) => {
+router.post('/mains/',isLoggedIn, isAdmin, async (req, res) => {
 
     // get subjects
     const subjects = await Subject.find();
@@ -80,11 +80,11 @@ router.post('/',isLoggedIn, isAdmin, async (req, res) => {
     await newSubject.save();
 
     // redirect to home page
-    res.redirect('/pola');
+    res.redirect('/');
 });
 
 // get route to edit page of each subject
-router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
+router.get('/mains/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
@@ -107,7 +107,7 @@ router.get('/:id/edit',isLoggedIn, isAdmin, async (req, res) => {
 
 
 // post route to edit subject
-router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
+router.post('/mains/:id',isLoggedIn, isAdmin, async (req, res) => {
     const subjectID = req.params.id;
 
     // find subject document
@@ -135,11 +135,11 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     await subjectToSwap[0].save();
 
     // redirect to home page
-    res.redirect(`/pola/${subjectID}`);
+    res.redirect(`/mains/${subjectID}`);
 });
 
 // delete route to delete subject
-router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
+router.delete('/mains/:id',isLoggedIn, isAdmin, async (req, res) => {
     const subjectID = req.params.id;
 
     // query to find all part documents with reference to subjectID
@@ -164,12 +164,12 @@ router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
         await Subject.findByIdAndDelete(subjectID);
 
         // redirect to home page
-        res.redirect('/pola');
+        res.redirect('/');
     }
 });
 
 // get route to each subject page
-router.get('/:id', async (req, res) => {
+router.get('/mains/:id', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
     
@@ -181,7 +181,7 @@ router.get('/:id', async (req, res) => {
     let parts = await Part.find({ subject: subjectID })
 
     // if user is not logged in and is not admin then filter out parts with status hide
-    if (!req.user || !req.user === process.env.ADMIN_OID) {
+    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
         parts = parts.filter(part => part.status !== 'hide');
     }
 
@@ -211,7 +211,7 @@ router.post('/:id/part',isLoggedIn, isAdmin, async (req, res) => {
     await newPart.save();
 
     // redirect to subject page
-    res.redirect(`/pola/${subjectID}`);
+    res.redirect(`/mains/${subjectID}`);
 });
 
 module.exports = router;

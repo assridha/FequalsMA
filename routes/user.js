@@ -19,8 +19,8 @@ router.post('/register', async (req, res) => {
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {
             if (err) return next(err);
-            req.flash('success', 'Welcome to Pola!');
-            res.redirect('/pola');
+            req.flash('success', `Welcome to Vector Soup ${username}!`);
+            res.redirect('/');
         })
     } catch (e) {
         req.flash('error', e.message);
@@ -36,9 +36,9 @@ router.get('/login', (req, res) => {
 
 // post route to /login using passport.authenticate middleware
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login',keepSessionInfo: true }), (req, res) => {
-    req.flash('success', 'Welcome back!');
-    // redirect pola    
-    res.redirect(req.session.returnTo || '/pola');
+    req.flash('success', `Welcome back ${req.user.username}!`);
+    // redirect /    
+    res.redirect(req.session.returnTo || '/');
 });
 
 

@@ -48,7 +48,7 @@
             <div class="image-container">
                            
                 <% if (subject_course[i].published || (currentUser && currentUser._id.toString() == process.env.ADMIN_OID)) { %>
-                  <a href="/pola/<%= subject_course[i]._id %>">
+                  <a href="/mains/<%= subject_course[i]._id %>">
                     <img src="<%= subject_course[i].image %>" class="img-fluid allSides" alt="..." width="60%">
                   </a>
                 <% } else { %>
@@ -76,7 +76,7 @@
     <div class="container-fluid mt-4"></div>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
         <!-- copy the form to add new subject but style it as according to the current card style -->
-        <form action="/pola" method="POST">
+        <form action="/mains/" method="POST">
         <div class=" mb-3 card" style="max-width: 540px;background-color:#fdf1e2 ;">
             <div class="row g-0">
               <div class="col-md-4">

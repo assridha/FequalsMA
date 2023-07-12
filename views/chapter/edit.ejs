@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <!-- form to edit chapter and send it via post route -->
 
-    <form action="/pola/subject/part/<%=chapter._id%>" method="POST">
+    <form action="/subject/part/<%=chapter._id%>" method="POST">
 
         <div class="card mb-3" style="max-width: 840px;">
 
@@ -40,7 +40,7 @@
     <!-- Create a duplicate form same as below but using chapter.references array -->
 
         <h3>Added References</h3>
-        <form action="/pola/subject/part/<%=chapter._id%>/removeRef" method="POST">
+        <form action="/subject/part/<%=chapter._id%>/removeRef" method="POST">
             <table class="table table-striped">
                 <thead>
                  <tr>
@@ -71,7 +71,7 @@
 
     <!-- Create a checkbox form for each element in references array. Display each field of each references element along with the corresponding checkbox as a separate row in a table within the form. -->
         <h3>All References</h3>
-        <form action="/pola/subject/part/<%=chapter._id%>/addRef" method="POST">
+        <form action="/subject/part/<%=chapter._id%>/addRef" method="POST">
             <table class="table table-striped">
                     <thead>
                         <tr>

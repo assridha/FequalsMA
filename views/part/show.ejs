@@ -7,12 +7,12 @@
     <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
     <% if (chapters[0]) {%>
         <!-- add link to first chapter link. Name it chapter 1. align right -->
-        ➡️<a href="/pola/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
+        ➡️<a href="/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
         <% } else { %>
             <!-- check if user is logged in and is admin -->
             <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
+                <!-- form to create new chapter. create POST route to /subject/<part>/chapter -->
+                <form action="/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
                     <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
                     <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
                 </form>
@@ -27,11 +27,25 @@
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
                 <span style="vertical-align:super;font-size: medium;"><a href="<%= part._id%>/edit"
                         style="text-decoration: none;">✏️</a></span>
+                <button id="set_delete" style="font-size: 1rem;">Del</button>
                 <form style="display: inline-block;" action="<%=part._id%>?_method=DELETE" method="POST">
                     <!-- anchor tag to submit the form on click -->
                     <a href="#" onclick="parentNode.submit(); return false;"
-                        style="text-decoration: none;font-size: medium;vertical-align: super;">🗑️</a>
+                       id="delete_button" style="text-decoration: none;font-size: medium;vertical-align: super;">🗑️</a>
                 </form>
+                <!-- script to show hide delete_button when set_delete is clicked -->
+                <script>
+                    const setDelete = document.getElementById("set_delete");
+                    const deleteButton = document.getElementById("delete_button");
+                    deleteButton.style.display = "none";
+                    setDelete.addEventListener("click", () => {
+                        if (deleteButton.style.display === "none") {
+                            deleteButton.style.display = "inline-block";
+                        } else {
+                            deleteButton.style.display = "none";
+                        }
+                    });
+                </script>
                 <% if (part.published) { %>
                         <span style="font-size: medium;vertical-align: super;">🟢</span>
                     <% } else { %>
@@ -53,12 +67,12 @@
     <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
     <% if (chapters[0]) {%>
         <!-- add link to first chapter link. Name it chapter 1. align right -->
-        ➡️<a href="/pola/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
+        ➡️<a href="/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
         <% } else { %>
             <!-- check if user is logged in and is admin -->
             <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                <form action="/pola/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
+                <!-- form to create new chapter. create POST route to /subject/<part>/chapter -->
+                <form action="/subject/<%=part._id%>/chapter" method="POST" style="display: inline-block;">
                     <a href="#" onclick="parentNode.submit(); return false;" style="text-decoration: none;"> ➕</a>
                     <input name="title" type="text" id="exampleFormControlInput1" value="New Chapter">
                 </form>
@@ -74,7 +88,7 @@
         // get the id of the equation
         const id = eqnNums[i].getAttribute("id");
         // insert an anchor tag in equation with the id as href
-        eqnNums[i].innerHTML = `<a href="/pola/subject/<%=part._id%>#${id}" style="color:black;text-decoration:none;">(${i + 1})</a>`;
+        eqnNums[i].innerHTML = `<a href="/subject/<%=part._id%>#${id}" style="color:black;text-decoration:none;">(${i + 1})</a>`;
     }
 </script>
 
@@ -85,6 +99,6 @@
         // get the id of the figure
         const id = figNums[i].getAttribute("id");
         // insert an anchor tag in figure with the id as href
-        figNums[i].innerHTML = `<a href="/pola/subject/<%=part._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
+        figNums[i].innerHTML = `<a href="/subject/<%=part._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
     }
 </script>

@@ -182,6 +182,13 @@ h1, h2, h3, h4, h5, h6 {
     color: #4F709C;
 }
 
+.figure-default {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
 @media (max-width: 786px) {
     .main-title-left{
         font-size: 70px;
@@ -193,5 +200,8 @@ h1, h2, h3, h4, h5, h6 {
     }
     body {
         font-size: 0.8rem;
+    }
+    .figure-default {
+        width: 100%;
     }
 }

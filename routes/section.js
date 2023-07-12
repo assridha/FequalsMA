@@ -28,7 +28,7 @@ router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
     await Section.findByIdAndDelete(sectionID);
 
     // redirect to chapter page
-    res.redirect(`/pola/subject/part/${section.chapter}`);
+    res.redirect(`/subject/part/${section.chapter}`);
 });
 
 // post route to edit section
@@ -47,7 +47,7 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     await section.save();
 
     // redirect to chapter page
-    //res.redirect(`/pola/subject/part/chapter/${section._id}/edit`);
+    //res.redirect(`/subject/part/chapter/${section._id}/edit`);
     res.send(section);
 });
 
@@ -94,7 +94,7 @@ router.post('/:id/addEquation',isLoggedIn, isAdmin, async (req, res) => {
     await section.save();
 
     // redirect to edit page of section
-    res.redirect(`/pola/subject/part/chapter/${section._id}/edit`);
+    res.redirect(`/subject/part/chapter/${section._id}/edit`);
 });
 
 // post route to delete equation from section
@@ -118,7 +118,7 @@ router.post('/:sId/deleteEquation/:eID',isLoggedIn, isAdmin, async (req, res) =>
     await Equation.findByIdAndDelete(equationID);
 
     // redirect to edit page of section
-    res.redirect(`/pola/subject/part/chapter/${section._id}/edit`);
+    res.redirect(`/subject/part/chapter/${section._id}/edit`);
 });
 
 // post route to edit equation
@@ -137,7 +137,7 @@ router.post('/:sId/editEquation/:eID',isLoggedIn, isAdmin, async (req, res) => {
     await equation.save();
 
     // redirect to edit page of section
-    res.redirect(`/pola/subject/part/chapter/${sectionID}/edit`);
+    res.redirect(`/subject/part/chapter/${sectionID}/edit`);
 });
 
 module.exports = router;

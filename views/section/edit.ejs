@@ -33,7 +33,7 @@ support, autocompletion etc -->
                 <div id="editor" class="border" style="height: 500px;"></div>
                 <div style="padding-top: 20px;"></div>
                 <!-- Place the editor in a form and post the result to template/edit -->
-                    <button onclick="location.href='/pola/subject/part/<%=section.chapter%>'" type="button"
+                    <button onclick="location.href='/subject/part/<%=section.chapter%>'" type="button"
                         class="btn btn-secondary">
                         Go Back</button>
                     <button type="button" class="btn btn-primary" id="save-button">Save</button>
@@ -119,7 +119,7 @@ support, autocompletion etc -->
         <script>
             document.getElementById("add-image").addEventListener("click", function (e) {
                 e.preventDefault();
-                editor.insert('<figure class="text-center"><img src="https://picsum.photos/200/300" alt="random image" width="200">\n<figcaption class="fig-num" id="fig-label">Random image</figcaption></figure>');
+                editor.insert('<figure class="text-center"><img class="figure-default" src="https://picsum.photos/200/300" alt="random image">\n<figcaption class="fig-num" id="fig-label">Random image</figcaption></figure>');
             }); </script>
 
 <!-- script to add block latex equation tag at current cursor location in the editor when the button add-block-equation is clicked. Center the equation -->
@@ -152,7 +152,7 @@ support, autocompletion etc -->
        e.preventDefault();
        
 
-        fetch('/pola/subject/part/chapter/<%=section._id%>', {
+        fetch('/subject/part/chapter/<%=section._id%>', {
             method: 'POST',
             body: JSON.stringify({
                 title: document.querySelector('input[name="title" ]').value,

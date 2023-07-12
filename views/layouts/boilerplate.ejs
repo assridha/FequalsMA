@@ -19,8 +19,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
        <!--  add computer modern font-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.18/katex.min.css">
-    <!-- add furore font -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.18/contrib/furore.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
 
@@ -28,9 +26,9 @@
 <body class="d-flex">
     <%- include('../partials/navbar') %>
             <div class="row container-fluid" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
-                <div class="col-12 col-sm-3 col-xl-2 px-0 d-flex" style="margin-left: 0%;">
+                <div class="col-xl-3 px-0 d-flex" style="margin-left: 0%;">
                     <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-4" style="background-color: #4F709C;">
-                    <div>      
+                    <div class="mb-2 pb-2">      
                         <h5 class="sidebar-heading"> Overview</h5>
                         <div>
                                 <!-- filter toc.subjects based on id in linkObject[0] and assign to subject -->
@@ -39,7 +37,7 @@
                                 <% let subjectsSort=subject %>
                                     <% for (let i=0; i< subjectsSort.length; i++) { %>
                                         <span>
-                                                <a href="/pola/<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
+                                                <a href="/mains/<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
                                                     <%= subjectsSort[i].title %>
                                                 </a>
                                             </span>
@@ -78,7 +76,7 @@
                                                 <ul class="collapse sidebar-text" id="collapseList<%=i%>">
                                                     <% for (let j=0; j< partsSort.length; j++) { %>
                                                         <li class="nav-item"><span>
-                                                                <a href="/pola/subject/<%=partsSort[j]._id%>"
+                                                                <a href="/subject/<%=partsSort[j]._id%>"
                                                                     id="part<%=i%>_<%=j%>" class="sidebar-text">
                                                                     <%= partsSort[j].title %>
                                                                 </a>
@@ -117,7 +115,7 @@
                                                                 <ul class="collapse sidebar-text" id="collapseList<%=i%>_<%=j%>">
                                                                     <% for (let k=0; k< chaptersSort.length; k++) { %>
                                                                         <li class="nav-item"><span>
-                                                                                <a href="/pola/subject/part/<%=chaptersSort[k]._id%>"
+                                                                                <a href="/subject/part/<%=chaptersSort[k]._id%>"
                                                                                     id="chapter<%=i%>_<%=j%>_<%=k%>" class="sidebar-text">
                                                                                     <%= chaptersSort[k].title %>
                                                                                 </a>

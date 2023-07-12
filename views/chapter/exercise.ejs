@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-9" style="padding-left: 0;margin-left: 0;">
             <!-- add link back to part, align left -->
-            ⬅️<a href="/pola/subject/part/<%=chapter._id %>"> Back to Chapter <%=chapter.index+1%>:
+            ⬅️<a href="/subject/part/<%=chapter._id %>"> Back to Chapter <%=chapter.index+1%>:
                 <%= chapter.title %></a>
         
     </div>
@@ -12,14 +12,14 @@
                 <!-- span algin right -->
                 ➡️<span>
                     <!-- add link to first chapter link. Name it chapter 1. align right -->
-                    <a href="/pola/subject/part/<%=nextChapter._id %>">Go to Chapter <%=chapter.index+2%>:
+                    <a href="/subject/part/<%=nextChapter._id %>">Go to Chapter <%=chapter.index+2%>:
                             <%=nextChapter.title%> </a>
                 </span>
                 <% } else {%>
                     <!-- if user is logged in and is admin -->
                     <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                    <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                    <form action="/pola/subject/<%=chapter.part%>/chapter" method="POST"
+                    <!-- form to create new chapter. create POST route to /subject/<part>/chapter -->
+                    <form action="/subject/<%=chapter.part%>/chapter" method="POST"
                         style="display: inline-block;">
                         <a href="#" onclick="parentNode.submit(); return false;"> ➕</a>
                         <input name="title" type="text" value="New Chapter">
@@ -41,11 +41,11 @@
         <div class="container-fluid mt-4">
             <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
             <!-- anchor tag to edit exercise route -->
-            <a href="/pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/editExercise"
+            <a href="/subject/part/chapter/<%= chapter.exercises[i]._id%>/editExercise"
                 style="text-decoration: none;vertical-align: super;font-size: medium;">✏️</a>
             <!-- form to delete exercise -->
             <form style="display: inline-block;"
-                action="/pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/deleteExercise?_method=DELETE" method="POST">
+                action="/subject/part/chapter/<%= chapter.exercises[i]._id%>/deleteExercise?_method=DELETE" method="POST">
                 <!-- anchor tag that submits form on click -->
                 <a href="#" onclick="parentNode.submit(); return false;"
                     style="text-decoration: none;vertical-align: super;font-size: medium;">🗑️</a>
@@ -62,7 +62,7 @@
         <!-- display figure in exercises -->
         <% if (chapter.exercises[i].figure) { %>
             <figure class="text-center">
-            <img src="<%= chapter.exercises[i].figure %>" class="img-fluid" alt="..." width="200">
+            <img class="figure-default" src="<%= chapter.exercises[i].figure %>" class="img-fluid" alt="...">
             </figure>
         <% } %>
         <div class="container-fluid">
@@ -107,9 +107,9 @@
                     // console.log("<%=chapter.exercises[i].answer%>");
                     // console.log(answer == "<%=chapter.exercises[i].answer%>");
 
-                    // get correct answer by sending answer via post request to the /pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route
+                    // get correct answer by sending answer via post request to the /subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer", true);
+                    xhr.open("POST", "/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer", true);
                     xhr.setRequestHeader('Content-Type', 'application/json');
                     xhr.send(JSON.stringify({answer: answer}));
 
@@ -171,7 +171,7 @@
             </div>
             </div>
               
-        <!-- script to retrive all the checked answers upon button click. answers should be arranged in a array and post to /pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer. Get response if answer was correct -->
+        <!-- script to retrive all the checked answers upon button click. answers should be arranged in a array and post to /subject/part/chapter/<%= chapter.exercises[i]._id%>/answer. Get response if answer was correct -->
         <script>
             document.getElementById("button<%=i%>").addEventListener("click", function() {
                 let answer = document.querySelectorAll('input[name="answer<%=i%>"]:checked');
@@ -183,9 +183,9 @@
                 // console.log("<%=chapter.exercises[i].answer%>");
                 // console.log(answerArray == "<%=chapter.exercises[i].answer%>");
 
-                // get correct answer by sending answer via post request to the /pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route
+                // get correct answer by sending answer via post request to the /subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer", true);
+                xhr.open("POST", "/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer", true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send(JSON.stringify({answer: answerArray}));
 
@@ -226,7 +226,7 @@
             <div class="card primary-bg-color" >
                 <div class="card-body">
                     <p><%- chapter.exercises[i].question%></p>
-                    <div style="width: 15rem; display: inline-block;">
+                    <div style=" display: inline-block;">
                         <input name="answer<%=i%>" type="number" class="form-control primary-bg-color" id="exampleFormControlInput_<%=i%>" placeholder="Enter your answer">
                     </div>
                     <div class="container-fluid mt-2"></div>
@@ -246,14 +246,14 @@
             </div>
             
         
-        <!--script to obtain numeric answer upon button submission and post it to /pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route and check if answer is correct  -->
+        <!--script to obtain numeric answer upon button submission and post it to /subject/part/chapter/<%= chapter.exercises[i]._id%>/answer route and check if answer is correct  -->
         <script>
             document.getElementById("button<%=i%>").addEventListener("click", function() {
                 let answer = document.querySelector('input[name="answer<%=i%>"]').value;
                 // console.log(answer == "<%=chapter.exercises[i].answer%>");
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/pola/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer", true);
+                xhr.open("POST", "/subject/part/chapter/<%= chapter.exercises[i]._id%>/answer", true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send(JSON.stringify({answer: answer}));
 
@@ -291,8 +291,8 @@
         <br>
         <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
              <h2 id="addExerciseTitle">Add new exercise</h2>
-                <!-- form to create new exercise. create POST route to pola/subject/part/<chapter>/exercise -->
-                 <form action="/pola/subject/part/<%=chapter._id%>/exercises" method="POST">
+                <!-- form to create new exercise. create POST route to /subject/part/<chapter>/exercise -->
+                 <form action="/subject/part/<%=chapter._id%>/exercises" method="POST">
                   <div class="card mb-3" style="max-width: 540px;">
                        <div class="row g-0">
                          <div class="container">
@@ -319,7 +319,7 @@
         <div class="row">
             <div class="col-md-9" style="padding-left: 0;margin-left: 0;">
                     <!-- add link back to part, align left -->
-                    ⬅️<a href="/pola/subject/part/<%=chapter._id %>">Back to Chapter <%=chapter.index+1%>:
+                    ⬅️<a href="/subject/part/<%=chapter._id %>">Back to Chapter <%=chapter.index+1%>:
                          <%= chapter.title %></a>
                 
             </div>
@@ -328,14 +328,14 @@
                         <!-- span algin right -->
                         ➡️<span>
                             <!-- add link to first chapter link. Name it chapter 1. align right -->
-                            <a href="/pola/subject/part/<%=nextChapter._id %>"> Go to Chapter <%=chapter.index+2%>:
+                            <a href="/subject/part/<%=nextChapter._id %>"> Go to Chapter <%=chapter.index+2%>:
                                     <%=nextChapter.title%> </a>
                         </span>
                         <% } else {%>
                             <!-- if user is logged in and is admin -->
                             <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                            <!-- form to create new chapter. create POST route to pola/subject/<part>/chapter -->
-                            <form action="/pola/subject/<%=chapter.part%>/chapter" method="POST"
+                            <!-- form to create new chapter. create POST route to /subject/<part>/chapter -->
+                            <form action="/subject/<%=chapter.part%>/chapter" method="POST"
                                 style="display: inline-block;">
                                 <a href="#" onclick="parentNode.submit(); return false;"> ➕</a>
                                 <input name="title" type="text" value="New Chapter">

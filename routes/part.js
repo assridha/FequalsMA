@@ -67,7 +67,6 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     await part.save();
 
     // redirect to part page
-    //res.redirect(`/pola/subject/${part._id}/edit`);
     res.send(part);
 });
 
@@ -100,7 +99,7 @@ router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
         await Part.findByIdAndDelete(partID);
 
         // redirect to subject page
-        res.redirect(`/pola/${part.subject}`);
+        res.redirect(`/mains/${part.subject}`);
     }
 });
 
@@ -126,10 +125,10 @@ router.post('/:id/chapter',isLoggedIn, isAdmin, async (req, res) => {
 
     // redirect to part page or last chapter page if part has chapters
     if (chapters.length > 0) {
-        res.redirect(`/pola/subject/part/${chapters[chapters.length - 1]._id}/exercises`);
+        res.redirect(`/subject/part/${chapters[chapters.length - 1]._id}/exercises`);
     }
     else {
-        res.redirect(`/pola/subject/${partID}`);
+        res.redirect(`/subject/${partID}`);
     }
 });
 

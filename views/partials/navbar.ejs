@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark quaternary-bg-color" style="padding-top: 0;">
     <div class="container-fluid" >
         <div>
-        <a class="navbar-brand" href="/pola" style="font-size: larger;"><span class="apply-font secondary-color">vectorsoup.com</span></a>
+        <a class="navbar-brand" href="/" style="font-size: larger;"><span class="apply-font secondary-color">vectorsoup.com</span></a>
         </div>
         <!-- display about page -->
             <div class="navbar-nav ml-auto">
                 <div class="row">
                     <div class="col">
-                    <a href="/pola/about" class="nav-link">About</a>
+                    <a href="/about" class="nav-link">About</a>
                     </div>
         <!-- display login only if currentUser doesnt exist and if node enviroment is not production -->
             <% if(!currentUser && process.env.NODE_ENV !== 'production') { %>

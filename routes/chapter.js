@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
     let sections = await Section.find({ chapter: chapterID}).populate('equations');
 
     // if not logged in and not admin, filter out sections with published false
-    if (!req.user || !req.user === process.env.ADMIN_OID) {
+    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
         sections = sections.filter(section => section.published);
     }
 
@@ -95,7 +95,7 @@ router.delete('/:id',isLoggedIn, isAdmin, async (req, res) => {
         await Chapter.findByIdAndDelete(chapterID);
 
         // redirect to part page
-        res.redirect(`/pola/subject/${part._id}`);
+        res.redirect(`/subject/${part._id}`);
     }
 });
 
@@ -122,7 +122,7 @@ router.post('/:id/section', isLoggedIn,isAdmin, async (req, res) => {
     await newSection.save();
 
     // redirect to chapter page
-    res.redirect(`/pola/subject/part/${chapter._id}`);
+    res.redirect(`/subject/part/${chapter._id}`);
 });
 
 // post route to add reference to chapter from addRef post route in chapter/edit.ejs
@@ -146,7 +146,7 @@ router.post('/:id/addRef',isLoggedIn, isAdmin, async (req, res) => {
     await chapter.save();
 
     // redirect to chapter edit page
-    res.redirect(`/pola/subject/part/${chapter._id}/edit`);
+    res.redirect(`/subject/part/${chapter._id}/edit`);
 });
 
 // post route to remove reference to chapter from removeRef post route in chapter/edit.ejs
@@ -166,7 +166,7 @@ router.post('/:id/removeRef',isLoggedIn, isAdmin, async (req, res) => {
     await chapter.save();
 
     // redirect to chapter edit page
-    res.redirect(`/pola/subject/part/${chapter._id}/edit`);
+    res.redirect(`/subject/part/${chapter._id}/edit`);
 });
 
 // get route to /exercises page
@@ -220,7 +220,7 @@ router.post('/:id/exercises',isLoggedIn, isAdmin, async (req, res) => {
     await chapter.save();
 
     // redirect to chapter exercises page
-    res.redirect(`/pola/subject/part/${chapter._id}/exercises/#addExerciseTitle`);
+    res.redirect(`/subject/part/${chapter._id}/exercises/#addExerciseTitle`);
 });
 
 // get route to edit exercise page (chapter/exercise_edit.ejs)
@@ -266,7 +266,7 @@ router.post('/chapter/:exerciseID/editExercise',isLoggedIn, isAdmin, async (req,
     await exercise.save();
 
     // redirect to chapter exercises page
-    res.redirect(`/pola/subject/part/${chapter._id}/exercises`);
+    res.redirect(`/subject/part/${chapter._id}/exercises`);
 });
 
 // delete route to delete exercise
@@ -289,7 +289,7 @@ router.delete('/chapter/:exerciseID/deleteExercise',isLoggedIn, isAdmin, async (
     await Exercise.findByIdAndDelete(exerciseID);
 
     // redirect to chapter exercises page
-    res.redirect(`/pola/subject/part/${chapter._id}/exercises`);
+    res.redirect(`/subject/part/${chapter._id}/exercises`);
 });
 
 // post route to <exerciseID>/answer 
