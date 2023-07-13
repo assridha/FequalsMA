@@ -23,6 +23,14 @@ support, autocompletion etc -->
                         <% } %>
                         <label class="form-check-label" for="publishCheck">Publish Status</label>
                     </div>
+                    <div class="form-check form-switch">
+                        <% if(part.status==='show') { %>
+                        <input class="form-check-input" name="status" type="checkbox" role="switch" id="statusCheck" checked>
+                        <% } else { %>
+                        <input class="form-check-input" name="status" type="checkbox" role="switch" id="statusCheck">
+                        <% } %>
+                        <label class="form-check-label" for="statusCheck">View Status</label>
+                    </div>
 
                 <h5 class="card-title">
                     <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
@@ -160,7 +168,8 @@ support, autocompletion etc -->
                 body: editor.getValue(),
                 // get the value of the summary text area
                 summary: document.querySelector('textarea[name="summary" ]').value,
-                published: document.querySelector('input[name="published" ]').checked
+                published: document.querySelector('input[name="published" ]').checked,
+                status: document.querySelector('input[name="status" ]').checked
             }),
             headers: {
                 'Content-Type': 'application/json'

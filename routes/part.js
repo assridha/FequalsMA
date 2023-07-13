@@ -62,6 +62,11 @@ router.post('/:id',isLoggedIn, isAdmin, async (req, res) => {
     part.summary = req.body.summary;
     part.body = req.body.body;
     part.published = req.body.published;
+    if (req.body.status){
+        part.status = 'show';
+    }else{
+        part.status = 'hide';
+    }
 
     // save updated part document
     await part.save();
