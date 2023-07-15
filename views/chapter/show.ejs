@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 <!-- add link back to part, align left -->
 <div class="row container-fluid">
-    <div class="col-md-9" style="padding-left: 0;margin-left: 0;">
+    <div class="col-md-6" style="padding-left: 0;margin-left: 0;">
     <% if (chapter.index==0) { %>
          ⬅️<a href="<%=linkObject[1].link%>">
        Back to <%=linkObject[1].text%>
@@ -11,7 +11,7 @@
                 <%= previousChapter.title %></a>
         <% } %>
     </div>
-    <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+    <div class="col-md-6 navLinkRight" style="padding-left: 0;margin-left: 0;">
             
                 <!-- span algin right -->
                 ➡️<span>
@@ -145,7 +145,7 @@
 
             <hr>
             <div class="row container-fluid">
-                <div class="col-md-9" style="padding-left: 0;margin-left: 0;">
+                <div class="col-md-6" style="padding-left: 0;margin-left: 0;">
                 <% if (chapter.index==0) { %>
                      ⬅️<a href="<%=linkObject[1].link%>">
                     Back to <%=linkObject[1].text%>
@@ -155,7 +155,7 @@
                             <%= previousChapter.title %></a>
                     <% } %>
                 </div>
-                <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+                <div class="col-md-6 navLinkRight" style="padding-left: 0;margin-left: 0;">
                         
                             <!-- span algin right -->
                             ➡️<span>

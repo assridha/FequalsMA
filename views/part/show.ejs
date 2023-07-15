@@ -1,13 +1,13 @@
 <% layout('layouts/boilerplate') %>
     <div class="row container-fluid" style="margin-left: 0; padding-left: 0;">
-        <div class="col-md-9" style="padding-left: 0;">⬅️<a href="<%=linkObject[0].link%>">
+        <div class="col-md-6" style="padding-left: 0;">⬅️<a href="<%=linkObject[0].link%>">
         Back to <%=linkObject[0].text%>
     </a></div>
     <!--<div class="col"></div>-->
-    <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+    <div class="col-md-6 navLinkRight" style="padding-left: 0;margin-left: 0;">
     <% if (chapters[0]) {%>
         <!-- add link to first chapter link. Name it chapter 1. align right -->
-        ➡️<a href="/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
+        ➡️<a href="/subject/part/<%=chapters[0]._id%>"> Go to Chapter 1: <%=chapters[0].title%> </a>
         <% } else { %>
             <!-- check if user is logged in and is admin -->
             <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
@@ -60,14 +60,14 @@
 
     <hr>
     <div class="row container-fluid" style="margin-left: 0; padding-left: 0;">
-        <div class="col-md-9" style="padding-left: 0;">⬅️<a href="<%=linkObject[0].link%>">
+        <div class="col-md-6" style="padding-left: 0;">⬅️<a href="<%=linkObject[0].link%>">
         Back to <%=linkObject[0].text%>
     </a></div>
     <!--<div class="col"></div>-->
-    <div class="col-md-3" style="padding-left: 0;margin-left: 0;">
+    <div class="col-md-6 navLinkRight" style="padding-left: 0;margin-left: 0;">
     <% if (chapters[0]) {%>
         <!-- add link to first chapter link. Name it chapter 1. align right -->
-        ➡️<a href="/subject/part/<%=chapters[0]._id%>"> Chapter 1: <%=chapters[0].title%> </a>
+        ➡️<a href="/subject/part/<%=chapters[0]._id%>">Go to Chapter 1: <%=chapters[0].title%> </a>
         <% } else { %>
             <!-- check if user is logged in and is admin -->
             <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
