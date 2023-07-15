@@ -55,7 +55,17 @@
     </h1>
 
     <p>
-        <%- part.body %>
+        <% let bodyText = part.body %>
+            
+            <!-- check if bodyText is null -->
+            <% if (bodyText) { %>
+
+            <!-- find all substrings '@' and replace it with '\' -->
+            <% bodyText = bodyText.replace(/@/g, '\\') %>
+            
+            <!-- display the body -->
+            <%- bodyText %>
+            <% } %>
     </p>
 
     <hr>
@@ -101,4 +111,17 @@
         // insert an anchor tag in figure with the id as href
         figNums[i].innerHTML = `<a href="/subject/<%=part._id%>#${id}" style="color:black;">Figure ${i + 1}</a>: `+figNums[i].innerHTML;
     }
+</script>
+
+<!-- Add mathjax to render latex equations -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- initialize mathjax -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
 </script>
