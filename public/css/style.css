@@ -162,8 +162,9 @@ width: 50%;
     background-color:#D8C4B6;
      box-shadow: 5px 10px;
      width:90%;
-     margin:2%;
-     padding: 2%;
+     margin-top:30px;
+     margin-bottom:30px;
+     padding: 30px;
      border-radius: 5px;
 }
 .equation{
