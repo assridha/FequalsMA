@@ -7,38 +7,57 @@ const Page = require('../models/page');
 const { getIndex } = require('../utils/getIndex');
 const { getLinkObject } = require('../utils/getLinkObject');
 const { isLoggedIn, isAdmin } = require('../utils/middleware');
-const course = require('../models/course');
+const Category = require('../models/category');
+const Module = require('../models/module');
 
 // get route on home page
+//router.get('/', async (req, res) => {
+
+//    req.session.returnTo = req.originalUrl;
+
+//    // get all subject documents and sort by index
+//    let subjects = await Subject.find()
+//        .sort({ index: 1 });
+
+//    // if user is not logged in and is not admin then filter out subjects with status hide
+//    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
+//        subjects = subjects.filter(subject => subject.status !== 'hide');
+//    }
+
+//    // get all courses
+//    const courses = await Course.find();
+//    // get all blogs 
+//    let blogs = await Page.find({ category: 'blog' });
+//    // get all side pages
+//    let sidePages = await Page.find({ category: 'side' });
+
+//    // if user is not logged in and is not admin then filter out blogs and side pages which are not published
+//    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
+//        blogs = blogs.filter(blog => blog.published === true);
+//        sidePages = sidePages.filter(sidePage => sidePage.published === true);
+//    }
+
+//    const linkObject = [];
+//    // render subject_home.ejs file with subjects variable
+//    res.render('subject/home2', { subjects, linkObject,courses, blogs, sidePages });
+
+//});
+
 router.get('/', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
-    // get all subject documents and sort by index
-    let subjects = await Subject.find()
-        .sort({ index: 1 });
+    // get the category with title 'Mains'
+    const mainsCategory = await Category.findOne({ title: 'Mains' });
+    // find all child categories of mainsCategory
+    const categories = await Category.find({ parent: mainsCategory._id });
 
-    // if user is not logged in and is not admin then filter out subjects with status hide
-    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
-        subjects = subjects.filter(subject => subject.status !== 'hide');
-    }
-
-    // get all courses
-    const courses = await Course.find();
-    // get all blogs 
-    let blogs = await Page.find({ category: 'blog' });
-    // get all side pages
-    let sidePages = await Page.find({ category: 'side' });
-
-    // if user is not logged in and is not admin then filter out blogs and side pages which are not published
-    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
-        blogs = blogs.filter(blog => blog.published === true);
-        sidePages = sidePages.filter(sidePage => sidePage.published === true);
-    }
+    // get all modules with whose category is in categories array and whose metaData.generation is 0 and sort by index
+    let subjects = await Module.find({ category: { $in: categories }, 'metaData.generation': 0 }).sort({ index: 1 });
 
     const linkObject = [];
     // render subject_home.ejs file with subjects variable
-    res.render('subject/home', { subjects, linkObject,courses, blogs, sidePages });
+    res.render('subject/home2', { subjects, linkObject,categories });
 
 });
 

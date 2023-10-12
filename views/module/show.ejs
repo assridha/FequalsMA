@@ -1,0 +1,74 @@
+<% layout('layouts/boilerplate_wo_sidebar') %>
+<div id="editorjs"></div>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-nested-checklist@latest"></script>
+<!-- import paragraph -->
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<link rel="stylesheet" href="/css/editorjs.css">
+
+
+
+<script type="module">
+    import HorizontalRule from '/es-modules/HorizontalRule.js';
+    import Numeric from '/es-modules/Numeric.js';
+    import {MCQ, MAQ} from '/es-modules/MCTemplate.js';
+    import Equation from '/es-modules/Equation.js';
+    import SimpleImage from '/es-modules/SimpleImage.js';
+    import ExParagraph from '/es-modules/ExParagraph.js';
+    
+    import renderEquation from '/es-modules/renderEquation.js';
+
+    window.MathJax = MathJax;
+    window.cmodule = {};
+    window.cmodule.renderMathBlock = renderEquation;
+    window.cmodule.renderMathInline = renderEquation;
+   
+    // check window.location.search for id
+    var moduleID = window.location.search.split('=')[1];
+
+    // get module data via GET request
+    var moduleData = {};
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `/module/data/${moduleID}`, true);
+    xhr.onload = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var moduleData = xhr.responseText;
+            moduleData = JSON.parse(moduleData);
+            const title = {id: 'title', type: 'header', data: { text: moduleData.title, level: 1}};
+            //push title to moduleData.body at index 0
+            moduleData.body.blocks.unshift(title);
+
+            var editor = new EditorJS({
+                holder: 'editorjs',
+                readOnly: true,
+                data:  moduleData.body,
+                tools: {
+                    paragraph: ExParagraph,
+                    header: Header,
+                    checklist:  editorjsNestedChecklist,
+                    mcq: MCQ,
+                    maq: MAQ,
+                    numeric: Numeric,
+                    equation: Equation,
+                    image: SimpleImage,
+                    hrule: HorizontalRule          
+                 }
+                });
+            } else {
+                console.error(xhr.statusText);
+        }
+        
+    };
+    xhr.onerror = function () {
+        console.error(xhr.statusText);
+    };
+    xhr.send(null);
+
+</script>
+

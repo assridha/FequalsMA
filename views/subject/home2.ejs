@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate_wo_sidebar') %>
+<%- include('../partials/banner') %>
+
+
+
+<h2 class="apply-font-bold tertiary-color">Mains</h2>
+<div class="container-fluid ms-1">
+<% for(k=0;k< categories.length;k++){%>
+<h3 class="apply-font-bold tertiary-color"><%= categories[k].title %></h3>
+
+<% const subject_category = subjects.filter((subject) => subject.category.equals(categories[k]._id)); %>
+<% console.log(subject_category) %>
+    
+      <div class="container-fluid mt-4"></div>
+      <div class="row row-cols-1 row-cols-md-5 g-4">
+        <% for (let i=0; i < subject_category.length; i++) { %>
+          <div class="col" style="text-align: center;">
+            <div class="image-container">
+                           
+            
+                  <a href="/module?id=<%= subject_category[i]._id %>">
+                    <img src="<%= subject_category[i].metaData.thumbnail %>" class="img-fluid allSides" alt="..." width="60%">
+                  </a>
+               
+            </div>
+            
+            <h5 class="mt-2 apply-font tertiary-color"><%= subject_category[i].title %></h5>
+          </div>
+          
+
+      <% } %>
+    </div>
+    <%}%>
+</div>
+<% include('../partials/footer') %>

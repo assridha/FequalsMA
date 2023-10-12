@@ -11,10 +11,6 @@ const app = express();
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
-const joi = require('joi');
-const ExpressError = require('./utils/ExpressError');
-const catchAsync = require('./utils/catchAsync');
-const fs = require('fs');
 const bodyParser = require('body-parser');
 const subjectRoute = require('./routes/subject');
 const partRoute = require('./routes/part');
@@ -23,6 +19,7 @@ const sectionRoute = require('./routes/section');
 const referenceRoute = require('./routes/reference');
 const userRoutes = require('./routes/user');
 const pageRoutes = require('./routes/page');
+const moduleRoutes = require('./routes/module');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -127,6 +124,9 @@ app.use('/subject/part/chapter', sectionRoute);
 
 // Reference routes
 app.use('/references', referenceRoute);
+
+// Module routes
+app.use('/module', moduleRoutes);
 
 // User routes
 app.use('/', userRoutes);
