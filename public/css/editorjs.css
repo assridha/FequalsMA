@@ -19,6 +19,22 @@ input{
         max-width: 1000px;
     }*/
 
+.codex-editor__redactor{
+
+  padding-bottom: 20px !important;
+
+}
+
+.subheader-anchor{
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.2;
+}
+
+.subheader-anchor:hover{
+  opacity: 1;
+}
+
 .cdx-marker {
     background: rgba(245,235,111,0.29);
     padding: 3px 0;

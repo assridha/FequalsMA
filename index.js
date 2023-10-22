@@ -69,6 +69,8 @@ const Subject = require('./models/subject');
 const Part = require('./models/part');
 const Chapter = require('./models/chapter');
 const Reference = require('./models/reference');
+const Module = require('./models/module');
+const Category = require('./models/category');
 
 // Configure Passport authentication
 app.use(passport.initialize());
@@ -87,16 +89,21 @@ app.use((req, res, next) => {
 
 // Send TOC (Table of Contents) array to all routes
 app.use(async (req, res, next) => {
-    let subjects = await Subject.find({}, 'title index published');
-    let parts = await Part.find({}, 'title subject index published');
-    let chapters = await Chapter.find({}, 'title part index published');
+
+    let mainCategory = await Category.findOne({ title: 'Mains' });
+    let courseCategories = await Category.find({ parent: mainCategory._id });
+    let courseModules = await Module.find({ category: { $in: courseCategories } }, 'title index parent metaData');
+
+    let subjects = courseModules.filter(module => module.metaData.generation === 0).sort((a, b) => a.index - b.index);
+    let parts = courseModules.filter(module => module.metaData.generation === 1).sort((a, b) => a.index - b.index);
+    let chapters = courseModules.filter(module => module.metaData.generation === 2).sort((a, b) => a.index - b.index);
 
     // If user is not logged in or not an admin, filter out unpublished subjects, parts, and chapters
-    if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
-        subjects = subjects.filter(subject => subject.published);
-        parts = parts.filter(part => part.published);
-        chapters = chapters.filter(chapter => chapter.published);
-    }
+    //if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
+    //    subjects = subjects.filter(subject => subject.metaData.published);
+    //    parts = parts.filter(part => part.metaData.published);
+    //    chapters = chapters.filter(chapter => chapter.metaData.published);
+    //}
 
     const toc = { subjects, parts, chapters };
     res.locals.toc = toc;

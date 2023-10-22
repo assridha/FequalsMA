@@ -1,7 +1,11 @@
 export default class Equation {
-  constructor({ data }) {
+  constructor({ data, block, readOnly }) {
     this.data = data
     this._previewState = data.previewState !== undefined ? data.previewState : false
+    this._blockAPI = block
+    if (readOnly) {
+      this._previewState = true
+    }
     this._element = document.createElement('div')
     this._element.className = 'equation-block block-edit-mode'
     this._form = document.createElement('div')
@@ -30,15 +34,45 @@ export default class Equation {
     this._form.appendChild(inputEquationWrapper)
 
     // output field -------------------------------
-    this._outputElement = document.createElement('div')
-    this._outputElement.className = 'equation-output'
+    const outputWrapper = document.createElement('div')
+    outputWrapper.style.display = 'flex'
+    outputWrapper.style.justifyContent = 'space-between'
+
+    this._outputEquation = document.createElement('div')
+    this._outputEquation.className = 'equation-output'
+    this._outputEquation.style.flexGrow = '1'
+
+    this._outputName = document.createElement('div')
+    this._outputName.style.width = '100px'
+    this._outputName.style.fontSize = '0.9rem'
+    this._outputName.style.overflow = 'hidden'
+    this._outputName.style.textOverflow = 'ellipsis'
+
+    this._outputNameText = document.createElement('span')
+    this._anchor = document.createElement('a')
+    this._anchor.innerHTML = '⚓'
+    this._anchor.style.fontSize = '0.9rem'
+    this._anchor.style.marginLeft = '0.5rem'
+    this._anchor.style.cursor = 'pointer'
+    this._anchor.href = `#${this._blockAPI.id}`
+    this._anchor.style.textDecoration = 'none'
+    this._anchor.style.color = 'inherit'
+    this._outputName.appendChild(this._outputNameText)
+    this._outputName.appendChild(this._anchor)
+
+    outputWrapper.appendChild(this._outputEquation)
+    outputWrapper.appendChild(this._outputName)
 
     //combine form and output into element
     this._element.appendChild(this._form)
-    this._element.appendChild(this._outputElement)
+    this._element.appendChild(outputWrapper)
 
     this._inputEquation.addEventListener('input', () => {
       this._renderEquation()
+    })
+
+    this._inputName.addEventListener('input', () => {
+      this._outputNameText.innerText = this._inputName.value
     })
 
     // Set preview state
@@ -90,22 +124,13 @@ export default class Equation {
   _renderInput() {
     this._inputEquation.value = this.data.equation
     this._inputName.value = this.data.name
+    this._outputNameText.innerText = this.data.name
   }
 
   async _renderEquation() {
     this.data = { equation: this._inputEquation.value }
-    // this._outputElement.innerHTML = '$$'.concat(this.data.equation.concat('$$'))
-
-    // try {
-    //   await window.MathJax.typesetPromise([this._outputElement], {
-    //     output: 'svg'
-    //   })
-    // } catch (error) {
-    //   console.error('Error rendering equation:', error)
-    // }
-
     const mathOutput = await window.cmodule.renderMathBlock(this.data.equation)
-    this._outputElement.innerHTML = mathOutput
+    this._outputEquation.innerHTML = mathOutput
   }
 
   static get toolbox() {

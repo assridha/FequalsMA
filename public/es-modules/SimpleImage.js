@@ -1,8 +1,8 @@
 export default class SimpleImage {
-  constructor({ data, readOnly }) {
+  constructor({ data, readOnly, block }) {
     this._data = {}
     this._block = this._buildBlock()
-
+    this._blockAPI = block
     if (readOnly) {
       this._block.form.style.display = 'none'
     }
@@ -34,12 +34,14 @@ export default class SimpleImage {
       figureCaption: document.createElement('figcaption'),
       titleSpan: document.createElement('span'),
       captionSpan: document.createElement('span'),
+      anchor: document.createElement('a'),
       slideContainer: document.createElement('div'),
       slider: document.createElement('input')
     }
 
     block.slideContainer.className = 'slide-container'
     block.img.style.width = '50%'
+
     block.slider.type = 'range'
     block.slider.min = '0'
     block.slider.max = '100'
@@ -53,8 +55,13 @@ export default class SimpleImage {
     block.titleWrapper.className = 'input-wrapper'
     block.form.className = 'form-input'
 
+    block.anchor.innerHTML = '⚓'
+    block.anchor.style.textDecoration = 'none'
+    block.anchor.style.color = 'inherit'
+
     block.figureCaption.appendChild(block.titleSpan)
     block.figureCaption.appendChild(block.captionSpan)
+    block.figureCaption.appendChild(block.anchor)
     block.figure.appendChild(block.img)
     block.figure.appendChild(block.figureCaption)
     block.slideContainer.appendChild(block.slider)
@@ -70,6 +77,9 @@ export default class SimpleImage {
 
     block.element.appendChild(block.form)
     block.element.appendChild(block.figure)
+
+    // hide titlespan
+    block.titleSpan.style.display = 'none'
 
     // Add event listener to urlInput
     block.urlInput.addEventListener('paste', function (event) {
@@ -118,6 +128,7 @@ export default class SimpleImage {
     this._data = data
 
     this._block.img.src = data.url || ''
+    this._block.anchor.href = `#${this._blockAPI.id || ''}`
     this._block.slideContainer.style.display = data.previewState ? 'none' : 'block'
     this._block.urlWrapper.style.display = data.previewState ? 'none' : 'block'
     this._block.titleWrapper.style.display = data.previewState ? 'none' : 'block'

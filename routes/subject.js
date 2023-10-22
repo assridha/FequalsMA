@@ -47,17 +47,29 @@ router.get('/', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
+    // Mains ----------------------------------------
     // get the category with title 'Mains'
     const mainsCategory = await Category.findOne({ title: 'Mains' });
     // find all child categories of mainsCategory
     const categories = await Category.find({ parent: mainsCategory._id });
-
     // get all modules with whose category is in categories array and whose metaData.generation is 0 and sort by index
     let subjects = await Module.find({ category: { $in: categories }, 'metaData.generation': 0 }).sort({ index: 1 });
 
+    // Soup ----------------------------------------
+    // get the category with title 'Soup'
+    const soupCategory = await Category.findOne({ title: 'Soup' });
+    // get all modules with category soupCategory and sort by index
+    let soups = await Module.find({ category: soupCategory }).sort({ index: 1 });
+
+    // Sides ----------------------------------------
+    // get the category with title 'Sides'
+    const sidesCategory = await Category.findOne({ title: 'Sides' });
+    // get all modules with category sidesCategory and sort by index
+    let sides = await Module.find({ category: sidesCategory }).sort({ index: 1 });
+
     const linkObject = [];
     // render subject_home.ejs file with subjects variable
-    res.render('subject/home2', { subjects, linkObject,categories });
+    res.render('subject/home2', { subjects, linkObject,categories, soups,sides });
 
 });
 

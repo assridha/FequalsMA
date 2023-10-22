@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Soup</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="icon" href="https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2117644&authkey=%21AEr4oAly99ucw_Q&width=814&height=622" >
+        <!-- Set body font to Spectral. Import necessary stylesheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spectral:400,400i,700,700i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,400i,700,700i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+       <!--  add computer modern font-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.18/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+
+</head>
+<body class="d-flex">
+    <%- include('../partials/navbar') %>
+            <div class="row container-fluid" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
+                <div class="col-xl-2 px-0 d-flex" style="margin-left: 0%;">
+                    <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-4" style="background-color: #4F709C;">
+                    <div class="mb-2 pb-2">      
+                        <h5 class="sidebar-heading"> Overview</h5>
+                        <div id="sidebar-handler">
+                                <% let linkObject = [moduleID]
+                               
+                                let part = toc.parts.filter(part => part._id.equals(moduleID))
+                                if (part.length > 0) {
+                                    linkObject.push(part[0].parent)
+                                } else {
+                                    let chapter = toc.chapters.filter(chapter => chapter._id.equals(moduleID))
+                                    if (chapter.length > 0) {
+                                        linkObject.push(chapter[0].parent)
+                                        let part = toc.parts.filter(part => part._id.equals(chapter[0].parent))
+                                        if (part.length > 0) {
+                                            linkObject.push(part[0].parent)
+                                        }
+                                    }
+                                }
+                                linkObject.reverse()
+                                %>
+                                
+                                <% let subjectsSort = toc.subjects.filter(subject => subject._id.equals(linkObject[0])) %>
+                                <% for (let i=0; i< subjectsSort.length; i++) { %>
+                                    <span>
+                                        <a href="/module?id=<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
+                                            <%= subjectsSort[i].title %>
+                                        </a>
+                                    </span>
+                                    <a data-bs-toggle="collapse" href="#collapseList<%=i%>" id="link_<%=i%>" role="button"
+                                        aria-expanded="false" aria-controls="collapseList<%=i%>" class="sidebar-text" style="text-decoration:none;">
+                                        [<span id="plus_minus_<%=i%>">+</span>]
+                                    </a>
+                                    <script>
+                                        document.getElementById("link_<%=i%>").addEventListener("click", function() {
+                                            document.getElementById("plus_minus_<%=i%>").innerHTML = document.getElementById("plus_minus_<%=i%>").innerHTML == "+" ? "-" : "+";
+                                        });
+                                    </script>
+                                    <% let partsSort = toc.parts.filter((part) => part.parent.equals(subjectsSort[i]._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
+                                    <ul class="collapse sidebar-text" id="collapseList<%=i%>">
+                                        <% for (let j=0; j< partsSort.length; j++) { %>
+                                            <li class="nav-item"><span>
+                                                <a href="/module?id=<%=partsSort[j]._id%>" id="part<%=i%>_<%=j%>" class="sidebar-text">
+                                                    <%= partsSort[j].title %>
+                                                </a>
+                                            </span>
+                                            <a data-bs-toggle="collapse" href="#collapseList<%=i%>_<%=j%>" id="link_<%=i%>_<%=j%>" role="button"
+                                                aria-expanded="false" aria-controls="collapseList<%=i%>_<%=j%>" class="sidebar-text" style="text-decoration: none;">
+                                                [<span id="plus_minus_<%=i%>_<%=j%>">+</span>]
+                                            </a></li>
+                                            <script>
+                                                document.getElementById("link_<%=i%>_<%=j%>").addEventListener("click", function () {
+                                                    document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML == "+" ? "-" : "+";
+                                                });
+                                            </script>
+                                            <% let chaptersSort = toc.chapters.filter((chapter) => chapter.parent.equals(partsSort[j]._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
+                                            <ul class="collapse sidebar-text" id="collapseList<%=i%>_<%=j%>">
+                                                <% for (let k=0; k< chaptersSort.length; k++) { %>
+                                                    <li class="nav-item"><span>
+                                                        <a href="/module?id=<%=chaptersSort[k]._id%>" id="chapter<%=i%>_<%=j%>_<%=k%>" class="sidebar-text">
+                                                            <%= chaptersSort[k].title %>
+                                                        </a>
+                                                    </span>
+                                                    </li>
+                                                    <% if (linkObject.length>2 && chaptersSort[k]._id.equals(linkObject[2])) {%>
+                                                        <script>
+                                                            document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").style.fontWeight = "bold";
+                                                        </script>
+                                                    <% } %>
+                                                <% } %>
+                                            </ul>
+                                            <% if (linkObject.length>1 && partsSort[j]._id.equals(linkObject[1])) { %>
+                                                <script>
+                                                    document.getElementById("collapseList<%=i%>_<%=j%>").classList.add("show");
+                                                    document.getElementById("part<%=i%>_<%=j%>").style.fontWeight = "bold";
+                                                    document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
+                                                </script>
+                                            <% } %>
+                                        <% } %>
+                                    </ul>
+                                    <% if (subjectsSort[i]._id.equals(linkObject[0])) { %>
+                                        <script>
+                                            document.getElementById("collapseList<%=i%>").classList.add("show");
+                                            document.getElementById("subject<%=i%>").style.fontWeight = "bold";
+                                            document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
+                                        </script>
+                                    <% } %>
+                                <% } %>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col d-flex flex-column mb-4 content-overflow" style="padding-left: 3rem;padding-right: 3rem; ">
+                    <main>
+                        <div class="col pt-4">
+                            <%- include('../partials/flash') %>
+                            <%- body %>
+                        </div>
+                    </main>
+
+                </div>
+            </div>
+            
+        <%- include('../partials/footer') %>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+   
+</body>
+
+
+</html>

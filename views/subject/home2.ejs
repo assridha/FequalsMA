@@ -2,14 +2,25 @@
 <%- include('../partials/banner') %>
 
 
+<!----------------------------------Soup--------------------------------------->
 
+<h2 class="apply-font-bold tertiary-color">Soup</h2>
+<!-- for loop to display all soups -->
+<% for (let i=0; i < soups.length; i++) { %>
+  <div class="container-fluid ms-1 mt-4">
+    <h4 class="apply-font tertiary-color"><a href="/module?id=<%= soups[i]._id %>" style="color: inherit;"><%= soups[i].title %></a></h4>
+    <p>20 July, 2023</p>
+  </div>
+  <% } %>
+
+<!----------------------------------Mains---------------------------------------->
+<div style="height: 20px;"> </div>
 <h2 class="apply-font-bold tertiary-color">Mains</h2>
 <div class="container-fluid ms-1">
 <% for(k=0;k< categories.length;k++){%>
 <h3 class="apply-font-bold tertiary-color"><%= categories[k].title %></h3>
 
 <% const subject_category = subjects.filter((subject) => subject.category.equals(categories[k]._id)); %>
-<% console.log(subject_category) %>
     
       <div class="container-fluid mt-4"></div>
       <div class="row row-cols-1 row-cols-md-5 g-4">
@@ -32,4 +43,17 @@
     </div>
     <%}%>
 </div>
+
+<!------------------------Sides------------------------------------------------------------>
+<div style="height: 20px;"> </div>
+<h2 class="apply-font-bold tertiary-color">Sides</h2>
+<% for (let i=0; i < sides.length; i++) { %>
+  <div class="container-fluid ms-1 mt-4">
+    <h4 class="apply-font tertiary-color"><a href="/module?id=<%= sides[i]._id %>" style="color: inherit;"><%= sides[i].title %></a></h4>
+    <p><%= sides[i].metaData.summary %></p>
+  </div>
+  <% } %>
+
+<!-----------------------Footers------------------------------------------------------------>
+
 <% include('../partials/footer') %>
