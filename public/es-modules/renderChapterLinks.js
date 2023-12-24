@@ -21,10 +21,15 @@ if (nextModule) {
 }
 
     console.log('links rendered');
-    const linkDiv = document.getElementById('links-top');
-    linkDiv.appendChild(row);
+    const linksDivTop = document.getElementById('links-top');
+    const linksDivBottom = document.getElementById('links-bottom');
+    linksDivTop.appendChild(row);
+    
     let hr = document.createElement('hr');
-    linkDiv.appendChild(hr);
+    linksDivTop.appendChild(hr);
+
+    linksDivBottom.appendChild(hr.cloneNode(true));
+    linksDivBottom.appendChild(row.cloneNode(true));
 
 }
 
