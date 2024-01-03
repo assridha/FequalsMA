@@ -55,9 +55,10 @@ export default class SimpleImage {
     block.titleWrapper.className = 'input-wrapper'
     block.form.className = 'form-input'
 
-    block.anchor.innerHTML = '⚓'
+    block.anchor.innerHTML = ' 🔗'
     block.anchor.style.textDecoration = 'none'
     block.anchor.style.color = 'inherit'
+    block.anchor.className = 'subheader-anchor'
 
     block.figureCaption.appendChild(block.titleSpan)
     block.figureCaption.appendChild(block.captionSpan)

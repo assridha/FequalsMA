@@ -1,0 +1,60 @@
+<% layout('layouts/boilerplate') %>
+<%- include('../partials/banner') %>
+<div class="container-fluid">
+<a href="your-link-here" style="text-decoration: none; color: inherit;">
+  <div class="article-summary">
+    <div class="article-content">
+      <h5 class="apply-font-bold article-title">Article Title long title blah blah blah asdasd asd </h5>
+      <small class="apply-font">Aug-03 &middot; User Name</small>
+      <p class="apply-font desktop-only" style="margin-top: 0.5rem;">Article summary...</p>
+    </div>
+    <div class="article-thumbnail">
+      <img src="https://getuikit.com/v2/docs/images/placeholder_600x400.svg" alt="Article Thumbnail" style="object-fit: cover;">
+    </div>
+  </div>
+</a>
+
+<hr style="margin-bottom: 40px;margin-top: 40px;">
+
+<a href="your-link-here" style="text-decoration: none; color: inherit;">
+<div class="article-summary">
+  <div class="article-content">
+    <h5 class="apply-font-bold article-title">Article Title long title blah blah blah asdasd asd </h5>
+    <small class="apply-font">Aug-03 &middot; User Name</small>
+    <p class="apply-font desktop-only" style="margin-top: 0.5rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in</p>
+  </div>
+  <div class="article-thumbnail">
+    <img src="https://getuikit.com/v2/docs/images/placeholder_600x400.svg" alt="Article Thumbnail" style="object-fit: cover;">
+  </div>
+</div>
+</a>
+<hr style="margin-bottom: 40px;margin-top: 40px;">
+</div>
+
+<style>
+  .article-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the top */
+  }
+  .article-thumbnail img {
+    width: 150px;
+    height: 150px;
+    margin-left: 20px;
+  }
+  .desktop-only {
+    display: none;
+  }
+  @media screen and (min-width: 601px) {
+    .desktop-only {
+      display: block;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .article-thumbnail img {
+      width: 100px;
+      height: 100px;
+      margin-left: 15px;
+    }
+  }
+</style>

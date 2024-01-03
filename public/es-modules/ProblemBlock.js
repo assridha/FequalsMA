@@ -24,7 +24,7 @@ class ProblemBlock {
     if (this._data.previewState) {
       this._buildPreviewElement()
     } else {
-      //this._buildEditElement()
+      this._buildEditElement()
     }
   }
 
@@ -34,10 +34,26 @@ class ProblemBlock {
 
   _buildPreviewElement() {
     const subEditors = []
+    const header = document.createElement('h5')
+    if (this._data.submodules.length === 1) {
+      header.innerText = 'Practice Problem'
+    } else {
+      header.innerText = 'Practice Problems'
+    }
+    header.style.marginBottom = '1rem'
+    header.style.marginTop = '1rem'
+    header.style.fontWeight = 'bold'
+
+    this._element.appendChild(header)
     this._data.submodules.forEach(async (submodule, index) => {
-      const subHeader = document.createElement('h4')
+      const subHeader = document.createElement('h5')
       subHeader.style.marginTop = '1rem'
-      subHeader.innerText = 'Problem: ' + submodule.title
+      subHeader.innerText = `#${index + 1}: ` + submodule.title
+      // make subHeader bold
+      subHeader.style.fontWeight = 'bold'
+
+      const line = document.createElement('hr')
+
       const subeditorElement = document.createElement('div')
       subeditorElement.setAttribute('id', submodule._id)
       // set subeditorElement z-index to 0 so that it doesn't block the editorjs toolbar
@@ -65,6 +81,9 @@ class ProblemBlock {
       })
       this._element.appendChild(subHeader)
       this._element.appendChild(subeditorElement)
+      if (index !== this._data.submodules.length - 1) {
+        this._element.appendChild(line)
+      }
     })
   }
 

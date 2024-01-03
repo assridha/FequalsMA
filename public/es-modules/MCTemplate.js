@@ -32,6 +32,9 @@ class MCTemplate {
       this._data.previewState = true
     }
 
+    this._tickSpans = []
+    this._optionElements = []
+
     this._block = this._buildBlock()
     this._renderOptions(this._block.input.value)
     this._setState()
@@ -77,6 +80,7 @@ class MCTemplate {
 
     block.element = document.createElement('div')
     block.element.className = 'container-fluid'
+    block.element.style.padding = '0px'
 
     // create a form
     const form = document.createElement('form')
@@ -191,6 +195,7 @@ class MCTemplate {
       this._initializeSubEditor(this._data.solutionBlockData, this._data.previewState)
       if (this._block.solutionBlock.style.display === 'none') {
         this._block.solutionBlock.style.display = 'block'
+        this._applyTickMarks()
       } else {
         this._block.solutionBlock.style.display = 'none'
       }
@@ -225,6 +230,22 @@ class MCTemplate {
     return block
   }
 
+  _applyTickMarks() {
+    // find the indices of the correct options in the answer array by extracting the number from answer[i] after 'option '
+    const correctOptionIndices = []
+    for (let i = 0; i < this._data.answer.length; i++) {
+      const optionIndex = parseInt(this._data.answer[i].replace('option ', ''))
+      correctOptionIndices.push(optionIndex)
+    }
+    console.log(correctOptionIndices)
+    // insert tick marks for correct options and toggle class "correct-option" for correct option elements
+    for (let i = 0; i < correctOptionIndices.length; i++) {
+      const optionIndex = correctOptionIndices[i]
+      this._tickSpans[optionIndex].innerText = '✔'
+      this._optionElements[optionIndex].classList.add('correct-option')
+    }
+  }
+
   _renderOptions(inputValue) {
     // remove existing option div including event listeners
     const options = this._block.options
@@ -236,20 +257,48 @@ class MCTemplate {
     // create option elements
     for (let i = 0; i < optionValues.length; i++) {
       const option = document.createElement('div')
-      option.className = 'form-check form-check-inline col-md-5 py-2'
+      option.className = 'form-check form-check-inline col-sm-5 py-2'
+      option.style.display = 'flex'
+      option.style.alignItems = 'center'
+      option.style.justifyContent = 'space-between'
+      option.style.margin = '0px'
+      option.style.borderRadius = '5px'
+
+      const optionInputAndLabel = document.createElement('div')
+      optionInputAndLabel.style.display = 'flex'
+      optionInputAndLabel.style.alignItems = 'center'
+      optionInputAndLabel.style.marginLeft = '1rem'
+
       const optionInput = document.createElement('input')
       optionInput.type = `${this._queryText}`
-      optionInput.style.width = '25px'
-      optionInput.style.height = '25px'
+      optionInput.style.flexGrow = '0' 
+      optionInput.style.flexShrink = '0'
+      optionInput.style.flexBasis = '25px'
+      optionInput.style.height = '25px' 
       optionInput.style.border = '1px solid black'
       optionInput.name = `option ${i}`
       optionInput.className = 'form-check-input vetical-center'
       const optionLabel = document.createElement('label')
       optionLabel.style.margin = '2px 10px'
+      optionLabel.style.overflowWrap = 'break-word'
+      optionLabel.style.flexGrow = '1'
       optionLabel.className = 'form-check-label'
       optionLabel.innerText = optionValues[i]
-      option.appendChild(optionInput)
-      option.appendChild(optionLabel)
+
+      optionInputAndLabel.appendChild(optionInput)
+      optionInputAndLabel.appendChild(optionLabel)
+
+      // span for the tick mark
+      const tickMark = document.createElement('span')
+      tickMark.style.color = 'darkgreen'
+      tickMark.style.marginLeft = '10px'
+
+      this._tickSpans.push(tickMark)
+
+      option.appendChild(optionInputAndLabel)
+      option.appendChild(tickMark)
+
+      this._optionElements.push(option)
       options.appendChild(option)
     }
 
@@ -372,13 +421,23 @@ class MCTemplate {
 
   async _renderEquation() {
     // Find all substrings within paragraph with $[text]$ format and replace with <span data-equation="[text]">$[text]$</span>. Note that [text] can contain '\' characters.
-    const regex = /\$([^$]+)\$/g
+    const regexInline = /\$([^$]+)\$/g
+    const regexBlock = /\$\$([^$]+)\$\$/g
     // find all labels within options
     const allLabels = this._block.options.querySelectorAll('label')
     // modify the innerHTML of each label
     for (let i = 0; i < allLabels.length; i++) {
+      // replace all $$[text]$$ with <span data-equation="[text]">$$[text]$$</span>
       allLabels[i].innerHTML = allLabels[i].innerHTML.replace(
-        regex,
+        regexBlock,
+        '<span>&#8203;</span><span class="block-equation" contenteditable="false" data-equation="$1">$$ $1 $$</span><span>&#8203;</span>'.replace(
+          /\\/g,
+          '\\\\'
+        )
+      )
+      // replace all $[text]$ with <span data-equation="[text]">$[text]$</span>
+      allLabels[i].innerHTML = allLabels[i].innerHTML.replace(
+        regexInline,
         '<span>&#8203;</span><span class="inline-equation" contenteditable="false" data-equation="$1">$ $1 $</span><span>&#8203;</span>'.replace(
           /\\/g,
           '\\\\'
@@ -386,10 +445,18 @@ class MCTemplate {
       )
 
       //--------------------
+      // find all spans with class "block-equation" and replace innerHTML with the "test text"
+      const equationsBlock = allLabels[i].querySelectorAll('.block-equation')
+      for (let i = 0; i < equationsBlock.length; i++) {
+        const equation = equationsBlock[i]
+        const equationText = equation.getAttribute('data-equation')
+        const equationRendered = await window.cmodule.renderMathBlock(equationText)
+        equation.innerHTML = equationRendered
+      }
       // find all spans with class "inline-equation" and replace innerHTML with the "test text"
-      const equations = allLabels[i].querySelectorAll('.inline-equation')
-      for (let i = 0; i < equations.length; i++) {
-        const equation = equations[i]
+      const equationsInline = allLabels[i].querySelectorAll('.inline-equation')
+      for (let i = 0; i < equationsInline.length; i++) {
+        const equation = equationsInline[i]
         const equationText = equation.getAttribute('data-equation')
         const equationRendered = await window.cmodule.renderMathInline(equationText)
         equation.innerHTML = equationRendered

@@ -12,14 +12,10 @@ const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
-const subjectRoute = require('./routes/subject');
-const partRoute = require('./routes/part');
-const chapterRoute = require('./routes/chapter');
-const sectionRoute = require('./routes/section');
-const referenceRoute = require('./routes/reference');
 const userRoutes = require('./routes/user');
-const pageRoutes = require('./routes/page');
+const mainRoutes = require('./routes/main');
 const moduleRoutes = require('./routes/module');
+const practiceRoutes = require('./routes/practice');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -65,9 +61,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 // Import models
-const Subject = require('./models/subject');
-const Part = require('./models/part');
-const Chapter = require('./models/chapter');
 const Reference = require('./models/reference');
 const Module = require('./models/module');
 const Category = require('./models/category');
@@ -98,39 +91,12 @@ app.use(async (req, res, next) => {
     let parts = courseModules.filter(module => module.metaData.generation === 1).sort((a, b) => a.index - b.index);
     let chapters = courseModules.filter(module => module.metaData.generation === 2).sort((a, b) => a.index - b.index);
 
-    // If user is not logged in or not an admin, filter out unpublished subjects, parts, and chapters
-    //if (!req.user || !(req.user._id.toString() === process.env.ADMIN_OID)) {
-    //    subjects = subjects.filter(subject => subject.metaData.published);
-    //    parts = parts.filter(part => part.metaData.published);
-    //    chapters = chapters.filter(chapter => chapter.metaData.published);
-    //}
-
     const toc = { subjects, parts, chapters };
     res.locals.toc = toc;
     next();
 });
 
-// Send reference array to all routes
-app.use(async (req, res, next) => {
-    const references = await Reference.find({}, 'title authors url');
-    res.locals.references = references;
-    next();
-});
 
-// Subject routes
-app.use('/', subjectRoute);
-
-// Part routes
-app.use('/subject', partRoute);
-
-// Chapter routes
-app.use('/subject/part', chapterRoute);
-
-// Section routes
-app.use('/subject/part/chapter', sectionRoute);
-
-// Reference routes
-app.use('/references', referenceRoute);
 
 // Module routes
 app.use('/module', moduleRoutes);
@@ -138,8 +104,11 @@ app.use('/module', moduleRoutes);
 // User routes
 app.use('/', userRoutes);
 
-// Page routes
-app.use('/', pageRoutes);
+// Main routes
+app.use('/', mainRoutes);
+
+// Practice routes
+app.use('/practice', practiceRoutes);
 
 // Start the server
 const port = process.env.PORT || 8080;

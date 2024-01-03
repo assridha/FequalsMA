@@ -1,0 +1,117 @@
+<% layout('layouts/boilerplate') %>
+<%- include('../partials/banner') %>
+
+<div class="alert mb-4 secondary-bg-color" role="alert" style="border: 1px solid black;">
+  <b>Note:</b> The option to customize the exercise selection will be added in the future. For now the user can load a random exercise from all modules.
+</div>
+
+
+<div class="container-fluid" style="border: 1px solid black; border-radius: 5px;padding-left: 2rem;padding-right: 2rem;">
+ <div class="row justify-content-center mb-4 mt-4">
+    <div class="col-auto">
+        <button class="btn btn-success" id="random-exercise" onclick="window.location.href='?id=<%=nextModule%>'">Random Exercise</button>
+    </div>
+</div>
+<hr style="margin-bottom: 0;">
+   
+
+  <div id="editorjs"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-nested-checklist@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <script type="module">
+
+    import HorizontalRule from '/es-modules/HorizontalRule.js';
+    import Numeric from '/es-modules/Numeric.js';
+    import {MCQ, MAQ} from '/es-modules/MCTemplate.js';
+    import Equation from '/es-modules/Equation.js';
+    import SimpleImage from '/es-modules/SimpleImage.js';
+    import ExParagraph from '/es-modules/ExParagraph.js';
+
+    import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
+    import getSubmoduleData from '/es-modules/getSubmoduleData.js';
+
+    window.MathJax = MathJax;
+    window.cmodule = {};
+    window.cmodule.renderMathBlock = renderEquationBlock;
+    window.cmodule.renderMathInline = renderEquationInline;
+    window.cmodule.getSubmoduleData = getSubmoduleData;
+   
+    // check window.location.search for id
+    var moduleID = window.location.search.split('=')[1];
+    // get module data via GET request
+   
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `/module/data/${moduleID}`, true);
+    xhr.onload = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var data = xhr.responseText;
+            data = JSON.parse(data);
+
+            const {module} = data;
+
+            renderEditor(module)
+
+            } else {
+                console.error(xhr.statusText);
+        }
+        
+    };
+    xhr.onerror = function () {
+        console.error(xhr.statusText);
+    };
+    xhr.send(null);
+
+    function renderEditor(module) {
+    
+        const body = module.body;
+        // add module title to body object
+        body.blocks.unshift({
+            type: "header",
+            data: {
+                text: module.title,
+                level: 2
+            }
+        });
+        
+                const editor = new EditorJS({
+                    holder: 'editorjs',
+                    readOnly: true,
+                    tools: {
+                        paragraph: ExParagraph,
+                        header: Header,
+                        checklist:  editorjsNestedChecklist,                        mcq: MCQ,
+                        maq: MAQ,
+                        numeric: Numeric,
+                        equation: Equation,
+                        image: SimpleImage,
+                        hrule: HorizontalRule          
+                     },
+                     data: body,
+                     onReady: () => {
+                        console.log('Editor.js is ready!')
+                        window.editor = editor;
+                        // find all elements with class 'ce-editor', read the data-id and set id to data-id
+                        const editorElements = document.querySelectorAll('.ce-block');
+                        editorElements.forEach(element => {
+                            element.id = element.dataset.id;
+                        });
+    
+                     }
+                    });  
+    }
+
+
+  </script>

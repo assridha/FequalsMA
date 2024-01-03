@@ -37,30 +37,40 @@ export default class Equation {
     const outputWrapper = document.createElement('div')
     outputWrapper.style.display = 'flex'
     outputWrapper.style.justifyContent = 'space-between'
+    outputWrapper.style.alignItems = 'center' // Added this line to vertically align the contents
+    outputWrapper.style.overflowX = 'auto' // Added this line to add horizontal scroll when content overflows
 
     this._outputEquation = document.createElement('div')
     this._outputEquation.className = 'equation-output'
     this._outputEquation.style.flexGrow = '1'
 
     this._outputName = document.createElement('div')
-    this._outputName.style.width = '100px'
-    this._outputName.style.fontSize = '0.9rem'
-    this._outputName.style.overflow = 'hidden'
+    this._outputName.style.width = '80px'
+    this._outputName.style.fontSize = '0.7rem'
+    //this._outputName.style.overflow = 'hidden'
     this._outputName.style.textOverflow = 'ellipsis'
+
+    this._outputLink = document.createElement('div')
+    this._outputLink.style.width = '20px'
+    this._outputLink.style.fontSize = '0.8rem'
+    this._outputLink.style.marginLeft = '5px'
+    this._outputLink.style.marginRight = '5px'
 
     this._outputNameText = document.createElement('span')
     this._anchor = document.createElement('a')
-    this._anchor.innerHTML = '⚓'
-    this._anchor.style.fontSize = '0.9rem'
-    this._anchor.style.marginLeft = '0.5rem'
+    this._anchor.innerHTML = '🔗'
     this._anchor.style.cursor = 'pointer'
     this._anchor.href = `#${this._blockAPI.id}`
     this._anchor.style.textDecoration = 'none'
     this._anchor.style.color = 'inherit'
-    this._outputName.appendChild(this._outputNameText)
-    this._outputName.appendChild(this._anchor)
+    this._anchor.className = 'subheader-anchor'
 
+    this._outputName.appendChild(this._outputNameText)
+    this._outputLink.appendChild(this._anchor)
+
+   
     outputWrapper.appendChild(this._outputEquation)
+    outputWrapper.appendChild(this._outputLink)
     outputWrapper.appendChild(this._outputName)
 
     //combine form and output into element

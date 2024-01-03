@@ -29,10 +29,10 @@
 {
 border: solid 1px #555;
 background-color: #eed;
-box-shadow:  0 0 10px  #4F709C;
--moz-box-shadow: 0 0 10px  #4F709C;
--webkit-box-shadow: 0 0 10px  #4F709C;
--o-box-shadow: 0 0 10px  #4F709C;
+box-shadow:  0 0 10px  #555;
+-moz-box-shadow: 0 0 10px  #555;
+-webkit-box-shadow: 0 0 10px  #555;
+-o-box-shadow: 0 0 10px  #555;
 border-radius: 10%;
 }
 
@@ -60,9 +60,7 @@ border-radius: 10%;
 }
 
 .text {
-  color: white;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1rem;
 }
 
 footer{

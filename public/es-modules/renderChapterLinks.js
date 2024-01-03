@@ -6,7 +6,7 @@ function renderChapterLinks(previousModule,nextModule,moduleType1,moduleType2){
     ModuleType2 = moduleType2.charAt(0).toUpperCase() + moduleType2.slice(1);
     }
     let row = document.createElement('div');
-    row.className = 'row container-fluid';
+    row.className = 'row row-cols-2 container-fluid';
     row.style.marginLeft = '0';
     row.style.paddingLeft = '0';
     row.style.paddingRight = '0';
@@ -45,23 +45,12 @@ function linkBlockLeft(module,moduleType){
     row1.style.paddingLeft = '0';
 
 
-    let nextText = document.createElement('div');
-    nextText.className = 'col-md-auto navLinkRight mt-2 mb-2';
-    nextText.style.paddingRight = '0.5rem';
-    nextText.innerHTML = 'Prev: ';
-        
-    let divider = document.createElement('div');
-    divider.className = 'col-md-auto';
-    divider.style.borderRight = '1px solid black';
-    divider.style.padding='0';
-
-
     let headerHolder = document.createElement('div');
     headerHolder.className = 'col-md-auto navLinkLeft';
     headerHolder.style.paddingLeft = '0.5rem';
 
     let prefix = document.createElement('div');
-    prefix.innerText = `${moduleType} ${module.index+1}`;
+    prefix.innerText = `Prev: ${moduleType} ${module.index+1}`;
     prefix.style.fontSize = '0.8rem';
 
     let header = document.createElement('a');
@@ -71,8 +60,6 @@ function linkBlockLeft(module,moduleType){
     headerHolder.appendChild(prefix);
     headerHolder.appendChild(header);
 
-    row1.appendChild(nextText);
-    row1.appendChild(divider);
     row1.appendChild(headerHolder);
     col1.appendChild(row1);
 
@@ -88,22 +75,9 @@ function linkBlockRight(module,moduleType){
     col2.style.paddingRight = '0';
 
     if (module) {
-
-
         let row2 = document.createElement('div');
         row2.className = 'row container-fluid justify-content-end';
         row2.style.paddingRight = '0';
-
-
-        let nextText = document.createElement('div');
-        nextText.className = 'col-md-auto navLinkRight mt-2 mb-2';
-        nextText.style.paddingRight = '0.5rem';
-        nextText.innerHTML = 'Next: ';
-        
-        let divider = document.createElement('div');
-        divider.className = 'col-md-auto';
-        divider.style.borderRight = '1px solid black';
-        divider.style.padding='0';
 
 
         let headerHolder = document.createElement('div');
@@ -111,7 +85,7 @@ function linkBlockRight(module,moduleType){
         headerHolder.style.paddingLeft = '0.5rem';
 
         let prefix = document.createElement('div');
-        prefix.innerText = `${moduleType} ${module.index+1}`;
+        prefix.innerText = `Next: ${moduleType} ${module.index+1}`;
         prefix.style.fontSize = '0.8rem';
         prefix.style.textAlign = 'left';
 
@@ -122,11 +96,8 @@ function linkBlockRight(module,moduleType){
         headerHolder.appendChild(prefix);
         headerHolder.appendChild(header);
 
-        row2.appendChild(nextText);
-        row2.appendChild(divider);
         row2.appendChild(headerHolder);
         col2.appendChild(row2);
-
 
     }
 

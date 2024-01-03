@@ -5,14 +5,14 @@
     import SimpleImage from '/es-modules/SimpleImage.js';
     import ExParagraph from '/es-modules/ExParagraph.js';
 
-    import renderEquation from '/es-modules/renderEquation.js';
+    import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
     import getSubmoduleData from '/es-modules/getSubmoduleData.js';
     import ProblemBlock from '/es-modules/ProblemBlock.js';
 
     window.MathJax = MathJax;
     window.cmodule = {};
-    window.cmodule.renderMathBlock = renderEquation;
-    window.cmodule.renderMathInline = renderEquation;
+    window.cmodule.renderMathBlock = renderEquationBlock;
+    window.cmodule.renderMathInline = renderEquationInline;
     window.cmodule.getSubmoduleData = getSubmoduleData;
    
     // check window.location.search for id
@@ -82,7 +82,7 @@
             // merge the body.blocks of all child modules into one array and push to module.body
             let mergedBlocks = [];
             childModules.forEach(childModule => {
-                const secTitle = {id: childModule._id, type: 'header', data: { text: `${childModule.title} <a href="#${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> ⚓ </a>`, level: 2}};
+                const secTitle = {id: childModule._id, type: 'header', data: { text: `${childModule.title} <a href="#${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> 🔗 </a>`, level: 2}};
                 mergedBlocks = mergedBlocks.concat(secTitle);
                 mergedBlocks = mergedBlocks.concat(childModule.body.blocks);
             });

@@ -10,190 +10,32 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- include favicon -->
     <link rel="icon" href="https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2117644&authkey=%21AEr4oAly99ucw_Q&width=814&height=622" >
-        <!-- Set body font to Spectral. Import necessary stylesheets -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Spectral:400,400i,700,700i">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,400i,700,700i">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-       <!--  add computer modern font-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.18/katex.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
-
+    <link rel="stylesheet" href="/css/editorjs.css">
 
 </head>
-<body class="d-flex">
+
+<body class="<%=bgColor%> <%=textColor%>">
     <%- include('../partials/navbar') %>
-            <div class="row container-fluid" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
-                <div class="col-xl-2 px-0 d-flex" style="margin-left: 0%;">
-                    <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-4" style="background-color: #4F709C;">
-                    <div class="mb-2 pb-2">      
-                        <h5 class="sidebar-heading"> Overview</h5>
-                        <div>
-                                <!-- filter toc.subjects based on id in linkObject[0] and assign to subject -->
-                                <% let subject = toc.subjects.filter(subject => subject._id.equals(linkObject[0]._id)) %>
-                                
-                                <% let subjectsSort=subject %>
-                                    <% for (let i=0; i< subjectsSort.length; i++) { %>
-                                        <span>
-                                                <a href="/mains/<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
-                                                    <%= subjectsSort[i].title %>
-                                                </a>
-                                            </span>
-                                            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                                                <% if (subjectsSort[i].published) { %>
-                                                    <span style="font-size: small;">🟢</span>
-                                                    <% } else { %>
-                                                        <span style="font-size: small;">🔴</span>
-                                                <% } %>
-                                                <% } %>
-                                            <a data-bs-toggle="collapse" href="#collapseList<%=i%>" id="link_<%=i%>" role="button"
-                                                aria-expanded="false" aria-controls="collapseList<%=i%>" class="sidebar-text" style="text-decoration:none;">
-                                                [<span id="plus_minus_<%=i%>">+</span>]
-                                            </a>
-                                            <!-- script to set plus_minus_<%=i%> to + or  -->
-                                            <script>
-                                                 
-                                                 document.getElementById("link_<%=i%>").addEventListener("click", function() {
-                                                        if (document.getElementById("plus_minus_<%=i%>").innerHTML == "+") {
-                                                            document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
-                                                        } else {
-                                                            document.getElementById("plus_minus_<%=i%>").innerHTML = "+";
-                                                        }
-                                                    });
+<main>
+
+<div class="container-xl mt-4 mb-4" style="padding-left: 20px; max-width: 1000px;"> <%- include('../partials/flash') %>
+    <%- body %></div>
+   
+</main>
+<%- include('../partials/footer') %>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
 
 
-
-                                            </script>
-
-                                        <!-- filter parts with parent subjectsSort[i] -->
-                                        <% let partsSort=toc.parts.filter((part)=>
-                                            part.subject.equals(subjectsSort[i]._id))
-                                            %>
-                                            <% partsSort=partsSort.sort((a, b)=> (a.index > b.index) ? 1 : -1)
-                                                %>
-                                                <ul class="collapse sidebar-text" id="collapseList<%=i%>">
-                                                    <% for (let j=0; j< partsSort.length; j++) { %>
-                                                        <li class="nav-item"><span>
-                                                                <a href="/subject/<%=partsSort[j]._id%>"
-                                                                    id="part<%=i%>_<%=j%>" class="sidebar-text">
-                                                                    <%= partsSort[j].title %>
-                                                                </a>
-                                                            </span>
-                                                            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                                                                <% if (partsSort[j].published) { %>
-                                                                    <span style="font-size: small;">🟢</span>
-                                                                    <% } else { %>
-                                                                        <span style="font-size: small;">🔴</span>
-                                                                <% } %>
-                                                                <% } %>
-                                                            <a data-bs-toggle="collapse"
-                                                                href="#collapseList<%=i%>_<%=j%>" id="link_<%=i%>_<%=j%>" role="button"
-                                                                aria-expanded="false"
-                                                                aria-controls="collapseList<%=i%>_<%=j%>" class="sidebar-text" style="text-decoration: none;">
-                                                                [<span id="plus_minus_<%=i%>_<%=j%>">+</span>]
-                                                            </a></li>
-                                                    <!-- script to set plus_minus_<%=i%>_<%=j%> to + or - -->
-                                                    <script>
-
-                                                        document.getElementById("link_<%=i%>_<%=j%>").addEventListener("click", function () {
-                                                            if (document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML == "+") {
-                                                                document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
-                                                            } else {
-                                                                document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "+";
-                                                            }
-                                                        });
-                                                    </script>
-
-                                                        <% let chaptersSort=toc.chapters.filter((chapter)=>
-                                                            chapter.part.equals(partsSort[j]._id))
-                                                            %>
-                                                            <% chaptersSort=chaptersSort.sort((a, b)=> (a.index >
-                                                                b.index) ? 1 : -1)
-                                                                %>
-                                                                <ul class="collapse sidebar-text" id="collapseList<%=i%>_<%=j%>">
-                                                                    <% for (let k=0; k< chaptersSort.length; k++) { %>
-                                                                        <li class="nav-item"><span>
-                                                                                <a href="/subject/part/<%=chaptersSort[k]._id%>"
-                                                                                    id="chapter<%=i%>_<%=j%>_<%=k%>" class="sidebar-text">
-                                                                                    <%= chaptersSort[k].title %>
-                                                                                </a>
-                                                                            </span>
-                                                                            <% if (currentUser && currentUser._id.toString() == process.env.ADMIN_OID) { %>
-                                                                                <% if (chaptersSort[k].published) { %>
-                                                                                    <span style="font-size: small;">🟢</span>
-                                                                                    <% } else { %>
-                                                                                        <span style="font-size: small;">🔴</span>
-                                                                                <% } %>
-                                                                                <% } %>
-                                                                        </li>
-                                                                        <% if (linkObject.length>2) {%>
-                                                                            <% if
-                                                                                (chaptersSort[k]._id.equals(linkObject[2]._id))
-                                                                                {%>
-                                                                                <script>
-                                                                                    document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").style.fontWeight = "bold";
-
-                                                                                </script>
-
-
-                                                                                <%}%>
-
-                                                                                    <%}%>
-
-
-                                                                                        <% } %>
-                                                                </ul>
-                                                                <!-- first check if length of linkObject is greater than 1  -->
-                                                                <% if (linkObject.length>1) {%>
-                                                                    <!-- create script to show collapseList<%=i%>_<%=j%> if _id matches the _id in linkObject[1]-->
-                                                                    <% if (partsSort[j]._id.equals(linkObject[1]._id)) {
-                                                                        %>
-                                                                        <script>
-                                                                            document.getElementById("collapseList<%=i%>_<%=j%>").classList.add("show");
-                                                                            // also make part<%=j%> bold
-                                                                            document.getElementById("part<%=i%>_<%=j%>").style.fontWeight = "bold";
-                                                                            // change plus_minus_<%=i%>_<%=j%> to -
-                                                                            document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
-                                                                        </script>
-                                                                        <% } %>
-                                                                            <% } %>
-
-                                                                                <% } %>
-                                                </ul>
-                                                <!-- create script to show collapseList<%=i%> if _id matches the _id in linkObject[0]-->
-                                                <% if (subjectsSort[i]._id.equals(linkObject[0]._id)) { %>
-                                                    <script>
-                                                        document.getElementById("collapseList<%=i%>").classList.add("show");
-                                                        // also make subject<%=i%> bold
-                                                        document.getElementById("subject<%=i%>").style.fontWeight = "bold";
-                                                        // change plus_minus_<%=i%> to -
-                                                        document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
-                                                    </script>
-                                                    <% } %>
-                                                        <% } %>
-
-
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col d-flex flex-column mb-4 content-overflow" style="padding-left: 3rem;padding-right: 3rem; ">
-                    <main>
-                        <div class="col pt-4">
-                            <%- include('../partials/flash') %>
-                            <%- body %>
-                        </div>
-                    </main>
-
-                </div>
-            </div>
-            
-        <%- include('../partials/footer') %>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
 </body>
 
 

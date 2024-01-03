@@ -14,10 +14,9 @@ input{
     background-color: #F5EFE7;
 }
 
-/*.ce-block__content,
-    .ce-toolbar__content {
+.ce-block__content{
         max-width: 1000px;
-    }*/
+    }
 
 .codex-editor__redactor{
 
@@ -44,11 +43,13 @@ input{
   background-color: lightgray;
 }
 
-.equation-block{
+.block-equation mjx-container {
+    margin: -15px 0px !important;
+}
 
-  text-align: center;
- 
+.block-equation{
 
+  max-height: 1px;
 }
 
 .block-edit-mode{
@@ -90,6 +91,25 @@ input {
   
 }
 
+.problem-block{
+
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+ /* add solid border, round edges and add shadow */
+  border-radius: 8px;
+  border: 1px solid black;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+}
+
+.correct-option{
+
+  border: 2px solid #c3e6cb;
+
+}
+
 .equation-output{
   padding-block-start: 0.3rem;
   padding-block-end: 0.3rem;
@@ -97,6 +117,7 @@ input {
 
 .inline-equation {
    padding: 1px;
+   margin: 20px 0px;
   /* background-color: lightgray; */
   /* border-radius: 4px; */ 
 }
@@ -111,8 +132,9 @@ figure {
 
 figcaption {
 
-  padding-block-start: 1rem;
-  padding-block-end: 1rem;
+  padding-block-start: 0.5rem;
+  padding-block-end: 0.5rem;
+  margin-top: 0.5rem;
 
 }
 

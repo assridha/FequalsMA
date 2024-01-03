@@ -1,27 +1,42 @@
 <nav class="navbar navbar-expand-lg navbar-dark quaternary-bg-color" style="padding-top: 0;">
-    <div class="container-fluid" >
-        <div>
-        <a class="navbar-brand" href="/" style="font-size: larger;"><span class="apply-font secondary-color">vectorsoup.com</span></a>
+    <div class="container-fluid d-flex justify-content-between">
+        <div class="d-flex justify-content-start">
+            <a class="navbar-brand" href="/" style="font-size: larger;"><span class="apply-font secondary-color">vectorsoup.com</span></a>
         </div>
-        <!-- display about page -->
-            <div class="navbar-nav ml-auto">
-                <div class="row">
-                    <div class="col">
-                    <a href="/about" class="nav-link">About</a>
-                    </div>
-        <!-- display login only if currentUser doesnt exist and if node enviroment is not production -->
+        <div class="d-flex justify-content-center">
+            <!-- Add your image thumbnails and titles here -->
+            <div class="text-center">
+                <a href="/learn" style="text-decoration: none;">
+                    <img src='https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118239&authkey=%21ABL4kRuPBtIHaKc&width=419&height=415' alt="Image " style="max-width: 40px; max-height: 40px;">
+                </a>
+                <span class="d-none d-sm-inline-block ml-2 mr-4 primary-color apply-font" style="margin-right: 15px;">Learn</span>
+                <a href="/practice?id=latest" style="text-decoration: none;">
+                    <img src='https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118240&authkey=%21ANJVXbdHltXdFY4&width=419&height=421' alt="Image " style="max-width: 40px; max-height: 40px;">
+                </a>
+                <span class="d-none d-sm-inline-block ml-2 mr-4 primary-color apply-font" style="margin-right: 15px;">Practice</span>
+                <a href="/soup" style="text-decoration: none;">
+                    <img src='https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118241&authkey=%21APmG771_O9kjENQ&width=419&height=421' alt="Image " style="max-width: 40px; max-height: 40px;">
+                </a>
+                <span class="d-none d-sm-inline-block ml-2 mr-4 primary-color apply-font" style="margin-right: 15px;">Soup</span>
+                <a href="/about" style="text-decoration: none;">
+                    <img src='https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118671&authkey=%21ADC87HuZjrtB1Hg&width=245&height=245' alt="Image " style="max-width: 40px; max-height: 40px;">
+                </a>
+                <span class="d-none d-sm-inline-block ml-2 mr-4 primary-color apply-font" style="margin-right: 15px;">About</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end navbar-nav">
+            <!-- display login only if currentUser doesnt exist and if node enviroment is not production -->
             <% if(!currentUser && process.env.NODE_ENV !== 'production') { %>
-                    <div class="col"> 
-                        <a href="/login" class="nav-link">Login</a>
-                    </div>
-                <% } %>
-                <!-- display logout only if currentUser exists -->
+                <div> 
+                    <a href="/login" class="nav-link apply-font">Login</a>
+                </div>
+            <% } %>
+            <!-- display logout only if currentUser exists -->
             <% if(currentUser) { %>
-                <div class="col">
+                <div>
                     <a href="/logout" class="nav-link">Logout</a>
                 </div>
-                <% } %>
-            </div>
+            <% } %>
         </div>
     </div>
 </nav>
