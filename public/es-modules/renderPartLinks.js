@@ -19,7 +19,7 @@ function renderPartLinks(parentModule,firstChildModule){
     let nextText = document.createElement('div');
     nextText.className = 'col-md-auto navLinkRight mt-2 mb-2';
     nextText.style.paddingRight = '0.5rem';
-    nextText.innerHTML = 'Prev: ';
+    nextText.innerHTML = 'Hello there' ;
         
     let divider = document.createElement('div');
     divider.className = 'col-md-auto';
@@ -65,7 +65,7 @@ function renderPartLinks(parentModule,firstChildModule){
         let nextText = document.createElement('div');
         nextText.className = 'col-md-auto navLinkRight mt-2 mb-2';
         nextText.style.paddingRight = '0.5rem';
-        nextText.innerHTML = 'Next: ';
+        nextText.innerHTML = '➡️' ;
         
         let divider = document.createElement('div');
         divider.className = 'col-md-auto';
