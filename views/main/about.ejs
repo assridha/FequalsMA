@@ -1,2 +1,63 @@
 <% layout('layouts/boilerplate') %>
 <%- include('../partials/banner') %>
+ 
+    
+    
+       <!-------------- Render Editor------------------------------------------------------->
+    <div id="editorjs" class="mt-4"></div>
+    
+    <link rel="stylesheet" href="/css/editorjs.css">
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-nested-checklist@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    
+    <script type="module">   
+   
+        import HorizontalRule from '/es-modules/HorizontalRule.js';
+        import SimpleImage from '/es-modules/SimpleImage.js';
+   
+            // get module data via GET request
+   
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `/module/data/65c3f4dd0e528872eff8571a`, true);
+        xhr.onload = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var data = xhr.responseText;
+            data = JSON.parse(data);
+
+            const { module} = data;
+
+            const body = module.body;
+
+        const editor = new EditorJS({
+            holder: 'editorjs',
+            readOnly: true,
+            autofocus: false,
+            tools: {
+                header: Header,
+                image: SimpleImage,
+                hrule: HorizontalRule          
+                    },
+            data: body,
+            onReady: () => {
+                console.log('Editor.js is ready!')
+                // delete the first element with class 'ce-block' from the dom
+                const firstElement = document.querySelector('.ce-block');
+                firstElement.remove();
+     }
+    });  
+
+            } else {
+                console.error(xhr.statusText);
+        }
+        
+    };
+    xhr.onerror = function () {
+        console.error(xhr.statusText);
+    };
+    xhr.send(null);
+
+    </script>
+    

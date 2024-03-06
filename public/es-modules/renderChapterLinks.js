@@ -50,7 +50,7 @@ function linkBlockLeft(module,moduleType){
     headerHolder.style.paddingLeft = '0.5rem';
 
     let prefix = document.createElement('div');
-    prefix.innerText = `Prev: ${moduleType} ${module.index+1}`;
+    prefix.innerText = `⬅️ ${moduleType}`;
     prefix.style.fontSize = '0.8rem';
 
     let header = document.createElement('a');
@@ -85,7 +85,7 @@ function linkBlockRight(module,moduleType){
         headerHolder.style.paddingLeft = '0.5rem';
 
         let prefix = document.createElement('div');
-        prefix.innerText = `Next: ${moduleType} ${module.index+1}`;
+        prefix.innerText = `➡️ ${moduleType}`;
         prefix.style.fontSize = '0.8rem';
         prefix.style.textAlign = 'left';
 

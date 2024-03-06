@@ -1,4 +1,4 @@
-function renderHeader(module, category){
+function renderHeader(module, category,moduleCreateDate,moduleUpdateDate    ){
 
     const moduleType = category.moduleSettings[module.metaData.generation].layoutName;
 
@@ -7,8 +7,8 @@ function renderHeader(module, category){
     const subtitle = document.createElement('h6');
     
     prefix.style.marginBottom = '0';
-    prefix.textContent = `${moduleType.charAt(0).toUpperCase() + moduleType.slice(1)} ${module.index+1}`;
-    subtitle.textContent = `Author: Ashwin Sridhar, Created: ${module.metaData.created}, Last Updated: ${module.metaData.updated}`;
+    prefix.textContent = `${moduleType.charAt(0).toUpperCase() + moduleType.slice(1)}`;
+    subtitle.textContent = `Author: Ashwin Sridhar, Created: ${moduleCreateDate}, Last Updated: ${moduleUpdateDate}`;
 
     const h1 = document.createElement('h1');
     h1.textContent = module.title;

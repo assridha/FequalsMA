@@ -8,6 +8,8 @@ import Numeric from '/es-modules/Numeric.js';
 class ProblemBlock {
   constructor({ data, readOnly, block }) {
     this._data = data
+    // sort submodules by index
+    this._data.submodules.sort((a, b) => a.index - b.index)
     this._blockAPI = block
     this._data.previewState = data.previewState ? data.previewState : false
     this._data.previewState = readOnly ? true : this._data.previewState
@@ -32,7 +34,7 @@ class ProblemBlock {
     return this._element
   }
 
-  _buildPreviewElement() {
+  async _buildPreviewElement() {
     const subEditors = []
     const header = document.createElement('h5')
     if (this._data.submodules.length === 1) {
@@ -45,7 +47,10 @@ class ProblemBlock {
     header.style.fontWeight = 'bold'
 
     this._element.appendChild(header)
-    this._data.submodules.forEach(async (submodule, index) => {
+    
+    for (let index = 0; index < this._data.submodules.length; index++) {
+      const submodule = this._data.submodules[index]
+      const submoduleData = await window.cmodule.getSubmoduleData(submodule._id)
       const subHeader = document.createElement('h5')
       subHeader.style.marginTop = '1rem'
       subHeader.innerText = `#${index + 1}: ` + submodule.title
@@ -58,7 +63,6 @@ class ProblemBlock {
       subeditorElement.setAttribute('id', submodule._id)
       // set subeditorElement z-index to 0 so that it doesn't block the editorjs toolbar
       subeditorElement.style.zIndex = -1
-      const submoduleData = await window.cmodule.getSubmoduleData(submodule._id)
 
       subEditors[index] = new EditorJS({
         holder: submodule._id,
@@ -84,7 +88,7 @@ class ProblemBlock {
       if (index !== this._data.submodules.length - 1) {
         this._element.appendChild(line)
       }
-    })
+    }
   }
 
   async _buildEditElement() {

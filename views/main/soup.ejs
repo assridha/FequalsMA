@@ -1,34 +1,22 @@
 <% layout('layouts/boilerplate') %>
 <%- include('../partials/banner') %>
-<div class="container-fluid">
-<a href="your-link-here" style="text-decoration: none; color: inherit;">
+
+<div class="container-fluid mt-4 pt-2">
+<% for(let i = 0; i < articles.length; i++) { %>
+<a href="/module?id=<%=articles[i]._id %>" style="text-decoration: none; color: inherit;">
   <div class="article-summary">
     <div class="article-content">
-      <h5 class="apply-font-bold article-title">Article Title long title blah blah blah asdasd asd </h5>
-      <small class="apply-font">Aug-03 &middot; User Name</small>
-      <p class="apply-font desktop-only" style="margin-top: 0.5rem;">Article summary...</p>
+      <h5 class="apply-font-bold article-title"><%= articles[i].title %></h5>
+      <small class="apply-font"><%= articleCreateDates[i] %> &middot; Ashwin Sridhar</small>
+      <p class="apply-font desktop-only" style="margin-top: 0.5rem;"><%= articles[i].metaData.summary %></p>
     </div>
     <div class="article-thumbnail">
-      <img src="https://getuikit.com/v2/docs/images/placeholder_600x400.svg" alt="Article Thumbnail" style="object-fit: cover;">
+      <img src="<%= articles[i].metaData.thumbnail %>" alt="Article Thumbnail" style="object-fit: cover;">
     </div>
   </div>
 </a>
-
 <hr style="margin-bottom: 40px;margin-top: 40px;">
-
-<a href="your-link-here" style="text-decoration: none; color: inherit;">
-<div class="article-summary">
-  <div class="article-content">
-    <h5 class="apply-font-bold article-title">Article Title long title blah blah blah asdasd asd </h5>
-    <small class="apply-font">Aug-03 &middot; User Name</small>
-    <p class="apply-font desktop-only" style="margin-top: 0.5rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in</p>
-  </div>
-  <div class="article-thumbnail">
-    <img src="https://getuikit.com/v2/docs/images/placeholder_600x400.svg" alt="Article Thumbnail" style="object-fit: cover;">
-  </div>
-</div>
-</a>
-<hr style="margin-bottom: 40px;margin-top: 40px;">
+<% } %>
 </div>
 
 <style>

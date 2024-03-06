@@ -1,4 +1,8 @@
+<% if (category.metaData.displayTOC) { %>
 <% layout('layouts/boilerplate_module') %>
+<% } else { %>
+<% layout('layouts/boilerplate_wo_sidebar') %>
+<% } %>
 
 
 <!--------------  Render Links for Chapter Type ---------------------------------->
@@ -28,10 +32,8 @@
     </script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 <script src="/es-modules/renderChapterLinks.js"></script>
-<script src="/es-modules/renderPartLinks.js"></script>
 <script src="/es-modules/renderHeader.js"></script>
 <script src="/es-modules/renderPartBlocks.js"></script>
-<script src="/es-modules/renderHeader.js"></script>
 <script type="module" src="/es-modules/renderMain.js">
     
 

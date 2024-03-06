@@ -26,11 +26,11 @@
             var data = xhr.responseText;
             data = JSON.parse(data);
 
-            const {parentModule, module, nextModule, previousModule, childModules, category} = data;
+            const {parentModule, moduleCreateDate, moduleUpdateDate, module, nextModule, previousModule, childModules, category} = data;
 
             const firstChildModule = childModules.find(childModule => childModule.index === 0);
 
-            renderHeader(module, category);
+            renderHeader(module, category,moduleCreateDate,moduleUpdateDate);
             renderEditor(module,childModules,category)
 
             if (category.moduleSettings[module.metaData.generation].linkFlow.display){
@@ -91,6 +91,7 @@
                 const editor = new EditorJS({
                     holder: 'editorjs',
                     readOnly: true,
+                    autofocus: false,
                     tools: {
                         paragraph: ExParagraph,
                         header: Header,
@@ -107,11 +108,15 @@
                      onReady: () => {
                         console.log('Editor.js is ready!')
                         window.editor = editor;
+                        // delete the first element with class 'ce-block' from the dom
+                        const firstElement = document.querySelector('.ce-block');
+                        firstElement.remove();
                         // find all elements with class 'ce-editor', read the data-id and set id to data-id
                         const editorElements = document.querySelectorAll('.ce-block');
                         editorElements.forEach(element => {
                             element.id = element.dataset.id;
                         });
+
     
                      }
                     });  

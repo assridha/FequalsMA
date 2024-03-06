@@ -37,6 +37,12 @@ const moduleSchema = new mongoose.Schema({
   }
 })
 
+// middleware to filter modules that are published when querying
+moduleSchema.pre(/^find/, function (next) {
+  this.find({ 'metaData.published': true })
+  next()
+})
+
 // create module model
 const Module = mongoose.model('Module', moduleSchema)
 

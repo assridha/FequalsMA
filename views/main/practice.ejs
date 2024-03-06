@@ -9,7 +9,9 @@
 <div class="container-fluid" style="border: 1px solid black; border-radius: 5px;padding-left: 2rem;padding-right: 2rem;">
  <div class="row justify-content-center mb-4 mt-4">
     <div class="col-auto">
-        <button class="btn btn-success" id="random-exercise" onclick="window.location.href='?id=<%=nextModule%>'">Random Exercise</button>
+      <a id="random-exercise-link" href="">
+        <button class="btn btn-success" id="random-exercise">Random Exercise</button>
+      </a>
     </div>
 </div>
 <hr style="margin-bottom: 0;">
@@ -49,20 +51,25 @@
     window.cmodule.renderMathInline = renderEquationInline;
     window.cmodule.getSubmoduleData = getSubmoduleData;
    
-    // check window.location.search for id
-    var moduleID = window.location.search.split('=')[1];
+    function getData(){
+    // get moduleID from the string after # symbol instead
+    var moduleID = window.location.hash.split('#')[1];
     // get module data via GET request
    
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', `/module/data/${moduleID}`, true);
+    xhr.open('GET', `/practice/data/${moduleID}`, true);
     xhr.onload = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var data = xhr.responseText;
             data = JSON.parse(data);
 
-            const {module} = data;
+            const {module,randomExercise} = data;
 
             renderEditor(module)
+            // update the link to a random exercise
+            const randomExerciseLink = document.getElementById('random-exercise-link');
+            randomExerciseLink.href = `#${randomExercise._id}`;
+            
 
             } else {
                 console.error(xhr.statusText);
@@ -73,8 +80,17 @@
         console.error(xhr.statusText);
     };
     xhr.send(null);
+  }
+  getData();
+  // run getData when the hash changes
+  window.onhashchange = getData;
 
     function renderEditor(module) {
+
+      // kill the editor if it exists
+      if (window.editor) {
+        window.editor.destroy();
+      }
     
         const body = module.body;
         // add module title to body object
@@ -92,7 +108,8 @@
                     tools: {
                         paragraph: ExParagraph,
                         header: Header,
-                        checklist:  editorjsNestedChecklist,                        mcq: MCQ,
+                        checklist:  editorjsNestedChecklist,                        
+                        mcq: MCQ,
                         maq: MAQ,
                         numeric: Numeric,
                         equation: Equation,

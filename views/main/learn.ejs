@@ -3,7 +3,7 @@
 
 
 <!------------------------Math Starter------------------------------------------------------------>
-<h3 class="apply-font-bold tertiary-color">Math Starter</h3>
+<h3 class="apply-font-bold tertiary-color">Starters</h3>
 <div class="container-fluid ms-1">
   <div class="row row-cols-2 row-cols-md-6 g-4">
     <% for (let i=0; i < starters.length; i++) { %>
@@ -23,6 +23,7 @@
 <div style="height: 20px;"> </div>
 <h3 class="apply-font-bold tertiary-color">Mains</h3>
 <div class="container-fluid ms-1">
+<% categories = categories.sort((a, b) => a.index - b.index); %>
 <% for(k=0;k< categories.length;k++){%>
 <h4 class="apply-font-bold tertiary-color"><%= categories[k].title %></h4>
 

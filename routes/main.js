@@ -19,9 +19,6 @@ router.get('/learn', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
-
-    req.session.returnTo = req.originalUrl;
-
     // Mains ----------------------------------------
     // get the category with title 'Mains'
     const mainsCategory = await Category.findOne({ title: 'Mains' });
@@ -67,12 +64,24 @@ router.get('/soup', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
+     // Articles ----------------------------------------
+    // get the category with title 'Soup'
+    const soupCategory = await Category.findOne({ title: 'Soup' });
+    // find all child categories of soupCategory
+    const categories = await Category.find({ parent: soupCategory._id });
+    categories.push(soupCategory);
+    // get all modules with whose category is in categories array and whose metaData.generation is 0 and sort by index
+    let articles = await Module.find({ category: { $in: categories }, 'metaData.generation': 0}).sort({ index: 1 });
+    let articleCreateDates = articles.map(article => article._id.getTimestamp());
+    articleCreateDates = articleCreateDates.map(date => date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' }) + ' ' + date.getFullYear());
+    
     // render soup.ejs file
     res.render('main/soup', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
     title: 'Soup' ,
     subTitle: 'Single page articles on applied math.',
-    thumbnail: 'https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118241&authkey=%21APmG771_O9kjENQ&width=419&height=421'});
+    thumbnail: 'https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118241&authkey=%21APmG771_O9kjENQ&width=419&height=421',
+    categories,articles,articleCreateDates});
 
 
 });
