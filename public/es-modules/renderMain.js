@@ -4,6 +4,7 @@
     import Equation from '/es-modules/Equation.js';
     import SimpleImage from '/es-modules/SimpleImage.js';
     import ExParagraph from '/es-modules/ExParagraph.js';
+    import HighlightBox from '/es-modules/HighlightBox.js';
 
     import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
     import getSubmoduleData from '/es-modules/getSubmoduleData.js';
@@ -102,7 +103,10 @@
                         numeric: Numeric,
                         equation: Equation,
                         image: SimpleImage,
-                        hrule: HorizontalRule          
+                        hrule: HorizontalRule,
+                        highlight: {
+                            class: HighlightBox
+                          }          
                      },
                      data: body,
                      onReady: () => {

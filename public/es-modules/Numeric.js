@@ -74,7 +74,7 @@ export default class Numeric {
     element.appendChild(input)
 
     const form = document.createElement('form')
-    form.className = 'form-input'
+    //form.className = 'form-input'
     element.appendChild(form)
 
     // create button holder

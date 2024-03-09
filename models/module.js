@@ -34,12 +34,17 @@ const moduleSchema = new mongoose.Schema({
     type: Object,
     required: false,
     default: {}
+  },
+  deleted: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 })
 
-// middleware to filter modules that are published when querying
+// middleware to filter modules that are published and not deleted when querying
 moduleSchema.pre(/^find/, function (next) {
-  this.find({ 'metaData.published': true })
+  this.find({ 'metaData.published': true, deleted: false})
   next()
 })
 

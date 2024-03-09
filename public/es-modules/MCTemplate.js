@@ -84,7 +84,7 @@ class MCTemplate {
 
     // create a form
     const form = document.createElement('form')
-    form.className = 'form-input'
+    form.className = 'container-fluid'
 
     // create text input
     const input = document.createElement('textarea')
