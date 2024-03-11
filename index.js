@@ -102,7 +102,7 @@ app.use(async (req, res, next) => {
 app.use('/module', moduleRoutes);
 
 // User routes
-app.use('/', userRoutes);
+//app.use('/', userRoutes);
 
 // Main routes
 app.use('/', mainRoutes);

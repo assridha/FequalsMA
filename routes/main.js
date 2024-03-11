@@ -39,7 +39,7 @@ router.get('/learn', async (req, res) => {
     textColor: 'quaternary-color',
     title: 'Learn' ,
     subTitle: 'Self study courses on topics in applied mathematics.',
-    thumbnail: 'https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118239&authkey=%21ABL4kRuPBtIHaKc&width=419&height=415',
+    thumbnail: '/src/assets/Trove.png',
     categories,starters,mains});
 
 
@@ -55,7 +55,7 @@ router.get('/about', async (req, res) => {
     textColor: 'quaternary-color',
     title: 'About' ,
     subTitle: 'Find out more about this website.',
-    thumbnail: 'https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118671&authkey=%21ADC87HuZjrtB1Hg&width=245&height=245'});
+    thumbnail: '/src/assets/about.png'});
 
 
 });
@@ -80,7 +80,7 @@ router.get('/soup', async (req, res) => {
     textColor: 'quaternary-color',
     title: 'Soup' ,
     subTitle: 'Single page articles on applied math.',
-    thumbnail: 'https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118241&authkey=%21APmG771_O9kjENQ&width=419&height=421',
+    thumbnail: '/src/assets/Soup.png',
     categories,articles,articleCreateDates});
 
 

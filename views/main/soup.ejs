@@ -2,6 +2,19 @@
 <%- include('../partials/banner') %>
 
 <div class="container-fluid mt-4 pt-2">
+<%
+articles.sort((a, b) => {
+  const dateA = new Date(articleCreateDates[articles.indexOf(a)]);
+  const dateB = new Date(articleCreateDates[articles.indexOf(b)]);
+  return dateB - dateA;
+});
+articleCreateDates.sort((a, b) => {
+  const dateA = new Date(a);
+  const dateB = new Date(b);
+  return dateB - dateA;
+});
+
+%>
 <% for(let i = 0; i < articles.length; i++) { %>
 <a href="/module?id=<%=articles[i]._id %>" style="text-decoration: none; color: inherit;">
   <div class="article-summary">

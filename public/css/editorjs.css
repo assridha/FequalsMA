@@ -147,11 +147,11 @@ figcaption {
 }
 
 .highlight-box-right{
-  width: 95%;
+  width: 90%;
 }
 
 .highlight-box-left{
-  width: 5%;
+  width: 3rem;
 }
 
 
@@ -159,7 +159,7 @@ ul {
   list-style-type: circle !important;
 }
 
-ul li::before {
+ul.cdx-nested-list--unordered li::before {
   font-size: 0.5rem !important; /* Makes the bullet very small */
 }
 

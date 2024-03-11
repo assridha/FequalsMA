@@ -45,13 +45,20 @@
                          renderChapterLinks(previousModule,nextModule,moduleType1,moduleType2)
                     }else{
                         let moduleType1 = category.moduleSettings[parentModule.metaData.generation].layoutName;
-                        let moduleType2 = category.moduleSettings[nextModule.metaData.generation].layoutName;
+                        let moduleType2
+                        if (nextModule){
+                            moduleType2 = category.moduleSettings[nextModule.metaData.generation].layoutName;
+                        }
                         renderChapterLinks(parentModule,nextModule,moduleType1,moduleType2)
                     }
                     
                 }else{
                     let moduleType1 = category.moduleSettings[parentModule.metaData.generation].layoutName;
-                    let moduleType2 = category.moduleSettings[firstChildModule.metaData.generation].layoutName;
+                    let moduleType2
+                    if (firstChildModule){
+                         moduleType2 = category.moduleSettings[firstChildModule.metaData.generation].layoutName;
+                    }
+                    
                     renderChapterLinks(parentModule,firstChildModule,moduleType1,moduleType2)
                 }
                 

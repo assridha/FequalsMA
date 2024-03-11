@@ -5,8 +5,11 @@ const Module = require('../models/module');
 
 router.get('/latest', async (req, res) => {
     console.log('latest')
-    const module = await Module.findOne({ 'metaData.generation': 4}, '_id');
-    res.redirect(`/practice#${module._id}`);
+    const modules = await Module.find({ 'metaData.generation': 4 }).select('_id');
+    // find latest module by creation date from id.getTimestamp()
+    const latestModule = modules.reduce((a, b) => a._id.getTimestamp() > b._id.getTimestamp() ? a : b);
+
+    res.redirect(`/practice#${latestModule._id}`);
 });
 
 router.get('/', async (req, res) => {
@@ -18,7 +21,7 @@ router.get('/', async (req, res) => {
     textColor: 'quaternary-color',
     title: 'Practice' ,
     subTitle: 'Apply your knowledge and skills to solve challenging problems.',
-    thumbnail: 'https://onedrive.live.com/embed?resid=1ca1eb3abf73ac72%2118240&authkey=%21ANJVXbdHltXdFY4&width=419&height=421'});
+    thumbnail: '/src/assets/Trials.png'});
     }
 
 );

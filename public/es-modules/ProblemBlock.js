@@ -81,7 +81,14 @@ class ProblemBlock {
           maq: MAQ,
           numeric: Numeric
         },
-        data: submoduleData
+        data: submoduleData,
+        onReady: () => {
+          // remove the first block
+         const firstBlockID =  subEditors[index].blocks.getBlockByIndex(0).id
+         // find element with data-id equal to firstBlockID and remove it
+          const firstBlock = document.querySelector(`[data-id="${firstBlockID}"]`)
+          firstBlock.remove()
+        }
       })
       this._element.appendChild(subHeader)
       this._element.appendChild(subeditorElement)
