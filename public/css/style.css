@@ -142,13 +142,13 @@ width: 50%;
 }
 
 .sidebar-text{
-    color: #D8C4B6;
+    color: #213555;
 }
 .sidebar-heading{
-    color: #D8C4B6;
+    color: #213555;
 }
 .sidebar-text:hover{
-    color: #F2E9E4;
+    color: #213555;
 }
 .sidebar{
     position: fixed;
@@ -201,4 +201,9 @@ h1, h2, h3, h4, h5, h6 {
     .navLinkRight{
         text-align: left;
     }
+}
+
+.accordion-button[aria-expanded="true"]{
+    color: #213555 !important;
+    background-color: #cdddf3 !important;
 }

@@ -27,99 +27,44 @@
     <%- include('../partials/navbar') %>
             <div class="row container-fluid" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
                 <div class="col-xl-2 px-0 d-flex" style="margin-left: 0%;">
-                    <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-4" style="background-color: #4F709C;">
-                    <div class="mb-2 pb-2">      
-                        <h5 class="sidebar-heading"> Overview</h5>
-                        <div id="sidebar-handler">
-                                <% let linkObject = [moduleID]
-                               
-                                let part = toc.parts.filter(part => part._id.equals(moduleID))
-                                if (part.length > 0) {
-                                    linkObject.push(part[0].parent)
-                                } else {
-                                    let chapter = toc.chapters.filter(chapter => chapter._id.equals(moduleID))
-                                    if (chapter.length > 0) {
-                                        linkObject.push(chapter[0].parent)
-                                        let part = toc.parts.filter(part => part._id.equals(chapter[0].parent))
-                                        if (part.length > 0) {
-                                            linkObject.push(part[0].parent)
-                                        }
-                                    }
-                                }
-                                linkObject.reverse()
-                                %>
-                                
-                                <% let subjectsSort = toc.subjects.filter(subject => subject._id.equals(linkObject[0])) %>
-                                <% for (let i=0; i< subjectsSort.length; i++) { %>
-                                    <span>
-                                        <a href="/module?id=<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
-                                            <%= subjectsSort[i].title %>
-                                        </a>
-                                    </span>
-                                    <a data-bs-toggle="collapse" href="#collapseList<%=i%>" id="link_<%=i%>" role="button"
-                                        aria-expanded="false" aria-controls="collapseList<%=i%>" class="sidebar-text" style="text-decoration:none;">
-                                        [<span id="plus_minus_<%=i%>">+</span>]
-                                    </a>
-                                    <script>
-                                        document.getElementById("link_<%=i%>").addEventListener("click", function() {
-                                            document.getElementById("plus_minus_<%=i%>").innerHTML = document.getElementById("plus_minus_<%=i%>").innerHTML == "+" ? "-" : "+";
-                                        });
-                                    </script>
-                                    <% let partsSort = toc.parts.filter((part) => part.parent.equals(subjectsSort[i]._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
-                                    <ul class="collapse sidebar-text" id="collapseList<%=i%>">
-                                        <% for (let j=0; j< partsSort.length; j++) { %>
-                                            <li class="nav-item"><span>
-                                                <a href="/module?id=<%=partsSort[j]._id%>" id="part<%=i%>_<%=j%>" class="sidebar-text">
-                                                    <%= partsSort[j].title %>
-                                                </a>
-                                            </span>
-                                            <a data-bs-toggle="collapse" href="#collapseList<%=i%>_<%=j%>" id="link_<%=i%>_<%=j%>" role="button"
-                                                aria-expanded="false" aria-controls="collapseList<%=i%>_<%=j%>" class="sidebar-text" style="text-decoration: none;">
-                                                [<span id="plus_minus_<%=i%>_<%=j%>">+</span>]
-                                            </a></li>
-                                            <script>
-                                                document.getElementById("link_<%=i%>_<%=j%>").addEventListener("click", function () {
-                                                    document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML == "+" ? "-" : "+";
-                                                });
-                                            </script>
-                                            <% let chaptersSort = toc.chapters.filter((chapter) => chapter.parent.equals(partsSort[j]._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
-                                            <ul class="collapse sidebar-text" id="collapseList<%=i%>_<%=j%>">
-                                                <% for (let k=0; k< chaptersSort.length; k++) { %>
-                                                    <li class="nav-item"><span>
-                                                        <a href="/module?id=<%=chaptersSort[k]._id%>" id="chapter<%=i%>_<%=j%>_<%=k%>" class="sidebar-text">
-                                                            <%= chaptersSort[k].title %>
-                                                        </a>
-                                                    </span>
-                                                    </li>
-                                                    <% if (linkObject.length>2 && chaptersSort[k]._id.equals(linkObject[2])) {%>
-                                                        <script>
-                                                            document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").style.fontWeight = "bold";
-                                                        </script>
-                                                    <% } %>
-                                                <% } %>
-                                            </ul>
-                                            <% if (linkObject.length>1 && partsSort[j]._id.equals(linkObject[1])) { %>
-                                                <script>
-                                                    document.getElementById("collapseList<%=i%>_<%=j%>").classList.add("show");
-                                                    document.getElementById("part<%=i%>_<%=j%>").style.fontWeight = "bold";
-                                                    document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
-                                                </script>
-                                            <% } %>
-                                        <% } %>
-                                    </ul>
-                                    <% if (subjectsSort[i]._id.equals(linkObject[0])) { %>
-                                        <script>
-                                            document.getElementById("collapseList<%=i%>").classList.add("show");
-                                            document.getElementById("subject<%=i%>").style.fontWeight = "bold";
-                                            document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
-                                        </script>
-                                    <% } %>
-                                <% } %>
-                        </div>
-                    </div>
+                    <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start tertiary-bg-color">
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed tertiary-bg-color secondary-color" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                  Subject Navigation
+                                </button>
+                              </h2>
+                              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <%- include('../partials/toc') %>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed tertiary-bg-color secondary-color" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                  On This Page
+                                </button>
+                              </h2>
+                              <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed tertiary-bg-color secondary-color" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                  References
+                                </button>
+                              </h2>
+                              <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                              </div>
+                            </div>
+                          </div>
                     </div>
                 </div>
-                <div class="col d-flex flex-column mb-4 content-overflow" style="padding-left: 3rem;padding-right: 3rem; ">
+                <div class="col d-flex flex-column mb-4 content-overflow" style="padding-left: 3rem; padding-right: 3rem; overflow-y: auto; max-height: 100vh;">
                     <main>
                         <div class="col pt-4">
                             <%- include('../partials/flash') %>
