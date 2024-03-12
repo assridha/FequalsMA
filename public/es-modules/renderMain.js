@@ -9,6 +9,7 @@
     import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
     import getSubmoduleData from '/es-modules/getSubmoduleData.js';
     import ProblemBlock from '/es-modules/ProblemBlock.js';
+    import { renderSubTitles } from './renderPageNavigation.js';
 
     window.MathJax = MathJax;
     window.cmodule = {};
@@ -86,7 +87,6 @@
         const childLayoutType = category.moduleSettings[module.metaData.generation].childLayout.layoutType;
 
         if (displayChildren && childLayoutType === 'full'){
-
             // merge the body.blocks of all child modules into one array and push to module.body
             let mergedBlocks = [];
             childModules.forEach(childModule => {
@@ -94,8 +94,13 @@
                 mergedBlocks = mergedBlocks.concat(secTitle);
                 mergedBlocks = mergedBlocks.concat(childModule.body.blocks);
             });
+            
             module.body.blocks = module.body.blocks.concat(mergedBlocks);
         }
+        const subTitleArray = module.body.blocks.filter(block => block.type === 'header');
+        console.log(subTitleArray);
+        renderSubTitles(subTitleArray);
+
                 const editor = new EditorJS({
                     holder: 'editorjs',
                     readOnly: true,
