@@ -145,10 +145,11 @@ width: 50%;
     color: #213555;
 }
 .sidebar-heading{
-    color: #213555;
+    color: #7e0556;
+    font-weight: bold;
 }
 .sidebar-text:hover{
-    color: #213555;
+    color: #7e0556;
 }
 .sidebar{
     position: fixed;
@@ -206,4 +207,13 @@ h1, h2, h3, h4, h5, h6 {
 .accordion-button[aria-expanded="true"]{
     color: #213555 !important;
     background-color: #cdddf3 !important;
+}
+
+.full-screen{
+    min-height: 90vh;
+}
+
+.list-group .active{
+    background-color: #84b2f4 !important;
+    border-color: #84b2f4   !important;
 }

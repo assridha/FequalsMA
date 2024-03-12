@@ -90,7 +90,7 @@
             // merge the body.blocks of all child modules into one array and push to module.body
             let mergedBlocks = [];
             childModules.forEach(childModule => {
-                const secTitle = {id: childModule._id, type: 'header', data: { text: `${childModule.title} <a href="#${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> 🔗 </a>`, level: 2}};
+                const secTitle = {id: `UID${childModule._id}`, type: 'header', data: { text: `${childModule.title} <a href="#UID${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> 🔗 </a>`, level: 2}};
                 mergedBlocks = mergedBlocks.concat(secTitle);
                 mergedBlocks = mergedBlocks.concat(childModule.body.blocks);
             });

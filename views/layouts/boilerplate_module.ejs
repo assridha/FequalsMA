@@ -25,7 +25,7 @@
 </head>
 <body class="d-flex">
     <%- include('../partials/navbar') %>
-            <div class="row container-fluid" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
+            <div class="row container-fluid full-screen" style="padding-left:0%; margin-left: 0%;padding-right: 0%;">
                 <div class="col-xl-2 px-0 d-flex" style="margin-left: 0%;">
                     <div class="flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start tertiary-bg-color">
                         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -71,7 +71,7 @@
                           </div>
                     </div>
                 </div>
-                <div class="col d-flex flex-column mb-4 content-overflow" style="padding-left: 3rem; padding-right: 3rem; overflow-y: auto; max-height: 100vh;">
+                <div class="col d-flex flex-column mb-4 content-overflow scrollspy-example" style="padding-left: 3rem; padding-right: 3rem; overflow-y: auto; max-height: 100vh;" data-bs-spy="scroll" data-bs-target="#subtitle-list" data-bs-smooth-scroll="true" tabindex="0">
                     <main>
                         <div class="col pt-4">
                             <%- include('../partials/flash') %>

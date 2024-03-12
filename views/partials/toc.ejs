@@ -62,6 +62,8 @@
                         <% if (linkObject.length>2 && chaptersSort[k]._id.equals(linkObject[2])) {%>
                             <script>
                                 document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").style.fontWeight = "bold";
+                                document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").classList.add("sidebar-heading");
+                                document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").classList.remove("sidebar-text");
                             </script>
                         <% } %>
                     <% } %>
@@ -69,7 +71,8 @@
                 <% if (linkObject.length>1 && partsSort[j]._id.equals(linkObject[1])) { %>
                     <script>
                         document.getElementById("collapseList<%=i%>_<%=j%>").classList.add("show");
-                        document.getElementById("part<%=i%>_<%=j%>").style.fontWeight = "bold";
+                        document.getElementById("part<%=i%>_<%=j%>").classList.add("sidebar-heading");
+                        document.getElementById("part<%=i%>_<%=j%>").classList.remove("sidebar-text");
                         document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
                     </script>
                 <% } %>
@@ -78,7 +81,8 @@
         <% if (subjectsSort[i]._id.equals(linkObject[0])) { %>
             <script>
                 document.getElementById("collapseList<%=i%>").classList.add("show");
-                document.getElementById("subject<%=i%>").style.fontWeight = "bold";
+                document.getElementById("subject<%=i%>").classList.add("sidebar-heading");
+                document.getElementById("subject<%=i%>").classList.remove("sidebar-text");
                 document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
             </script>
         <% } %>

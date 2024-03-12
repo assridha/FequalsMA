@@ -7,15 +7,20 @@ function renderSubTitles(subTitleArray){
     } else {
         const subTitles = subTitleArray.map(subTitle => {
             // remove any anchor tags from the text
-            subTitle.data.text = subTitle.data.text.replace(/<a.*a>/g, '');
+            const subTitleMod =  subTitle.data.text.replace(/<a.*a>/g, '');
             if(subTitle.data.level > 2) {
-                return `<a class="list-group-item list-group-item-action" href="#${subTitle.id}" style="font-size: 0.8em;">${subTitle.data.text}</a>`;
+                return `<a class="list-group-item list-group-item-action" href="#${subTitle.id}" style="font-size: 0.7em;"> &nbsp; &nbsp; ${subTitleMod}</a>`;
             } else {
-                return `<a class="list-group-item list-group-item-action" href="#${subTitle.id}">${subTitle.data.text}</a>`;
+                return `<a class="list-group-item list-group-item-action" href="#${subTitle.id}" style="font-size: 0.8em;">${subTitleMod}</a>`;
             }
         });
         const subTitlesHtml = subTitles.join('');
-        document.getElementById('flush-collapseTwo').innerHTML = subTitlesHtml;
+        const listDiv = document.createElement('div');
+        listDiv.id = 'subtitle-list';
+        listDiv.className = 'list-group';
+        listDiv.innerHTML = subTitlesHtml;
+        document.getElementById('flush-collapseTwo').innerHTML = ''; // Clear existing content
+        document.getElementById('flush-collapseTwo').appendChild(listDiv);
     }
 }
 export { renderSubTitles }; 
