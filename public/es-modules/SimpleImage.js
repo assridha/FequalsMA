@@ -79,8 +79,6 @@ export default class SimpleImage {
     block.element.appendChild(block.form)
     block.element.appendChild(block.figure)
 
-    // hide titlespan
-    block.titleSpan.style.display = 'none'
 
     // Add event listener to urlInput
     block.urlInput.addEventListener('paste', function (event) {
@@ -103,7 +101,7 @@ export default class SimpleImage {
     // Add event listener to titleInput
     block.titleInput.addEventListener('input', function () {
       // Update the text content of the title span
-      block.titleSpan.innerHTML = `<u>${this.value}</u>: `
+      block.titleSpan.innerHTML = `<u>Fig [${this.value}]</u>`
     })
 
     // Add event listener to captionInput
@@ -154,7 +152,7 @@ export default class SimpleImage {
     this._block.titleInput.value = title
 
     this._block.captionSpan.innerHTML = captionInput
-    this._block.titleSpan.innerHTML = `<u>${title}</u>: `
+    this._block.titleSpan.innerHTML = `Fig. [${title}]: `
   }
   render() {
     return this._block.element
