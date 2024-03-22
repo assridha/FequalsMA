@@ -1,3 +1,9 @@
+    // Component imports
+    import renderChapterLinks from './renderChapterLinks.js';
+    import renderHeader from './renderHeader.js';
+    import renderPartBlocks from './renderPartBlocks.js';
+
+    // Editor JS imports
     import HorizontalRule from '/es-modules/HorizontalRule.js';
     import Numeric from '/es-modules/Numeric.js';
     import {MCQ, MAQ} from '/es-modules/MCTemplate.js';
@@ -6,11 +12,13 @@
     import ExParagraph from '/es-modules/ExParagraph.js';
     import HighlightBox from '/es-modules/HighlightBox.js';
 
+    // Editor JS auxiliary imports
     import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
     import getSubmoduleData from '/es-modules/getSubmoduleData.js';
     import ProblemBlock from '/es-modules/ProblemBlock.js';
     import { renderSubTitles } from './renderPageNavigation.js';
 
+    // Assign auxiliary functions to window object so that EditorJS tools can access them
     window.MathJax = MathJax;
     window.cmodule = {};
     window.cmodule.renderMathBlock = renderEquationBlock;

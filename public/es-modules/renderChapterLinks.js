@@ -1,4 +1,4 @@
-function renderChapterLinks(previousModule,nextModule,moduleType1,moduleType2){
+export default function renderChapterLinks(previousModule,nextModule,moduleType1,moduleType2){
 
     let ModuleType1 = moduleType1.charAt(0).toUpperCase() + moduleType1.slice(1);
     let ModuleType2

@@ -1,4 +1,4 @@
-function renderHeader(module, category,moduleCreateDate,moduleUpdateDate    ){
+export default function renderHeader(module, category,moduleCreateDate,moduleUpdateDate    ){
 
     const moduleType = category.moduleSettings[module.metaData.generation].layoutName;
 
