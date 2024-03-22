@@ -35,15 +35,15 @@
 
   <script type="module">
 
-    import HorizontalRule from '/es-modules/HorizontalRule.js';
-    import Numeric from '/es-modules/Numeric.js';
-    import {MCQ, MAQ} from '/es-modules/MCTemplate.js';
-    import Equation from '/es-modules/Equation.js';
-    import SimpleImage from '/es-modules/SimpleImage.js';
-    import ExParagraph from '/es-modules/ExParagraph.js';
+    import HorizontalRule from '/es-modules/renderer-modules/HorizontalRule.js';
+    import Numeric from '/es-modules/renderer-modules/Numeric.js';
+    import {MCQ, MAQ} from '/es-modules/renderer-modules/MCTemplate.js';
+    import Equation from '/es-modules/renderer-modules/Equation.js';
+    import SimpleImage from '/es-modules/renderer-modules/SimpleImage.js';
+    import ExParagraph from '/es-modules/renderer-modules/ExParagraph.js';
 
-    import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
-    import getSubmoduleData from '/es-modules/getSubmoduleData.js';
+    import {renderEquationInline,renderEquationBlock} from '/es-modules/renderer-modules/renderEquation.js';
+    import getSubmoduleData from '/es-modules/renderer-modules/getSubmoduleData.js';
 
     window.MathJax = MathJax;
     window.cmodule = {};

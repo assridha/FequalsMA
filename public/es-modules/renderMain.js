@@ -1,7 +1,7 @@
     // Component imports
-    import renderChapterLinks from './component-modules/renderChapterLinks.js';
+    import renderChapterLinks from './component-modules/renderPageFlipperLinks.js';
     import renderHeader from './component-modules/renderHeader.js';
-    import renderPartBlocks from './component-modules/renderPartBlocks.js';
+    import renderPartBlocks from './component-modules/renderChildSummaryBlocks.js';
     import { renderSubTitles } from './component-modules/renderPageNavigation.js';
 
     // Editor JS imports
@@ -13,13 +13,13 @@
     import ExParagraph from './renderer-modules/ExParagraph.js';
     import HighlightBox from './renderer-modules/HighlightBox.js';
 
-    // Editor JS auxiliary imports
+    // Editor JS interface function imports
     import {renderEquationInline,renderEquationBlock} from './renderer-modules/renderEquation.js';
     import getSubmoduleData from './renderer-modules/getSubmoduleData.js';
     import ProblemBlock from './renderer-modules/ProblemBlock.js';
     
 
-    // Assign auxiliary functions to window object so that EditorJS tools can access them
+    // Assign interface functions to window object so that EditorJS tools can access them
     window.MathJax = MathJax;
     window.cmodule = {};
     window.cmodule.renderMathBlock = renderEquationBlock;
