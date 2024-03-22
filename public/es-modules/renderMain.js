@@ -1,22 +1,23 @@
     // Component imports
-    import renderChapterLinks from './renderChapterLinks.js';
-    import renderHeader from './renderHeader.js';
-    import renderPartBlocks from './renderPartBlocks.js';
+    import renderChapterLinks from './component-modules/renderChapterLinks.js';
+    import renderHeader from './component-modules/renderHeader.js';
+    import renderPartBlocks from './component-modules/renderPartBlocks.js';
+    import { renderSubTitles } from './component-modules/renderPageNavigation.js';
 
     // Editor JS imports
-    import HorizontalRule from '/es-modules/HorizontalRule.js';
-    import Numeric from '/es-modules/Numeric.js';
-    import {MCQ, MAQ} from '/es-modules/MCTemplate.js';
-    import Equation from '/es-modules/Equation.js';
-    import SimpleImage from '/es-modules/SimpleImage.js';
-    import ExParagraph from '/es-modules/ExParagraph.js';
-    import HighlightBox from '/es-modules/HighlightBox.js';
+    import HorizontalRule from './renderer-modules/HorizontalRule.js';
+    import Numeric from './renderer-modules/Numeric.js';
+    import {MCQ, MAQ} from './renderer-modules/MCTemplate.js';
+    import Equation from './renderer-modules/Equation.js';
+    import SimpleImage from './renderer-modules/SimpleImage.js';
+    import ExParagraph from './renderer-modules/ExParagraph.js';
+    import HighlightBox from './renderer-modules/HighlightBox.js';
 
     // Editor JS auxiliary imports
-    import {renderEquationInline,renderEquationBlock} from '/es-modules/renderEquation.js';
-    import getSubmoduleData from '/es-modules/getSubmoduleData.js';
-    import ProblemBlock from '/es-modules/ProblemBlock.js';
-    import { renderSubTitles } from './renderPageNavigation.js';
+    import {renderEquationInline,renderEquationBlock} from './renderer-modules/renderEquation.js';
+    import getSubmoduleData from './renderer-modules/getSubmoduleData.js';
+    import ProblemBlock from './renderer-modules/ProblemBlock.js';
+    
 
     // Assign auxiliary functions to window object so that EditorJS tools can access them
     window.MathJax = MathJax;
@@ -106,7 +107,7 @@
             module.body.blocks = module.body.blocks.concat(mergedBlocks);
         }
         const subTitleArray = module.body.blocks.filter(block => block.type === 'header');
-        console.log(subTitleArray);
+        
         renderSubTitles(subTitleArray);
 
                 const editor = new EditorJS({

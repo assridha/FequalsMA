@@ -1,10 +1,10 @@
 //import EditorJS from '@editorjs/editorjs'
 //import Header from '@editorjs/header'
 //import editorjsNestedChecklist from '@calumk/editorjs-nested-checklist'
-import SimpleImage from '/es-modules/SimpleImage.js';
-import Equation from '/es-modules/Equation.js';
-import ExParagraph from '/es-modules/ExParagraph.js';
-import HorizontalRule from '/es-modules/HorizontalRule.js';
+import SimpleImage from './SimpleImage.js';
+import Equation from './Equation.js';
+import ExParagraph from './ExParagraph.js';
+import HorizontalRule from './HorizontalRule.js';
 
 class MCTemplate {
   constructor({ data, readOnly, qType }) {

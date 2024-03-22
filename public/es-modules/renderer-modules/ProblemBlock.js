@@ -1,9 +1,9 @@
-import SimpleImage from '/es-modules/SimpleImage.js';
-import Equation from '/es-modules/Equation.js';
-import ExParagraph from '/es-modules/ExParagraph.js';
-import HorizontalRule from '/es-modules/HorizontalRule.js';
-import {MCQ,MAQ} from '/es-modules/MCTemplate.js';
-import Numeric from '/es-modules/Numeric.js';
+import SimpleImage from './SimpleImage.js';
+import Equation from './Equation.js';
+import ExParagraph from './ExParagraph.js';
+import HorizontalRule from './HorizontalRule.js';
+import {MCQ,MAQ} from './MCTemplate.js';
+import Numeric from './Numeric.js';
 
 class ProblemBlock {
   constructor({ data, readOnly, block }) {
