@@ -1,7 +1,7 @@
     // Component imports
-    import renderChapterLinks from './component-modules/renderPageFlipperLinks.js';
+    import renderPageFlipperLinks from './component-modules/renderPageFlipperLinks.js';
     import renderHeader from './component-modules/renderHeader.js';
-    import renderPartBlocks from './component-modules/renderChildSummaryBlocks.js';
+    import renderChildSummaryBlocks from './component-modules/renderChildSummaryBlocks.js';
     import { renderSubTitles } from './component-modules/renderPageNavigation.js';
 
     // Editor JS imports
@@ -26,10 +26,10 @@
     window.cmodule.renderMathInline = renderEquationInline;
     window.cmodule.getSubmoduleData = getSubmoduleData;
    
-    // check window.location.search for id
+    // Parse URL
     var moduleID = window.location.search.split('=')[1];
+    
     // get module data via GET request
-   
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/module/data/${moduleID}`, true);
     xhr.onload = function () {
@@ -42,7 +42,7 @@
             const firstChildModule = childModules.find(childModule => childModule.index === 0);
 
             renderHeader(module, category,moduleCreateDate,moduleUpdateDate);
-            renderEditor(module,childModules,category)
+            renderBody(module,childModules,category)
 
             if (category.moduleSettings[module.metaData.generation].linkFlow.display){
                 if (category.moduleSettings[module.metaData.generation].linkFlow.chainSiblings){
@@ -52,14 +52,14 @@
                         if (nextModule){
                          moduleType2 = category.moduleSettings[nextModule.metaData.generation].layoutName;
                         }
-                         renderChapterLinks(previousModule,nextModule,moduleType1,moduleType2)
+                         renderPageFlipperLinks(previousModule,nextModule,moduleType1,moduleType2)
                     }else{
                         let moduleType1 = category.moduleSettings[parentModule.metaData.generation].layoutName;
                         let moduleType2
                         if (nextModule){
                             moduleType2 = category.moduleSettings[nextModule.metaData.generation].layoutName;
                         }
-                        renderChapterLinks(parentModule,nextModule,moduleType1,moduleType2)
+                        renderPageFlipperLinks(parentModule,nextModule,moduleType1,moduleType2)
                     }
                     
                 }else{
@@ -69,13 +69,13 @@
                          moduleType2 = category.moduleSettings[firstChildModule.metaData.generation].layoutName;
                     }
                     
-                    renderChapterLinks(parentModule,firstChildModule,moduleType1,moduleType2)
+                    renderPageFlipperLinks(parentModule,firstChildModule,moduleType1,moduleType2)
                 }
                 
             }
             if (category.moduleSettings[module.metaData.generation].childLayout.display &&
                 category.moduleSettings[module.metaData.generation].childLayout.layoutType === 'summary'){
-                renderPartBlocks(childModules,category)
+                renderChildSummaryBlocks(childModules,category)
             }
 
             } else {
@@ -88,7 +88,7 @@
     };
     xhr.send(null);
 
-    function renderEditor(module,childModules,category) {
+    function renderBody(module,childModules,category) {
     
         const body = module.body;
         

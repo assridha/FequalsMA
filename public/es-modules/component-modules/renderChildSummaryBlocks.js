@@ -1,4 +1,4 @@
-export default function renderPartBlocks(childModules,category){
+export default function renderChildSummaryBlocks(childModules,category){
 
     let moduleType = category.moduleSettings[childModules[0].metaData.generation].layoutName;
     moduleType = moduleType.charAt(0).toUpperCase() + moduleType.slice(1);
