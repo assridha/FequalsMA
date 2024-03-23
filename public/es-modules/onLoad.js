@@ -108,7 +108,6 @@
         }
         const subTitleArray = module.body.blocks.filter(block => block.type === 'header');
         
-        renderSubTitles(subTitleArray);
 
                 const editor = new EditorJS({
                     holder: 'editorjs',
@@ -142,7 +141,7 @@
                             element.id = element.dataset.id;
                         });
 
-    
+                        renderSubTitles(subTitleArray);
                      }
                     });  
     }
