@@ -1,4 +1,34 @@
-export default function renderChapterLinks(previousModule,nextModule,moduleType1,moduleType2){
+export default function renderPageFlipperLinks(category, module, previousModule, nextModule, parentModule, firstChildModule) {
+    if (category.moduleSettings[module.metaData.generation].linkFlow.display) {
+        if (category.moduleSettings[module.metaData.generation].linkFlow.chainSiblings) {
+            if (previousModule) {
+                let moduleType1 = category.moduleSettings[previousModule.metaData.generation].layoutName;
+                let moduleType2;
+                if (nextModule) {
+                    moduleType2 = category.moduleSettings[nextModule.metaData.generation].layoutName;
+                }
+                handlePageFlipperLinks(previousModule, nextModule, moduleType1, moduleType2);
+            } else {
+                let moduleType1 = category.moduleSettings[parentModule.metaData.generation].layoutName;
+                let moduleType2;
+                if (nextModule) {
+                    moduleType2 = category.moduleSettings[nextModule.metaData.generation].layoutName;
+                }
+                handlePageFlipperLinks(parentModule, nextModule, moduleType1, moduleType2);
+            }
+        } else {
+            let moduleType1 = category.moduleSettings[parentModule.metaData.generation].layoutName;
+            let moduleType2;
+            if (firstChildModule) {
+                moduleType2 = category.moduleSettings[firstChildModule.metaData.generation].layoutName;
+            }
+            handlePageFlipperLinks(parentModule, firstChildModule, moduleType1, moduleType2);
+        }
+    }
+}
+
+
+function handlePageFlipperLinks(previousModule,nextModule,moduleType1,moduleType2){
 
     let ModuleType1 = moduleType1.charAt(0).toUpperCase() + moduleType1.slice(1);
     let ModuleType2
