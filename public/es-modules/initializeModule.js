@@ -63,19 +63,21 @@
         const displayChildren = category.moduleSettings[module.metaData.generation].childLayout.display;
         const childLayoutType = category.moduleSettings[module.metaData.generation].childLayout.layoutType;
 
-        if (displayChildren && childLayoutType === 'full'){
-            // merge the body.blocks of all child modules into one array and push to module.body
-            let mergedBlocks = [];
-            childModules.forEach(childModule => {
-                const secTitle = {id: `UID${childModule._id}`, type: 'header', data: { text: `${childModule.title} <a href="#UID${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> 🔗 </a>`, level: 2}};
-                mergedBlocks = mergedBlocks.concat(secTitle);
-                mergedBlocks = mergedBlocks.concat(childModule.body.blocks);
-            });
+        //if (displayChildren && childLayoutType === 'full'){
+        //    // merge the body.blocks of all child modules into one array and push to module.body
+        //    let mergedBlocks = [];
+        //    childModules.forEach(childModule => {
+        //        const secTitle = {id: `UID${childModule._id}`, type: 'header', data: { text: `${childModule.title} <a href="#UID${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> 🔗 </a>`, level: 2}};
+        //        mergedBlocks = mergedBlocks.concat(secTitle);
+        //        mergedBlocks = mergedBlocks.concat(childModule.body.blocks);
+        //    });
             
-            module.body.blocks = module.body.blocks.concat(mergedBlocks);
-        }
+        //    module.body.blocks = module.body.blocks.concat(mergedBlocks);
+        //}
         const subTitleArray = module.body.blocks.filter(block => block.type === 'header');
-        
+        subTitleArray.forEach(subTitle => {
+                    subTitle.id = 'UID' + subTitle.id;
+                });
 
                 const editor = new EditorJS({
                     holder: 'editorjs',

@@ -5,7 +5,7 @@ const Module = require('../models/module');
 
 router.get('/latest', async (req, res) => {
     console.log('latest')
-    const modules = await Module.find({ 'metaData.generation': 4 }).select('_id');
+    const modules = await Module.find({ 'metaData.generation': 3 }).select('_id');
     // find latest module by creation date from id.getTimestamp()
     const latestModule = modules.reduce((a, b) => a._id.getTimestamp() > b._id.getTimestamp() ? a : b);
 
@@ -32,7 +32,7 @@ router.get('/data/:id', async (req, res) => {
     const moduleID = req.params.id;
 
     const module = await Module.findById(moduleID);
-    const modules = await Module.find({ 'metaData.generation': 4 }, '_id');
+    const modules = await Module.find({ 'metaData.generation': 3 }, '_id');
     // remove current module from array
     const filteredModules = modules.filter(exercise => exercise._id.toString() !== moduleID);
     // get random exercise
