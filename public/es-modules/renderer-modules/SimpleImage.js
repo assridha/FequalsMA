@@ -152,7 +152,7 @@ export default class SimpleImage {
     this._block.titleInput.value = title
 
     this._block.captionSpan.innerHTML = captionInput
-    this._block.titleSpan.innerHTML = `Fig. [${title}]: `
+    this._block.titleSpan.innerHTML = `${title}: `
   }
   render() {
     return this._block.element
