@@ -99,7 +99,7 @@ function linkBlockLeft(module,moduleType){
 function linkBlockRight(module,moduleType){
 
     let col2 = document.createElement('div');
-    col2.className = 'col-md-6 navLinkRight';
+    col2.className = 'col-md-6';
     col2.style.paddingLeft = '0';
     col2.style.marginLeft = '0';
     col2.style.paddingRight = '0';
@@ -111,17 +111,20 @@ function linkBlockRight(module,moduleType){
 
 
         let headerHolder = document.createElement('div');
-        headerHolder.className = 'col-md-auto navLinkLeft justify-content-start';
+        headerHolder.className = 'col-md-auto navLinkRight';
         headerHolder.style.paddingLeft = '0.5rem';
+        headerHolder.style.paddingRight = '0';
 
         let prefix = document.createElement('div');
         prefix.innerText = `➡️ ${moduleType}`;
         prefix.style.fontSize = '0.8rem';
-        prefix.style.textAlign = 'left';
+        prefix.style.textAlign = 'right';
 
         let header = document.createElement('a');
         header.innerText = module.title;
         header.href = `/module?id=${module._id}`;
+        header.style.textAlign = 'right'
+        header.style.justifyContent = 'end'
 
         headerHolder.appendChild(prefix);
         headerHolder.appendChild(header);

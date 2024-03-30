@@ -167,6 +167,12 @@ ul.cdx-nested-list--unordered li::before {
   .btn {
     font-size: 0.8rem;
   }
+  .body-image {
+    width: 100% !important
+  }
 }
 
+.navLinkRight {
+  text-align: right;
+}
 

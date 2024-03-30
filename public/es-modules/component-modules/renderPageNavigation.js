@@ -23,5 +23,24 @@ function renderSubTitles(subTitleArray){
         document.getElementById('flush-collapseTwo').appendChild(listDiv);
     }
 }
-export { renderSubTitles }; 
+
+function renderReferences(references){
+    if(references && references.length === 0) {
+        document.getElementById('flush-collapseThree').innerHTML = '<div style="margin-left: 20px; margin-right: 20px;padding-bottom: 20px;padding-top: 20px;">There are no references to display on this page.</div>';
+    } else {
+
+        const referenceHtml = references.map((reference,index) =>{ 
+           return `<a class="list-group-item list-group-item-action" href="${reference.href}" style="font-size: 0.8em;">[${index+1}] ${reference.text}</a>`;
+        })
+        const listDiv = document.createElement('div');
+        listDiv.id = 'subtitle-list';
+        listDiv.className = 'list-group';
+        listDiv.innerHTML = referenceHtml.join('');
+        document.getElementById('flush-collapseThree').innerHTML = ''; // Clear existing content
+        document.getElementById('flush-collapseThree').appendChild(listDiv);
+    }
+
+}
+
+export { renderSubTitles, renderReferences }; 
 

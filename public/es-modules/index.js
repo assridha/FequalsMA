@@ -2,7 +2,7 @@
     import renderPageFlipperLinks from './component-modules/renderPageFlipperLinks.js';
     import renderHeader from './component-modules/renderHeader.js';
     import renderChildSummaryBlocks from './component-modules/renderChildSummaryBlocks.js';
-    import { renderSubTitles } from './component-modules/renderPageNavigation.js';
+    import { renderSubTitles, renderReferences } from './component-modules/renderPageNavigation.js';
 
     // Editor JS imports
     import HorizontalRule from './renderer-modules/HorizontalRule.js';
@@ -53,6 +53,9 @@
             renderBody(module, childModules, category);
             renderPageFlipperLinks(category, module, previousModule, nextModule, parentModule, firstChildModule);
             renderChildSummaryBlocks(childModules, category, module);
+
+            const references = module.metaData?.references;
+            renderReferences(references)
         }
     }
 
@@ -112,6 +115,26 @@
                         });
 
                         renderSubTitles(subTitleArray);
+                            // Function to scroll to the element
+                              function scrollToHash() {
+                                  const hash = window.location.hash;
+                                  
+                                  if (hash) {
+                                    console.log('This is the hash',hash)
+                                      const targetElement = document.querySelector(hash);                                      if (targetElement) {
+                                          targetElement.scrollIntoView({ behavior: "smooth" });
+                                          console.log('executed scroll to view')
+                                      }
+                                  }
+                              }
+                          
+                              // Assuming your dynamic content is loaded here, adjust accordingly
+                              // For demonstration, using setTimeout as a placeholder for dynamic content loading
+                              
+                            setTimeout(() => {
+                                      scrollToHash(); // Call the function after the window is fully loaded and after a specific timeout
+                            }, 3000); // Adjust the timeout according to when your content is expected to be loaded
+                              
                      }
                     });  
     }

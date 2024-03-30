@@ -31,4 +31,15 @@ Finally, run the website:
 npm run start-dev 
 ```
 
+## Change log
+- Added Basic references
+- Right align right module links 
+- Dont filter out unpublished modules in dev mode
+- Figure: image should appear bigger on mobile screens > Idea: default to max width on mobile screens. 
+- Page navigation links might not work due to editorjs 
+- subtitle metadata font size is too big on mobile screens > use p tag instead of h5? 
+- Change to equation numbering. 
+- Use defer when setting page navigation. 
+- Change to figure numbering.
+
 

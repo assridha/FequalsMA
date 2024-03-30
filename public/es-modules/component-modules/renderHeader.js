@@ -4,7 +4,8 @@ export default function renderHeader(module, category,moduleCreateDate,moduleUpd
 
     const title = document.getElementById('header');
     const prefix = document.createElement('h6');
-    const subtitle = document.createElement('h6');
+    const subtitle = document.createElement('p');
+    subtitle.classList.add('tertiary-color')
     
     prefix.style.marginBottom = '0';
     prefix.textContent = `${moduleType.charAt(0).toUpperCase() + moduleType.slice(1)}`;

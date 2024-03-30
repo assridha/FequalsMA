@@ -383,6 +383,12 @@ class MCTemplate {
       },
       data: { blocks: solutionBlockData },
       onReady: () => {
+        // remove the first block
+        const firstBlockID =  this._subEditor.blocks.getBlockByIndex(0).id
+        // find element with data-id equal to firstBlockID and remove it
+         const firstBlock = document.querySelector(`[data-id="${firstBlockID}"]`)
+         firstBlock.remove()
+
         // find all elements within solutionBlock with class "ce-block" and set its id to value in data-id attribute
         const allBlocks = this._block.solutionBlock.querySelectorAll('.ce-block')
         for (let i = 0; i < allBlocks.length; i++) {

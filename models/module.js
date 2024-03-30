@@ -42,11 +42,13 @@ const moduleSchema = new mongoose.Schema({
   }
 })
 
-// middleware to filter modules that are published and not deleted when querying
-moduleSchema.pre(/^find/, function (next) {
-  this.find({ 'metaData.published': true, deleted: false})
-  next()
-})
+// middleware to filter modules that are published and not deleted when querying only in production
+if (process.env.NODE_ENV === 'production') {
+  moduleSchema.pre(/^find/, function (next) {
+    this.find({ 'metaData.published': true, deleted: false})
+    next()
+  })
+}
 
 // create module model
 const Module = mongoose.model('Module', moduleSchema)

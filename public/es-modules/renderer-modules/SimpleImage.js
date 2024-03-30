@@ -41,6 +41,7 @@ export default class SimpleImage {
 
     block.slideContainer.className = 'slide-container'
     block.img.style.width = '50%'
+    block.img.className = 'body-image'
 
     block.slider.type = 'range'
     block.slider.min = '0'
@@ -152,7 +153,11 @@ export default class SimpleImage {
     this._block.titleInput.value = title
 
     this._block.captionSpan.innerHTML = captionInput
-    this._block.titleSpan.innerHTML = `${title}: `
+    if (title==='0'){
+      this._block.titleSpan.innerHTML = ''
+    } else {
+      this._block.titleSpan.innerHTML = `Figure ${title}: `
+    }
   }
   render() {
     return this._block.element

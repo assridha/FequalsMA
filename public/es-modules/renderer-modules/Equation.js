@@ -38,15 +38,16 @@ export default class Equation {
     outputWrapper.style.display = 'flex'
     outputWrapper.style.justifyContent = 'space-between'
     outputWrapper.style.alignItems = 'center' // Added this line to vertically align the contents
-    outputWrapper.style.overflowX = 'auto' // Added this line to add horizontal scroll when content overflows
+    //outputWrapper.style.overflowX = 'auto' // Added this line to add horizontal scroll when content overflows
 
     this._outputEquation = document.createElement('div')
     this._outputEquation.className = 'equation-output'
     this._outputEquation.style.flexGrow = '1'
+    this._outputEquation.style.overflowX = 'auto'
 
     this._outputName = document.createElement('div')
     this._outputName.style.width = '80px'
-    this._outputName.style.fontSize = '0.7rem'
+    //this._outputName.style.fontSize = '0.7rem'
     //this._outputName.style.overflow = 'hidden'
     this._outputName.style.textOverflow = 'ellipsis'
 
@@ -72,6 +73,7 @@ export default class Equation {
     outputWrapper.appendChild(this._outputEquation)
     outputWrapper.appendChild(this._outputLink)
     outputWrapper.appendChild(this._outputName)
+    
 
     //combine form and output into element
     this._element.appendChild(this._form)
@@ -134,7 +136,7 @@ export default class Equation {
   _renderInput() {
     this._inputEquation.value = this.data.equation
     this._inputName.value = this.data.name
-    this._outputNameText.innerText = this.data.name
+    this._outputNameText.innerText = `(${this.data.name})`
   }
 
   async _renderEquation() {
