@@ -17,74 +17,73 @@
     linkObject.reverse()
     %>
     
-    <% let subjectsSort = toc.subjects.filter(subject => subject._id.equals(linkObject[0])) %>
-    <% for (let i=0; i< subjectsSort.length; i++) { %>
+    <% let selectedSubject = toc.subjects.find(subject => subject._id.equals(linkObject[0])) %>
         <span>
-            <a href="/module?id=<%=subjectsSort[i]._id%>" id="subject<%=i%>" class="sidebar-text">
-                <%= subjectsSort[i].title %>
+            <a href="/module?id=<%=selectedSubject._id%>" id="subject" class="sidebar-text">
+                <%= selectedSubject.title %>
             </a>
         </span>
-        <a data-bs-toggle="collapse" href="#collapseList<%=i%>" id="link_<%=i%>" role="button"
-            aria-expanded="false" aria-controls="collapseList<%=i%>" class="sidebar-text" style="text-decoration:none;">
-            [<span id="plus_minus_<%=i%>">+</span>]
+        <a data-bs-toggle="collapse" href="#collapseList" id="link" role="button"
+            aria-expanded="false" aria-controls="collapseList" class="sidebar-text" style="text-decoration:none;">
+            [<span id="plus_minus">+</span>]
         </a>
         <script>
-            document.getElementById("link_<%=i%>").addEventListener("click", function() {
-                document.getElementById("plus_minus_<%=i%>").innerHTML = document.getElementById("plus_minus_<%=i%>").innerHTML == "+" ? "-" : "+";
+            document.getElementById("link").addEventListener("click", function() {
+                document.getElementById("plus_minus").innerHTML = document.getElementById("plus_minus").innerHTML == "+" ? "-" : "+";
             });
         </script>
-        <% let partsSort = toc.parts.filter((part) => part.parent.equals(subjectsSort[i]._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
-        <ul class="collapse sidebar-text" id="collapseList<%=i%>">
+        <% let partsSort = toc.parts.filter((part) => part.parent.equals(selectedSubject._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
+        <ul class="collapse sidebar-text" id="collapseList">
             <% for (let j=0; j< partsSort.length; j++) { %>
                 <li class="nav-item"><span>
-                    <a href="/module?id=<%=partsSort[j]._id%>" id="part<%=i%>_<%=j%>" class="sidebar-text">
+                    <a href="/module?id=<%=partsSort[j]._id%>" id="part_<%=j%>" class="sidebar-text">
                         <%= partsSort[j].title %>
                     </a>
                 </span>
-                <a data-bs-toggle="collapse" href="#collapseList<%=i%>_<%=j%>" id="link_<%=i%>_<%=j%>" role="button"
-                    aria-expanded="false" aria-controls="collapseList<%=i%>_<%=j%>" class="sidebar-text" style="text-decoration: none;">
-                    [<span id="plus_minus_<%=i%>_<%=j%>">+</span>]
+                <a data-bs-toggle="collapse" href="#collapseList_<%=j%>" id="link_<%=j%>" role="button"
+                    aria-expanded="false" aria-controls="collapseList_<%=j%>" class="sidebar-text" style="text-decoration: none;">
+                    [<span id="plus_minus_<%=j%>">+</span>]
                 </a></li>
                 <script>
-                    document.getElementById("link_<%=i%>_<%=j%>").addEventListener("click", function () {
-                        document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML == "+" ? "-" : "+";
+                    document.getElementById("link_<%=j%>").addEventListener("click", function () {
+                        document.getElementById("plus_minus_<%=j%>").innerHTML = document.getElementById("plus_minus_<%=j%>").innerHTML == "+" ? "-" : "+";
                     });
                 </script>
                 <% let chaptersSort = toc.chapters.filter((chapter) => chapter.parent.equals(partsSort[j]._id)).sort((a, b) => (a.index > b.index) ? 1 : -1) %>
-                <ul class="collapse sidebar-text" id="collapseList<%=i%>_<%=j%>">
+                <ul class="collapse sidebar-text" id="collapseList_<%=j%>">
                     <% for (let k=0; k< chaptersSort.length; k++) { %>
                         <li class="nav-item"><span>
-                            <a href="/module?id=<%=chaptersSort[k]._id%>" id="chapter<%=i%>_<%=j%>_<%=k%>" class="sidebar-text">
+                            <a href="/module?id=<%=chaptersSort[k]._id%>" id="chapter_<%=j%>_<%=k%>" class="sidebar-text">
                                 <%= chaptersSort[k].title %>
                             </a>
                         </span>
                         </li>
                         <% if (linkObject.length>2 && chaptersSort[k]._id.equals(linkObject[2])) {%>
                             <script>
-                                document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").style.fontWeight = "bold";
-                                document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").classList.add("sidebar-heading");
-                                document.getElementById("chapter<%=i%>_<%=j%>_<%=k%>").classList.remove("sidebar-text");
+                                document.getElementById("chapter_<%=j%>_<%=k%>").style.fontWeight = "bold";
+                                document.getElementById("chapter_<%=j%>_<%=k%>").classList.add("sidebar-heading");
+                                document.getElementById("chapter_<%=j%>_<%=k%>").classList.remove("sidebar-text");
                             </script>
                         <% } %>
                     <% } %>
                 </ul>
                 <% if (linkObject.length>1 && partsSort[j]._id.equals(linkObject[1])) { %>
                     <script>
-                        document.getElementById("collapseList<%=i%>_<%=j%>").classList.add("show");
-                        document.getElementById("part<%=i%>_<%=j%>").classList.add("sidebar-heading");
-                        document.getElementById("part<%=i%>_<%=j%>").classList.remove("sidebar-text");
-                        document.getElementById("plus_minus_<%=i%>_<%=j%>").innerHTML = "-";
+                        document.getElementById("collapseList_<%=j%>").classList.add("show");
+                        document.getElementById("part_<%=j%>").classList.add("sidebar-heading");
+                        document.getElementById("part_<%=j%>").classList.remove("sidebar-text");
+                        document.getElementById("plus_minus_<%=j%>").innerHTML = "-";
                     </script>
                 <% } %>
             <% } %>
         </ul>
-        <% if (subjectsSort[i]._id.equals(linkObject[0])) { %>
+        <% if (selectedSubject._id.equals(linkObject[0])) { %>
             <script>
-                document.getElementById("collapseList<%=i%>").classList.add("show");
-                document.getElementById("subject<%=i%>").classList.add("sidebar-heading");
-                document.getElementById("subject<%=i%>").classList.remove("sidebar-text");
-                document.getElementById("plus_minus_<%=i%>").innerHTML = "-";
+                document.getElementById("collapseList").classList.add("show");
+                document.getElementById("subject").classList.add("sidebar-heading");
+                document.getElementById("subject").classList.remove("sidebar-text");
+                document.getElementById("plus_minus").innerHTML = "-";
             </script>
         <% } %>
-    <% } %>
+   
 </div>
