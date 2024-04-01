@@ -47,7 +47,23 @@ router.get('/data/:id', async (req, res) => {
     const updateDate = new Date(module.body.time);
     const moduleUpdateDate = updateDate.getDate() + ' ' + updateDate.toLocaleString('default', { month: 'short' }) + ' ' + updateDate.getFullYear();
 
-    res.send({module,moduleCreateDate,moduleUpdateDate, parentModule, previousModule, nextModule, childModules, category});
+
+    //
+    
+    let mainCategory = await Category.findOne({ title: 'Mains' });
+    let courseCategories = await Category.find({ parent: mainCategory._id });
+    let courseModules = await Module.find({ category: { $in: courseCategories } }, 'title index parent metaData');
+
+    let subjects = courseModules.filter(module => module.metaData.generation === 0).sort((a, b) => a.index - b.index);
+    let parts = courseModules.filter(module => module.metaData.generation === 1).sort((a, b) => a.index - b.index);
+    let chapters = courseModules.filter(module => module.metaData.generation === 2).sort((a, b) => a.index - b.index);
+
+    toc = { subjects, parts, chapters };
+
+    //
+
+
+    res.send({module,moduleCreateDate,moduleUpdateDate, parentModule, previousModule, nextModule, childModules, category,toc});
     
 
 });

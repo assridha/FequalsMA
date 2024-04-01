@@ -2,7 +2,7 @@
     import renderPageFlipperLinks from './component-modules/renderPageFlipperLinks.js';
     import renderHeader from './component-modules/renderHeader.js';
     import renderChildSummaryBlocks from './component-modules/renderChildSummaryBlocks.js';
-    import { renderSubTitles, renderReferences } from './component-modules/renderPageNavigation.js';
+    import { renderPageNavigation, renderReferences, renderSubjectNavigation } from './component-modules/renderSidebar.js';
 
     // Editor JS imports
     import HorizontalRule from './renderer-modules/HorizontalRule.js';
@@ -46,37 +46,24 @@
     async function renderModule(moduleID) {
         const data = await getModuleData(moduleID);
         if (data) {
-            const {parentModule, moduleCreateDate, moduleUpdateDate, module, nextModule, previousModule, childModules, category} = data;
+            const {parentModule, moduleCreateDate, moduleUpdateDate, module, nextModule, previousModule, childModules, category, toc} = data;
             const firstChildModule = childModules.find(childModule => childModule.index === 0);
 
             renderHeader(module, category, moduleCreateDate, moduleUpdateDate);
-            renderBody(module, childModules, category);
+            renderBody(module);
             renderPageFlipperLinks(category, module, previousModule, nextModule, parentModule, firstChildModule);
             renderChildSummaryBlocks(childModules, category, module);
+            renderSubjectNavigation(toc,module._id)
 
             const references = module.metaData?.references;
             renderReferences(references)
         }
     }
 
-    function renderBody(module,childModules,category) {
+    function renderBody(module) {
     
         const body = module.body;
         
-        const displayChildren = category.moduleSettings[module.metaData.generation].childLayout.display;
-        const childLayoutType = category.moduleSettings[module.metaData.generation].childLayout.layoutType;
-
-        //if (displayChildren && childLayoutType === 'full'){
-        //    // merge the body.blocks of all child modules into one array and push to module.body
-        //    let mergedBlocks = [];
-        //    childModules.forEach(childModule => {
-        //        const secTitle = {id: `UID${childModule._id}`, type: 'header', data: { text: `${childModule.title} <a href="#UID${childModule._id}" class="subheader-anchor" style="text-decoration:none;font-size:1.2rem"> 🔗 </a>`, level: 2}};
-        //        mergedBlocks = mergedBlocks.concat(secTitle);
-        //        mergedBlocks = mergedBlocks.concat(childModule.body.blocks);
-        //    });
-            
-        //    module.body.blocks = module.body.blocks.concat(mergedBlocks);
-        //}
         const subTitleArray = module.body.blocks.filter(block => block.type === 'header');
         subTitleArray.forEach(subTitle => {
                     subTitle.id = 'UID' + subTitle.id;
@@ -114,7 +101,7 @@
                             element.id = element.dataset.id;
                         });
 
-                        renderSubTitles(subTitleArray);
+                        renderPageNavigation(subTitleArray);
                             // Function to scroll to the element
                               function scrollToHash() {
                                   const hash = window.location.hash;
@@ -133,7 +120,7 @@
                               
                             setTimeout(() => {
                                       scrollToHash(); // Call the function after the window is fully loaded and after a specific timeout
-                            }, 3000); // Adjust the timeout according to when your content is expected to be loaded
+                            }, 1000); // Adjust the timeout according to when your content is expected to be loaded
                               
                      }
                     });  

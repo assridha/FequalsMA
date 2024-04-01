@@ -50,7 +50,6 @@ if (nextModule) {
     row.appendChild(col2);
 }
 
-    console.log('links rendered');
     const linksDivTop = document.getElementById('links-top');
     const linksDivBottom = document.getElementById('links-bottom');
     linksDivTop.appendChild(row);

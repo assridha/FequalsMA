@@ -43,7 +43,7 @@ class ExParagraph extends Paragraph {
     }
 
     this._data.text = this._dummyElement.innerHTML
-    this.hydrate()
+    this._element.innerHTML = this._data.text
   }
 
   async _renderEquation() {
