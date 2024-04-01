@@ -61,7 +61,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 // Import models
-const Reference = require('./models/reference');
 const Module = require('./models/module');
 const Category = require('./models/category');
 

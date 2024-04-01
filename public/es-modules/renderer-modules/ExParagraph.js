@@ -1,5 +1,3 @@
-//import Paragraph from '@editorjs/paragraph'
-
 class ExParagraph extends Paragraph {
   constructor({ data, api, config, readOnly }) {
     super({ data, config, api, readOnly })
