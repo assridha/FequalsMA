@@ -27,8 +27,26 @@
     window.cmodule.getSubmoduleData = getSubmoduleData;
    
     // Parse URL
-    var moduleID = window.location.search.split('=')[1];
-    renderModule(moduleID)
+   function parseURL(){
+    var pathElement = window.location.hash;
+    return pathElement
+   }
+
+    // Function to scroll to the element
+    function scrollToHash(nextPathLevel) {
+                                  
+        if (nextPathLevel) {
+            const targetElement = document.querySelector(nextPathLevel);                                      
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: "smooth" });
+                console.log('executed scroll to view')
+            }
+        }
+    }
+   
+   const nextPathLevel = parseURL();
+   renderModule(moduleID,nextPathLevel);
+
     
     async function getModuleData(moduleID) {
         try {
@@ -43,24 +61,24 @@
         }
     }
 
-    async function renderModule(moduleID) {
+    async function renderModule(moduleID,nextPathLevel) {
         const data = await getModuleData(moduleID);
         if (data) {
             const {parentModule, moduleCreateDate, moduleUpdateDate, module, nextModule, previousModule, childModules, category, toc} = data;
             const firstChildModule = childModules.find(childModule => childModule.index === 0);
 
             renderHeader(module, category, moduleCreateDate, moduleUpdateDate);
-            renderBody(module);
+            renderBody(module,nextPathLevel);
             renderPageFlipperLinks(category, module, previousModule, nextModule, parentModule, firstChildModule);
             renderChildSummaryBlocks(childModules, category, module);
-            renderSubjectNavigation(toc,module._id)
+            renderSubjectNavigation(toc,module._id,category)
 
             const references = module.metaData?.references;
             renderReferences(references)
         }
     }
 
-    function renderBody(module) {
+    function renderBody(module,nextPathLevel) {
     
         const body = module.body;
         
@@ -69,24 +87,24 @@
                     subTitle.id = 'UID' + subTitle.id;
                 });
 
-                const editor = new EditorJS({
-                    holder: 'editorjs',
-                    readOnly: true,
-                    autofocus: false,
-                    tools: {
-                        paragraph: ExParagraph,
-                        header: Header,
-                        checklist:  editorjsNestedChecklist,
-                        problem: ProblemBlock,
-                        mcq: MCQ,
-                        maq: MAQ,
-                        numeric: Numeric,
-                        equation: Equation,
-                        image: SimpleImage,
-                        hrule: HorizontalRule,
-                        highlight: {
-                            class: HighlightBox
-                          }          
+        const editor = new EditorJS({
+            holder: 'editorjs',
+            readOnly: true,
+            autofocus: false,
+            tools: {
+                    paragraph: ExParagraph,
+                    header: Header,
+                    checklist:  editorjsNestedChecklist,
+                    problem: ProblemBlock,
+                    mcq: MCQ,
+                    maq: MAQ,
+                    numeric: Numeric,
+                    equation: Equation,
+                    image: SimpleImage,
+                    hrule: HorizontalRule,
+                    highlight: {
+                         class: HighlightBox
+                        }          
                      },
                      data: body,
                      onReady: () => {
@@ -101,27 +119,14 @@
                             element.id = element.dataset.id;
                         });
 
-                        renderPageNavigation(subTitleArray);
-                            // Function to scroll to the element
-                              function scrollToHash() {
-                                  const hash = window.location.hash;
-                                  
-                                  if (hash) {
-                                    console.log('This is the hash',hash)
-                                      const targetElement = document.querySelector(hash);                                      if (targetElement) {
-                                          targetElement.scrollIntoView({ behavior: "smooth" });
-                                          console.log('executed scroll to view')
-                                      }
-                                  }
-                              }
-                          
+                        renderPageNavigation(subTitleArray);          
                               // Assuming your dynamic content is loaded here, adjust accordingly
                               // For demonstration, using setTimeout as a placeholder for dynamic content loading
                               
                             setTimeout(() => {
-                                      scrollToHash(); // Call the function after the window is fully loaded and after a specific timeout
+                                      scrollToHash(nextPathLevel); // Call the function after the window is fully loaded and after a specific timeout
                             }, 1000); // Adjust the timeout according to when your content is expected to be loaded
                               
                      }
-                    });  
+            });  
     }

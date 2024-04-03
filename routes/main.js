@@ -75,13 +75,16 @@ router.get('/soup', async (req, res) => {
     let articleCreateDates = articles.map(article => article._id.getTimestamp());
     articleCreateDates = articleCreateDates.map(date => date.getDate() + ' ' + date.toLocaleString('default', { month: 'short' }) + ' ' + date.getFullYear());
     
+    const updateDates = articles.map(article => new Date(article.body.time))
+    const articleUpdateDates = updateDates.map(updateDate => updateDate.getDate() + ' ' + updateDate.toLocaleString('default', { month: 'short' }) + ' ' + updateDate.getFullYear());
+
     // render soup.ejs file
     res.render('main/soup', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
     title: 'Soup' ,
     subTitle: 'Single page articles on applied math.',
     thumbnail: '/src/assets/Soup.png',
-    categories,articles,articleCreateDates});
+    categories,articles,articleCreateDates,articleUpdateDates});
 
 
 });

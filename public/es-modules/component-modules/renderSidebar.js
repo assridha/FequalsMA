@@ -42,8 +42,14 @@ function renderReferences(references){
 
 }
 
-function renderSubjectNavigation(toc, moduleID) {
+function renderSubjectNavigation(toc, moduleID,category) {
+
+    const subjectNavigation = document.getElementById('subjectNavigationAccordion');
+
+    if (category.metaData.displayTOC) {
+    subjectNavigation.style.display = 'block'
     const sidebarHandler = document.getElementById('sidebar-handler');
+    sidebarHandler.innerHTML = ''
     let linkObject = [moduleID];
     let part = toc.parts.filter(part => part._id === moduleID);
     if (part.length > 0) {
@@ -63,7 +69,7 @@ function renderSubjectNavigation(toc, moduleID) {
     let selectedSubject = toc.subjects.find(subject => subject._id === linkObject[0]);
     let subjectSpan = document.createElement('span');
     let subjectLink = document.createElement('a');
-    subjectLink.href = `/module?id=${selectedSubject._id}`;
+    subjectLink.href = `/module/${selectedSubject._id}`;
     subjectLink.id = "subject";
     subjectLink.className = "sidebar-heading";
     subjectLink.textContent = selectedSubject.title;
@@ -99,7 +105,7 @@ function renderSubjectNavigation(toc, moduleID) {
         li.className = "nav-item";
         let span = document.createElement('span');
         let partLink = document.createElement('a');
-        partLink.href = `/module?id=${part._id}`;
+        partLink.href = `/module/${part._id}`;
         partLink.id = `part_${j}`;
         partLink.className = "sidebar-text";
         partLink.textContent = part.title;
@@ -141,7 +147,7 @@ function renderSubjectNavigation(toc, moduleID) {
             chapterLi.className = "nav-item";
             let chapterSpan = document.createElement('span');
             let chapterLink = document.createElement('a');
-            chapterLink.href = `/module?id=${chapter._id}`;
+            chapterLink.href = `/module/${chapter._id}`;
             chapterLink.id = `chapter_${j}_${k}`;
             chapterLink.className = "sidebar-text";
             chapterLink.textContent = chapter.title;
@@ -162,6 +168,7 @@ function renderSubjectNavigation(toc, moduleID) {
     });
 
     sidebarHandler.appendChild(collapseList);
+} 
 }
 
 

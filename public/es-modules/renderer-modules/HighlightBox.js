@@ -33,7 +33,7 @@ class HighlightBox extends Paragraph {
 
     // insert img inside left div
     const img = document.createElement('img')
-    img.src = 'src/assets/lightbulb.png'
+    img.src = '/src/assets/lightbulb.png'
     img.style.width = '50%' // Adjust the width of the image to fit well within the left div
     img.alt = 'placeholder'
     left.appendChild(img)

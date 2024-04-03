@@ -31,7 +31,7 @@ export default function renderChildSummaryBlocks(childModules,category,module){
             let arrow = document.createElement('span');
             arrow.textContent = '➡️ Go to ';
             let a = document.createElement('a');
-            a.href = `/module?id=${childModules[i]._id}`;
+            a.href = `/module/${childModules[i]._id}`;
             a.textContent = childModules[i].title;
             div.appendChild(arrow);
             div.appendChild(a);

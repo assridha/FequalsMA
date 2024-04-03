@@ -5,19 +5,12 @@ const Module = require('../models/module');
 const Category = require('../models/category');
 
 // get route to each module page
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
 
-    // get module id from query string
-    const moduleID = req.query.id;
-
-    // find module document
-    const module = await Module.findById(moduleID, 'title category');
-
-    // find category document of module
-    const category = await Category.findById(module.category);
-
+    const moduleID = req.params.id;
+    
     // render module.ejs 
-    res.render('module/show', { moduleID, category});
+    res.render('module/show',{moduleID});
     
 });
 

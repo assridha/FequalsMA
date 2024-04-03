@@ -237,7 +237,7 @@ class MCTemplate {
       const optionIndex = parseInt(this._data.answer[i].replace('option ', ''))
       correctOptionIndices.push(optionIndex)
     }
-    console.log(correctOptionIndices)
+
     // insert tick marks for correct options and toggle class "correct-option" for correct option elements
     for (let i = 0; i < correctOptionIndices.length; i++) {
       const optionIndex = correctOptionIndices[i]
@@ -401,7 +401,6 @@ class MCTemplate {
   }
 
   _toggleState() {
-    console.log(this._data.previewState)
     this._data.previewState = !this._data.previewState
 
     this._setState()

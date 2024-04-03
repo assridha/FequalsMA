@@ -52,6 +52,11 @@ if (nextModule) {
 
     const linksDivTop = document.getElementById('links-top');
     const linksDivBottom = document.getElementById('links-bottom');
+
+    // clear html
+    linksDivTop.innerHTML = '';
+    linksDivBottom.innerHTML = '';
+
     linksDivTop.appendChild(row);
     
     let hr = document.createElement('hr');
@@ -84,7 +89,7 @@ function linkBlockLeft(module,moduleType){
 
     let header = document.createElement('a');
     header.innerText = module.title;
-    header.href = `/module?id=${module._id}`;
+    header.href = `/module/${module._id}`;
 
     headerHolder.appendChild(prefix);
     headerHolder.appendChild(header);
@@ -121,7 +126,7 @@ function linkBlockRight(module,moduleType){
 
         let header = document.createElement('a');
         header.innerText = module.title;
-        header.href = `/module?id=${module._id}`;
+        header.href = `/module/${module._id}`;
         header.style.textAlign = 'right'
         header.style.justifyContent = 'end'
 

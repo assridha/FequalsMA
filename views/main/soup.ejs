@@ -4,11 +4,11 @@
 <div class="container-fluid mt-4 pt-2">
 <%
 articles.sort((a, b) => {
-  const dateA = new Date(articleCreateDates[articles.indexOf(a)]);
-  const dateB = new Date(articleCreateDates[articles.indexOf(b)]);
+  const dateA = new Date(articleUpdateDates[articles.indexOf(a)]);
+  const dateB = new Date(articleUpdateDates[articles.indexOf(b)]);
   return dateB - dateA;
 });
-articleCreateDates.sort((a, b) => {
+articleUpdateDates.sort((a, b) => {
   const dateA = new Date(a);
   const dateB = new Date(b);
   return dateB - dateA;
@@ -16,11 +16,11 @@ articleCreateDates.sort((a, b) => {
 
 %>
 <% for(let i = 0; i < articles.length; i++) { %>
-<a href="/module?id=<%=articles[i]._id %>" style="text-decoration: none; color: inherit;">
+<a href="/module/<%=articles[i]._id %>" style="text-decoration: none; color: inherit;">
   <div class="article-summary">
     <div class="article-content">
       <h5 class="apply-font-bold article-title"><%= articles[i].title %></h5>
-      <small class="apply-font"><%= articleCreateDates[i] %> &middot; Ashwin Sridhar</small>
+      <small class="apply-font"><%= articleUpdateDates[i] %></small>
       <p class="apply-font desktop-only" style="margin-top: 0.5rem;"><%= articles[i].metaData.summary %></p>
     </div>
     <div class="article-thumbnail">
