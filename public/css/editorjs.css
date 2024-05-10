@@ -155,12 +155,9 @@ figcaption {
 }
 
 
-ul {
-  list-style-type: circle !important;
-}
-
 ul.cdx-nested-list--unordered li::before {
   font-size: 0.5rem !important; /* Makes the bullet very small */
+  list-style-type: circle !important;
 }
 
 @media (max-width: 786px) {

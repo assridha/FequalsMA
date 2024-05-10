@@ -18,7 +18,6 @@ export default function renderChildSummaryBlocks(childModules,category,module){
             partBlock.appendChild(prefix);
 
             let h2 = document.createElement('h2');
-            //h2.className = "mt-2 pt-2";
             h2.textContent = childModules[i].title;
             partBlock.appendChild(h2);
 

@@ -1,24 +1,376 @@
 <% layout('layouts/boilerplate') %>
 <%- include('../partials/banner') %>
 
-<div class="alert mb-4 secondary-bg-color" role="alert" style="border: 1px solid black;">
-  <b>Note:</b> The option to customize the exercise selection will be added in the future. For now the user can load a random exercise from all modules.
+<style>
+  .vl {
+    border-left: 1px solid black;
+    margin-left: 11px;
+    padding-left: 5px;
+  }
+
+  .nav-link.active {
+  background-color: #F5EFE7 !important
+}
+.nav-link {
+  color: #213555 !important
+}
+
+  @media (max-width: 576px) {
+    #content-container {
+      column-count: 1;
+    }
+  }
+
+  @media (min-width: 576px) and (max-width: 992px) {
+    #content-container {
+      column-count: 2;
+    }
+  }
+
+  @media (min-width: 992px) {
+    #content-container {
+      column-count: 3;
+    }
+  }
+</style>
+
+<% const cmModules = allModules.filter(module => module.type === 'study') %>
+<%
+   function getNofExercises(ID){
+
+    let NofExercises = allModules.filter(module => module.parent?.toString() === ID && module.type === 'exercise').length;
+    const SubModules = allModules.filter(module => module.parent?.toString() === ID && module.type === 'study');
+   
+    SubModules.forEach(module => {
+
+      const NofExercisesChildren = getNofExercises(module._id.toString());
+      NofExercises = NofExercises + NofExercisesChildren;
+
+    })
+
+    return NofExercises;
+   }
+
+   function getNofExercisesCategory(ID){
+
+    let NofExercises = allModules.filter(module => module.category?.toString() === ID && module.type === 'exercise').length;
+    const subCategories = subjectCategories.filter(module => module.parent?.toString() === ID);
+
+    subCategories.forEach(module => {
+
+      const NofExercisesChildren = getNofExercisesCategory(module._id.toString());
+      NofExercises = NofExercises + NofExercisesChildren;
+
+    })
+    
+    return NofExercises
+
+   }
+
+%>
+
+<div class="container mb-4 mt-4 ">
+  <ul class="nav nav-tabs"  id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">
+        <h4>Custom</h4>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">
+        <h4>Special</h4>
+      </button>
+    </li>
+  </ul>
+
+
+
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+      <div class="accordion primary-bg-color" id="accordionExample" >
+  
+        <div class="accordion-item primary-bg-color">
+            <button class="accordion-button collapsed primary-bg-color" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              <h5>Topic Selection</h5>
+            </button>
+          <div id="collapseOne" class="accordion-collapse collapse primary-bg-color" >
+            <div class="accordion-body">
+                <div><input type="checkbox" class="q-checkbox" id="checkbox-SA" style="vertical-align: middle; display: inline; width:23px;"><label for="checkbox-SA">Select all</label></div>
+              <div class="container-fluid mb-4" id="content-container">
+                  <div><input type="checkbox" class="q-checkbox s-category child-checkbox-SA" id="<%=starterCategory._id%>" style="vertical-align: middle; display: inline; width:23px;"><label for="<%=starterCategory._id%>"><b>Starters</b> (<%- getNofExercisesCategory(starterCategory._id.toString()) %>)</label> </div>
+                      <% const starterModules = cmModules.filter(module => module.category?.toString() === starterCategory._id.toString()).sort((a, b) => a.index - b.index); %>
+                      <% starterModules.forEach(starterModule => { %>
+                       <div class="vl" style="margin-left: 10px;">  <input type="checkbox" class="child-<%=starterCategory._id%> c-module q-checkbox" id="<%=starterModule._id%>" style="vertical-align: middle; display: inline; width:20px;"> <label for="<%=starterModule._id%>"><%= starterModule.title %> (<%- getNofExercises(starterModule._id.toString()) %>) </label></div>
+                      
+                      <% }); %>
+                  <div class="mt-4"><input type="checkbox" id="<%=mainsCategory._id%>" class="q-checkbox s-category child-checkbox-SA" style=" display: inline; width:22px;"><label for="<%=mainsCategory._id%>"><b>Mains</b> (<%- getNofExercisesCategory(mainsCategory._id.toString()) %>)</label></div>
+                  <div class="vl">
+                  <% subjectCategories.forEach(subjectCategory => {  %>
+                    <div style="margin-top: 10px;"><input type="checkbox" class="q-checkbox s-category child-<%=mainsCategory._id%>" id="<%=subjectCategory._id%>" style="display: inline; width:22px;"><label for="<%=subjectCategory._id%>"><b><%= subjectCategory.title %></b> (<%- getNofExercisesCategory(subjectCategory._id.toString()) %>)</label></div>
+                    <% const subjectModules = cmModules.filter(module => module.category?.toString() === subjectCategory._id.toString() && module.metaData.generation === 0).sort((a, b) => a.index - b.index); %>
+                    <div class="vl">
+                      <% subjectModules.forEach(subjectModule => { %>
+                        <div style="margin: 0;" ><input type="checkbox" class="q-checkbox c-module child-<%=subjectCategory._id%>" id="<%=subjectModule._id%>" style="vertical-align: middle; display: inline; width:20px;"><label for="<%=subjectModule._id%>"><%= subjectModule.title %> (<%- getNofExercises(subjectModule._id.toString()) %>) </label></div>
+                        <% const partModules = cmModules.filter(module => module.parent?.toString() === subjectModule._id.toString() && module.metaData.generation === 1).sort((a, b) => a.index - b.index); %>
+                        <div class="vl">
+                          <% partModules.forEach(partModule => { %>
+                            <div><input type="checkbox" id="<%=partModule._id%>" class="q-checkbox c-module child-<%=subjectModule._id%>" style="vertical-align: middle; display: inline; width:20px;"><label for="<%=partModule._id%>"><%= partModule.title %> (<%- getNofExercises(partModule._id.toString()) %>)</label></div>
+                            <% const chapterModules = cmModules.filter(module => module.parent?.toString() === partModule._id.toString() && module.metaData.generation === 2).sort((a, b) => a.index - b.index); %>
+                          <div class="vl">
+                            <% chapterModules.forEach(chapterModule => { %>
+                              <div style="font-size: small;"><input id="<%=chapterModule._id%>" class="c-module q-checkbox child-<%=partModule._id%>" type="checkbox" style="vertical-align: middle; display: inline; width:20px;"><label for="<%=chapterModule._id%>"><%= chapterModule.title %> (<%- getNofExercises(chapterModule._id.toString()) %>)</label></div>
+                            <% }); %>
+                          </div>
+                          <% }); %>
+                        </div>
+                        <div style="margin: 10px;"> </div>
+                      <% }); %>
+                    </div>
+                  <% }); %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="accordion-item primary-bg-color" >
+              <button class="accordion-button collapsed primary-bg-color" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h5> Difficulty</h5>
+              </button>
+            <div id="collapseTwo" class="accordion-collapse collapse primary-bg-color">
+              <div class="accordion-body primary-bg-color">
+               To be developed.
+              </div>
+            </div>
+        </div>
+          
+      </div>
+    </div>
+    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+    <div style="min-height: 200px; margin-top: 2rem;border: 1px solid black; border-radius: 5px;padding: 1.5rem; margin-top: 1rem;">
+       <ul>
+        <li>
+          <a href="practice/latest">Latest exercise</a>   
+        </li>
+       </ul>
+       
+    </div>
+    </div>
+  </div>
 </div>
 
 
-<div class="container-fluid" style="border: 1px solid black; border-radius: 5px;padding-left: 2rem;padding-right: 2rem;">
- <div class="row justify-content-center mb-4 mt-4">
-    <div class="col-auto">
-      <a id="random-exercise-link" href="">
-        <button class="btn btn-success" id="random-exercise">Random Exercise</button>
+<h5> Number of exercises selected: <b><span id="n-of-exercises" style="background-color: white; padding: 5px; border: 1px solid black; border-radius: 5px;">0</span></b> </h5>
+  
+<div class="mb-4 mt-4" style="margin-left: 0;">
+  <button class="btn btn-primary" id="start-button" onclick="startTest()"><svg class="w-[30px] h-[30px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 18V6l8 6-8 6Z"/>
+    </svg> Apply Selection
+  </button>
+</div>
+
+<!-----------------------------Start--------------------------------------------------------->
+
+ <div id="json-data">
+  <%= JSON.stringify(allModules)%>
+ </div>
+
+<!-------------------------------------------------------------------------------------->
+
+<div style="border: 1px solid black; border-radius: 5px;padding-left: 2rem;padding-right: 2rem; margin-top: 1rem;">
+
+  <div class="row mt-4 justify-content-center" style="width: 100%;">
+    <div class="col-auto d-flex justify-content-start" style="width: 3%; margin-right: 5%;">
+      <a id="prev-exercise" href="">
+        <button onclick="decrementIdx()" style="background-color: transparent; padding: 0%; border: none;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="previous exercise"> 
+          <svg class="w-[30px] h-[30px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+          </svg>          
+        </button>
+      </a>
+    </div> 
+    <div class="col-auto d-flex justify-content-center align-items-center" style="width: 70%;">
+      <div class="progress" style="width: 100%; height: 10px;" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: 0%;" id="progress-bar">  </div>
+      </div>
+    </div>
+    <div class="col-auto d-flex justify-content-end" style="width: 3%; margin-left: 5%;">
+      <a id="next-exercise" href="">
+        <button onclick="incrementIdx()" style="background-color: transparent; padding: 0%; border: none;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="next exercise"> 
+          <svg class="w-[30px] h-[30px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+          </svg>                        
+        </button>
       </a>
     </div>
-</div>
+  </div>
+  <div class="container-fluid text-center">
+    (<span id="e-idx">0</span>/<span id="total-exercises">0</span>)
+  </div>
+
+  <!--<div class="container-fluid mt-4 mb-4" >
+    <button class="tertiary-color"  data-bs-toggle="collapse" data-bs-target="#exerciseSummary" aria-expanded="false" aria-controls="exerciseSummary" style="background-color: transparent;border: none;"><u>Hide/Show exercises</u></button>
+  </div>-->
+  <!--<div class="collapse" id="exerciseSummary">
+    <div id="exercise-summary" class="card card-body">
+     No exercises selected.
+    </div>
+  </div>-->
+
 <hr style="margin-bottom: 0;">
    
 
   <div id="editorjs"></div>
 </div>
+
+
+<script>
+ 
+ let exerciseSet = [];
+ let eIdx = 0;
+ const progressbar = document.getElementById('progress-bar'); 
+ const eSpan = document.getElementById('e-idx');
+ const teSpan = document.getElementById('total-exercises');
+ 
+
+
+const allModules = JSON.parse(document.getElementById('json-data').innerText);
+document.getElementById('json-data').remove();
+
+function getCheckedCMIds(){
+  const result = Array.from(document.querySelectorAll('.c-module:checked')).map(checkbox => checkbox.id);
+  return result
+}
+
+function getCheckedCategoryIDs(){
+  const result = Array.from(document.querySelectorAll('.s-category:checked')).map(checkbox => checkbox.id);
+  return result
+}
+
+function incrementIdx(){
+  if (eIdx < exerciseSet.length-1){
+  eIdx = eIdx + 1;
+  progressbar.style.width = `${Math.round((eIdx+1)/(exerciseSet.length)*100)}%`;
+  eSpan.innerText = eIdx+1;
+  }
+}
+
+function decrementIdx(){
+
+  if (eIdx > 0){
+    eIdx = eIdx - 1;
+    progressbar.style.width = `${Math.round((eIdx+1)/(exerciseSet.length)*100)}%`;
+    eSpan.innerText = eIdx+1;
+}
+}
+
+function getExercises(){
+  const checkedCMIDs = getCheckedCMIds();
+  const checkedCategoryIDs = getCheckedCategoryIDs();
+  const filteredExercises = allModules.filter(module => module.type === 'exercise' && checkedCMIDs.includes(module.parent));
+  const orphanExercises = allModules.filter(module => module.type === 'exercise' && checkedCategoryIDs.includes(module.category) && !module.parent);
+  const mergedExercises = [...filteredExercises, ...orphanExercises];
+
+return mergedExercises
+}
+
+function setNofExercises(){
+  const noeSpan = document.getElementById('n-of-exercises');
+  const exercises =  getExercises()
+noeSpan.innerText = `${exercises.length}`;
+
+}
+
+function updateLinks(){
+
+   // update the link to a next exercise
+   const nextExerciseLink = document.getElementById('next-exercise');
+   const prevExerciseLink = document.getElementById('prev-exercise');
+      if (exerciseSet.length > eIdx+1){
+          const nextExercise = exerciseSet[eIdx+1];
+         
+          nextExerciseLink.href = `#${nextExercise._id}`;
+      } 
+      
+      if (eIdx>0) {
+        const prevExercise = exerciseSet[eIdx-1];
+        prevExerciseLink.href = `#${prevExercise._id}`;
+      } 
+
+}
+
+function startTest(){
+
+  const exercises = getExercises()
+  exerciseSet = [...exercises].sort(() => Math.random() - 0.5);
+  eIdx = 0;
+  if (exerciseSet.length>0){
+    window.location.href = `#${exerciseSet[eIdx]._id}`;
+    progressbar.style.width = `${Math.round((eIdx+1)/(exerciseSet.length)*100)}%`;
+    eSpan.innerText = eIdx+1;
+    teSpan.innerText = exerciseSet.length;
+    const startButton = document.getElementById("start-button");
+    updateLinks()
+
+    //const exerciseSummary = document.getElementById('exercise-summary');
+    //exerciseSummary.innerHTML = '';
+    //const exerciseList = document.createElement('ol');
+    //exerciseSet.forEach(exercise => {
+    //    const exerciseItem = document.createElement('li');
+    //    const exerciseLink = document.createElement('a');
+    //    exerciseLink.id = `exercise-${exercise._id}`
+    //    exerciseLink.href = `#${exercise._id}`;
+    //    exerciseLink.textContent = exercise.title;
+    //    exerciseItem.appendChild(exerciseLink);
+    //    exerciseList.appendChild(exerciseItem);
+    //});
+    //exerciseSummary.appendChild(exerciseList);
+
+    setTimeout(() => {
+        startButton.scrollIntoView({behavior:'smooth'});
+    }, 200);
+
+    
+}
+
+  
+
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const cmCheckbox = document.querySelectorAll('.q-checkbox')
+
+
+  const changeCMChildren = (e) => {
+    const cmID =  e.currentTarget.id
+    const isChecked = e.currentTarget.checked;
+    const cmChildCheckbox = document.querySelectorAll(`.child-${cmID}`);
+    cmChildCheckbox.forEach( cmChild => {
+      cmChild.checked = isChecked;
+      const ec = {
+        currentTarget: {
+          id: cmChild.id,
+          checked: cmChild.checked
+        }
+      }
+     const cf = changeCMChildren;
+     cf(ec)
+
+    })
+    // Update number of exercises
+    setNofExercises()
+  }
+  
+  // Add event listerners
+  cmCheckbox.forEach(cm => {
+    cm.addEventListener('change',(e) => changeCMChildren(e))
+  })
+
+});
+
+
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-nested-checklist@latest"></script>
@@ -56,20 +408,33 @@
     var moduleID = window.location.hash.split('#')[1];
     // get module data via GET request
    
-    var xhr = new XMLHttpRequest();
+    if (moduleID){
+
+      if (exerciseSet.length === 0){
+        // update the link to a next exercise
+        const nextExerciseLink = document.getElementById('next-exercise');
+        const prevExerciseLink = document.getElementById('prev-exercise');
+
+        nextExerciseLink.href = `#${moduleID}`;
+        prevExerciseLink.href = `#${moduleID}`;
+
+        progressbar.style.width = '100%';
+        eSpan.innerText = 1;
+        teSpan.innerText = 1;
+
+
+      }
+
+      var xhr = new XMLHttpRequest();
     xhr.open('GET', `/practice/data/${moduleID}`, true);
     xhr.onload = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var data = xhr.responseText;
             data = JSON.parse(data);
 
-            const {module,randomExercise} = data;
+            const {module} = data;
 
-            renderEditor(module)
-            // update the link to a random exercise
-            const randomExerciseLink = document.getElementById('random-exercise-link');
-            randomExerciseLink.href = `#${randomExercise._id}`;
-            
+            renderEditor(module)            
 
             } else {
                 console.error(xhr.statusText);
@@ -80,10 +445,34 @@
         console.error(xhr.statusText);
     };
     xhr.send(null);
+  
+  } else {
+
+    const module = {
+            title: "No exercise to display",
+            body: {
+            time: 1697289074525,
+            blocks: [{
+                        id: "xxxx",
+                        type: "paragraph",
+                        data: {
+                        text: "-",
+                        id: "xxx"}}],
+              version: "2.28.0"}};
+
+    renderEditor(module)   
+
+    const summaryBlock = document.getElementById('exercise-summary');
+    summaryBlock.innerText = 'No exercise selected.'
+
+  }
   }
   getData();
   // run getData when the hash changes
-  window.onhashchange = getData;
+  window.onhashchange = () => {
+    getData();
+    updateLinks();
+  }
 
     function renderEditor(module) {
 
@@ -118,7 +507,7 @@
                      },
                      data: body,
                      onReady: () => {
-                        console.log('Editor.js is ready!')
+                        console.log('Content rendered!')
                         window.editor = editor;
                         // find all elements with class 'ce-editor', read the data-id and set id to data-id
                         const editorElements = document.querySelectorAll('.ce-block');

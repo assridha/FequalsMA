@@ -9,8 +9,10 @@ router.get('/:id', async (req, res) => {
 
     const moduleID = req.params.id;
     
+    const htmlRes = "<h1> Hello There. This is a test.</h1>"
+
     // render module.ejs 
-    res.render('module/show',{moduleID});
+    res.render('module/show',{moduleID,htmlRes});
     
 });
 
