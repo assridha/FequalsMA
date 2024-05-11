@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 });
 
-router.get('/learn', async (req, res) => {
+router.get('/study', async (req, res) => {
 
     req.session.returnTo = req.originalUrl;
 
@@ -37,8 +37,8 @@ router.get('/learn', async (req, res) => {
     // render learn.ejs file
     res.render('main/learn', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
-    title: 'Learn' ,
-    subTitle: 'Self study courses on topics in applied mathematics.',
+    title: 'Study' ,
+    subTitle: 'Self study advanced topics in applied mathematics.',
     thumbnail: '/src/assets/Trove.png',
     categories,starters,mains});
 
@@ -54,7 +54,7 @@ router.get('/about', async (req, res) => {
     res.render('main/about', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
     title: 'About' ,
-    subTitle: 'Find out more about this website.',
+    subTitle: 'Learning = Study + Practice.',
     thumbnail: '/src/assets/about.png'});
 
 
@@ -82,7 +82,7 @@ router.get('/soup', async (req, res) => {
     res.render('main/soup', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
     title: 'Soup' ,
-    subTitle: 'Single page articles on applied math.',
+    subTitle: 'Space for articles/blogs.',
     thumbnail: '/src/assets/Soup.png',
     categories,articles,articleCreateDates,articleUpdateDates});
 

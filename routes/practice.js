@@ -5,7 +5,6 @@ const Module = require('../models/module');
 const Category = require('../models/category');
 
 router.get('/latest', async (req, res) => {
-    console.log('latest')
     const modules = await Module.find({ 'metaData.generation': 3 }).select('_id');
     // find latest module by creation date from id.getTimestamp()
     const latestModule = modules.reduce((a, b) => a._id.getTimestamp() > b._id.getTimestamp() ? a : b);
@@ -26,7 +25,7 @@ router.get('/', async (req, res) => {
     res.render('main/practice', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
     title: 'Practice' ,
-    subTitle: 'Apply your knowledge and skills to solve challenging problems.',
+    subTitle: 'Test your knowledge.',
     thumbnail: '/src/assets/Trials.png',
     allModules,
     starterCategory,
@@ -41,14 +40,21 @@ router.get('/', async (req, res) => {
 router.get('/data/:id', async (req, res) => {
 
     const moduleID = req.params.id;
-
-    const module = await Module.findById(moduleID);
-    const modules = await Module.find({ 'metaData.generation': 3 }, '_id');
-    // remove current module from array
-    const filteredModules = modules.filter(exercise => exercise._id.toString() !== moduleID);
-    // get random exercise
-    const randomExercise = filteredModules[Math.floor(Math.random() * filteredModules.length)];
-    res.send({module,randomExercise});
+    const data = await Module.findById(moduleID);
+    
+    const module = data? data : {
+        title: "No exercise to display",
+        body: {
+        time: 1697289074525,
+        blocks: [{
+                    id: "xxxx",
+                    type: "paragraph",
+                    data: {
+                    text: "-",
+                    id: "xxx"}}],
+          version: "2.28.0"}};
+    
+    res.send({module});
     
 });
 
