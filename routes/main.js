@@ -54,7 +54,7 @@ router.get('/about', async (req, res) => {
     res.render('main/about', { bgColor: 'primary-bg-color', 
     textColor: 'quaternary-color',
     title: 'About' ,
-    subTitle: 'Learning = Study + Practice.',
+    subTitle: 'A website dedicated to the art of applying mathematics to the real world.',
     thumbnail: '/src/assets/about.png'});
 
 
