@@ -10,6 +10,7 @@
     import {MCQ, MAQ} from './renderer-modules/MCTemplate.js';
     import Equation from './renderer-modules/Equation.js';
     import SimpleImage from './renderer-modules/SimpleImage.js';
+    import EmbedGeo from './renderer-modules/EmbedGeo.js';
     import ExParagraph from './renderer-modules/ExParagraph.js';
     import HighlightBox from './renderer-modules/HighlightBox.js';
 
@@ -94,6 +95,7 @@
             tools: {
                     paragraph: ExParagraph,
                     header: Header,
+                    embed: Embed,
                     checklist:  editorjsNestedChecklist,
                     problem: ProblemBlock,
                     mcq: MCQ,
@@ -101,6 +103,7 @@
                     numeric: Numeric,
                     equation: Equation,
                     image: SimpleImage,
+                    embed: EmbedGeo,
                     hrule: HorizontalRule,
                     highlight: {
                          class: HighlightBox
