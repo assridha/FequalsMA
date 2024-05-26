@@ -167,6 +167,11 @@ ul.cdx-nested-list--unordered li::before {
   .body-image {
     width: 100% !important
   }
+  .embedded-figure{
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important
+  }
 }
 
 .navLinkRight {

@@ -29,7 +29,7 @@ export default class EmbedGeo {
       titleWrapper: document.createElement('div'),
       captionWrapper: document.createElement('div'),
       form: document.createElement('div'),
-      figure: document.createElement('figure'),
+      figure: document.createElement('div'),
       img: document.createElement('div'),
       figureCaption: document.createElement('figcaption'),
       titleSpan: document.createElement('span'),
@@ -39,8 +39,20 @@ export default class EmbedGeo {
       slider: document.createElement('input')
     }
 
+    block.figure.style.width = '80%'
+    block.figure.style.marginLeft = '10%'
+    block.figure.style.marginRight = '10%'
+    block.figure.style.marginTop = '20px'
+    block.figure.style.marginBottom = '20px'
+    block.figure.classList = 'embedded-figure'
     block.slideContainer.className = 'slide-container'
-    block.img.style.width = '50%'
+    block.img.style.overflow = 'hidden'
+    block.img.style.paddingTop = '65.34%'
+    block.img.style.position = 'relative'
+    block.img.style.display = 'flex'
+    block.img.style.justifyContent = 'center'
+    block.img.style.alignItems = 'center'
+
 
     block.slider.type = 'range'
     block.slider.min = '0'
@@ -70,6 +82,7 @@ export default class EmbedGeo {
       )
     }
 
+    block.figureCaption.classList = 'text-center'
     block.figureCaption.appendChild(block.titleSpan)
     block.figureCaption.appendChild(block.captionSpan)
     block.figureCaption.appendChild(block.anchor)
@@ -95,7 +108,7 @@ export default class EmbedGeo {
       const pastedUrl = (event.clipboardData || window.clipboardData).getData('text')
 
       // Apply the URL to the image element
-      block.img.innerHTML = pastedUrl
+      block.img.innerHTML = `<iframe scrolling="no" title="Vector fields 3D" src="${pastedUrl}" style="border:0px; height: 100%; left: 0; position: absolute; top: 0; width: 100%;"></iframe>`
     })
 
     // Add event listener to slider
@@ -123,7 +136,7 @@ export default class EmbedGeo {
   }
 
   get data() {
-    this._data.url = this._block.img.innerHTML || ''
+    this._data.url = this._block.urlInput.value || ''
     this._data.previewState = this._block.slideContainer.style.display === 'none' ? true : false
     this._data.sliderValue = this._block.slider.value
     this._data.caption = this._block.captionInput.value
@@ -135,7 +148,9 @@ export default class EmbedGeo {
   set data(data) {
     this._data = data
 
-    this._block.img.innerHTML = data.url || ''
+    this._block.img.innerHTML =
+      `<iframe scrolling="no" title="Vector fields 3D" src="${data.url}" style="border:0px; height: 100%; left: 0; position: absolute; top: 0; width: 100%;"></iframe>` ||
+      ''
     this._block.anchor.href = `#${this._blockAPI.id || ''}`
     this._block.slideContainer.style.display = data.previewState ? 'none' : 'block'
     this._block.urlWrapper.style.display = data.previewState ? 'none' : 'block'
