@@ -108,7 +108,7 @@ export default class EmbedGeo {
       const pastedUrl = (event.clipboardData || window.clipboardData).getData('text')
 
       // Apply the URL to the image element
-      block.img.innerHTML = `<iframe scrolling="no" title="Vector fields 3D" src="${pastedUrl}" style="border:0px; height: 100%; left: 0; position: absolute; top: 0; width: 100%;"></iframe>`
+      block.img.innerHTML = `<iframe scrolling="no" title="Vector fields 3D" src="${pastedUrl}" allowFullScreen="true" style="border:0px; height: 100%; left: 0; position: absolute; top: 0; width: 100%;"></iframe>`
     })
 
     // Add event listener to slider
@@ -149,7 +149,7 @@ export default class EmbedGeo {
     this._data = data
 
     this._block.img.innerHTML =
-      `<iframe scrolling="no" title="Vector fields 3D" src="${data.url}" style="border:0px; height: 100%; left: 0; position: absolute; top: 0; width: 100%;"></iframe>` ||
+      `<iframe scrolling="no" title="Vector fields 3D" src="${data.url}" allowFullScreen="true" style="border:0px; height: 100%; left: 0; position: absolute; top: 0; width: 100%;"></iframe>` ||
       ''
     this._block.anchor.href = `#${this._blockAPI.id || ''}`
     this._block.slideContainer.style.display = data.previewState ? 'none' : 'block'
